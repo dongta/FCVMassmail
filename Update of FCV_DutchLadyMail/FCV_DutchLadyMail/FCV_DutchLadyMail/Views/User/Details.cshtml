@@ -1,0 +1,31 @@
+﻿@model FCV_DutchLadyMail_Model.Models.USER
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $(":input[type='button']").button();
+        $(":input[type='submit']").button();
+    });
+</script>
+<div class="container" style="width:100%;">
+    <div class=" userdetails">
+    @Html.Partial("_userDetails", Model)
+</div>
+    @using (Html.BeginForm("UserDetails", "Admin", FormMethod.Post))
+    {
+        @Html.ValidationSummary(true)
+        <br />
+        <div class="panel" id="RolesTable">
+            @Html.Partial("_ListUserRoleTable", Model)
+        </div>
+    }
+    <div style="padding-bottom:10px">
+        @Html.ActionLink("Go to Users", "Index", new { @controller = "User" }, new { @class = "btn btn-danger" })
+    </div>
+</div>
+
+

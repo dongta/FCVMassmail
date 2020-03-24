@@ -1,0 +1,97 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>Details Mail</title>
+</head>
+
+<body>
+    @model FCV_DutchLadyMail_Model.Models.SendMails
+    <link rel="stylesheet" href="~/Content/lib/helper.css" />
+    <link rel="stylesheet" href="~/Content/lib/bootstrap/bootstrap.min.css" />
+    <link href="@Url.Content("~/Content/admin/themes/ui-lightness/jquery-ui-1.10.3.min.css")" rel="stylesheet" type="text/css" />
+    @Styles.Render("~/Content/css")
+    <style>
+        .blank {
+            color: #000;
+        }
+    </style>
+    <div class="container blank" style="width:100%">
+        <div class="row ">
+            <div class="col-md-1">
+                <span>From : </span>
+            </div>
+            <div>
+                @Model.fromName
+            </div>
+        </div>
+        <div class="row ">
+            <div class="col-md-1">
+                <span>Date : </span>
+            </div>
+            <div>
+                @Model.LastTry
+            </div>
+        </div>
+        <div class="row ">
+            <div class="col-md-1">
+                <span>To : </span>
+            </div>
+            <div>
+                @Model.toAddress
+            </div>
+        </div>
+        <div class="row ">
+            <div class="col-md-1">
+                <span>Cc : </span>
+            </div>
+            <div>
+                @Model.ccAddress
+            </div>
+        </div>
+        <div class="row ">
+            <div class="col-md-1">
+                <span>Bcc : </span>
+            </div>
+            <div class="">
+                @Model.bccAddress
+            </div>
+        </div>
+        <div class="row ">
+            <div class="col-md-1">
+                <span>Title : </span>
+            </div>
+            <div class="">
+                <b>@Model.Subject</b>
+            </div>
+        </div>
+        
+        <div class="row ">
+            <div class="col-md-1">
+                <span>Attached file:</span>
+            </div>
+            @if (Model.AttachedFiles != null)
+            {
+            <div class="">
+                @{
+                    
+                    var file = Model.AttachedFiles.Split(',');
+                    foreach(var f in file)
+                    {
+                        @Html.ActionLink(f+ ",  ", "DownloadFile", new { id = Model.ID,name = f }, new { @style="color:blue"})
+                    }
+                }
+                
+               
+            </div>
+            } 
+        </div>
+        
+        <hr />
+
+        @MvcHtmlString.Create(HttpUtility.HtmlDecode(@Model.Body))
+
+    </div>
+</body>
+</html>

@@ -1,0 +1,178 @@
+﻿@model FCV_DutchLadyMail_Model.Models.SMTPProfiles
+
+@{
+    ViewBag.Title = "Mail Configuration Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    <style>
+        hr {
+             margin-top: 0; 
+             margin-bottom: 0; 
+            border: 0;
+            border-top: 1px solid #eee;
+        }
+    </style>
+    <link rel="stylesheet" href="~/Content/lib/data-table/dataTables.bootstrap.min.css" />
+    <script src="~/Content/js/lib/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/Content/js/lib/datatables/dataTables.bootstrap.min.js"></script>
+    <style type="text/css">
+        .table-responsive[data-pattern="priority-columns"] > .table > thead > tr > th, .table-responsive[data-pattern="priority-columns"] > .table > tbody > tr > th, .table-responsive[data-pattern="priority-columns"] > .table > tfoot > tr > th, .table-responsive[data-pattern="priority-columns"] > .table > thead > tr > td, .table-responsive[data-pattern="priority-columns"] > .table > tbody > tr > td, .table-responsive[data-pattern="priority-columns"] > .table > tfoot > tr > td {
+            min-width: 20px;
+            max-width: 500px;
+            white-space: normal;
+        }
+
+        div.dataTables_wrapper div.dataTables_filter input {
+            margin-left: 0.5em;
+            display: inline-block;
+            width: 300px;
+        }
+
+        .sticky-table-header.fixed-solution {
+            min-width: 0;
+            position: fixed;
+            height: 0px !important;
+        }
+    </style>
+}
+<div class="container" style="padding-top: 10px; width: 100%;">
+    
+    <div class="row">
+        <div class="col-6 col-md-2">
+            <span>Name</span>
+        </div>
+        <div class="col-12 col-md-8 form-group">
+            @Model.Name
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-6 col-md-2">
+            <span>SMTPServer</span>
+        </div>
+        <div class="col-12 col-md-8 form-group">
+            @Model.SMTPServer
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-6 col-md-2">
+            <span>SMTPPort</span>
+        </div>
+        <div class="col-12 col-md-8 form-group">
+            @Model.SMTPPort
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-6 col-md-2">
+            <span>Account</span>
+        </div>
+        <div class="col-12 col-md-8 form-group">
+            @Model.Account
+        </div>
+    </div>
+    <hr />
+    @*<div class="row">
+        <div class="col-6 col-md-2">
+            <span>Password</span>
+        </div>
+        <div class="col-12 col-md-8 form-group">
+            @Model.Password
+        </div>
+    </div>
+    <hr />*@
+    <div class="row">
+        <div class="col-6 col-md-2">
+            <span>Address</span>
+        </div>
+        <div class="col-12 col-md-8 form-group">
+            @Model.Address
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-6 col-md-2">
+            <span>DisplayName</span>
+        </div>
+        <div class="col-12 col-md-8 form-group">
+            @Model.DisplayName
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-6 col-md-2">
+            <span>SSLEnable</span>
+        </div>
+        <div class="col-12 col-md-8 form-group">
+            @Model.SSLEnable
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-6 col-md-2">
+            <span>Description</span>
+        </div>
+        <div class="col-12 col-md-8 form-group">
+            @Model.Description
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-6 col-md-2">
+            <span>MaxTries</span>
+        </div>
+        <div class="col-12 col-md-8 form-group">
+            @Model.MaxTries
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-6 col-md-2">
+            <span>TryInterval</span>
+        </div>
+        <div class="col-12 col-md-8 form-group">
+            @Model.TryInterval
+        </div>
+    </div>
+    <hr />
+
+    <br />
+
+        <div class="col-md-12" style="padding-bottom:10px; padding-left:0px;padding-top:20px">
+            @Html.ActionLink("Go to Mail Configuration List", "Index", new { controller = "MailConfiguration" }, new { @class = "btn btn-danger" })
+        </div>
+</div>
+
+
+<script type="text/javascript">
+
+    var t = $('#data_table').DataTable({
+        "bAutoWidth": true,
+        "language": {
+            "search": "Quick filter records:",
+            "columnDefs": [{
+                "searchable": false,
+                "orderable": false,
+                "targets": 0
+            }],
+            "order": [[1, 'asc']]
+
+        }
+    });
+    t.on('order.dt search.dt', function () {
+        t.column(0, { search: 'applied', order: 'applied' }).nodes().each(function (cell, i) {
+            cell.innerHTML = i + 1;
+        });
+    }).draw();
+
+    $(".collapse.in").each(function () {
+        $(this).siblings(".panel-heading").find(".glyphicon").addClass("glyphicon-minus").removeClass("glyphicon-plus");
+    });
+
+    // Toggle plus minus icon on show hide of collapse element
+    $(".collapse").on('show.bs.collapse', function () {
+        $(this).parent().find(".glyphicon").removeClass("glyphicon-plus").addClass("glyphicon-minus");
+    }).on('hide.bs.collapse', function () {
+        $(this).parent().find(".glyphicon").removeClass("glyphicon-minus").addClass("glyphicon-plus");
+    });
+</script>

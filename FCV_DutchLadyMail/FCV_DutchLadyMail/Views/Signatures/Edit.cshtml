@@ -1,0 +1,67 @@
+﻿@model FCV_DutchLadyMail_Model.Models.Signatures
+@{
+    ViewBag.Title = "Edit Signature";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    <script src="~/ckeditor/ckeditor.js"></script>
+}
+
+
+
+@using (Html.BeginForm("Edit", "Signatures", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        @Html.HiddenFor(model => model.UserID, new { @class = "control-label col-md-2" })
+
+        <div class="row">
+            <label class="col-md-2 control-label">Created By</label>
+            <div class="col-md-10" style="padding-top:7px;">
+                 <span>@Model.UserID</span>
+            </div>
+        </div>
+        <div class="row">
+            <label class="col-md-2 control-label">Last Update Time</label>
+            <div class="col-md-10" style="padding-top:7px;">
+                <span>@Model.UpdateTime</span>
+            </div>
+        </div>
+
+        <div class="form-group" style="padding-top:7px;">
+            @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.Name, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Contents, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextAreaFor(model => model.Contents, htmlAttributes: new { @class = "form-control", @id = "ckeContent" })
+                <script type="text/javascript">
+                    CKEDITOR.replace("ckeContent",
+                                {
+                                    height: 130,
+                                    language: 'en',
+                                    image_previewText: " ",
+                                    removePlugins: "help"
+
+                                });
+                </script>
+            </div>
+        </div>
+
+
+        <hr />
+        <div style="padding-bottom:10px">
+            <input type="submit" value="Update" class="btn btn-primary" />
+            @Html.ActionLink("Go to Signatures List", "Index", new { @controller = "Signatures" }, new { @class = "btn btn-danger" })
+        </div>
+    </div>
+}
+
+

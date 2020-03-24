@@ -1,0 +1,189 @@
+﻿@model FCV_DutchLadyMail_Model.Models.DistributorModel
+
+@{
+    ViewBag.Title = "Edit Distributor";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    <style type="text/css">
+        table {
+            /*word-wrap: break-word;*/
+            width: 100%;
+        }
+
+        .form-control {
+            font-size: 13px;
+            padding: 0px;
+        }
+
+        td p {
+            margin-bottom: 0px;
+        }
+
+        .text_NPP {
+            width: 36.36%;
+            float: left;
+            padding-top: 6px;
+        }
+
+        .input_NPP {
+            width: 63.63%;
+            float: left;
+        }
+
+        @@media screen and (max-width:767px) {
+            .input_NPP {
+                width: 63.63% !important;
+                float: left;
+            }
+
+            .text_NPP {
+                width: 36.36% !important;
+                float: left;
+                padding-top: 6px;
+            }
+        }
+
+
+        .form-control {
+            height: 28px;
+            padding: 1px;
+        }
+    </style>
+    <script src="~/Scripts/multiple-select.js"></script>
+    <link rel="stylesheet" href="~/Content/custom/multiple-select.css" />
+}
+
+<div class="container" style="padding-top: 10px; width: 100%">
+    @using (Html.BeginForm("Edit", "Distributors", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-horizontal">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-xs-12 col-sm-12 col-md-12">
+                        <div class="col-sm-3 col-md-3">
+                            <label>Dis's Code</label>
+                        </div>
+                        <div class="input_NPP form-group">
+                            @Html.TextBoxFor(model => model.Code, new { @class = "form-control input-md" })
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-12 col-md-12">
+                        <div class="col-sm-3 col-md-3">
+                            <label>Dis's Name</label>
+                        </div>
+                        <div class="input_NPP form-group">
+                            @Html.TextBoxFor(model => model.Name, new { @class = "form-control input-md" })
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-12 col-md-12">
+                        <div class="col-sm-3 col-md-3">
+                            <label>Manager Email</label>
+                        </div>
+                        <div class="input_NPP form-group">
+                            @Html.TextBoxFor(model => model.ManagerMail, new { @class = "form-control input-md" })
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-12 col-md-12">
+                        <div class="col-sm-3 col-md-3">
+                            <label>Admin's email</label>
+                        </div>
+                        <div class="input_NPP form-group">
+                            @Html.TextBoxFor(model => model.AdminMail, new { @class = "form-control input-md" })
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-12 col-md-12">
+                        <div class="col-sm-3 col-md-3">
+                            <label>SE Dis's email</label>
+                        </div>
+                        <div class="input_NPP form-group">
+                            @Html.TextBoxFor(model => model.SEMail, new { @class = "form-control input-md" })
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-12 col-md-12">
+                        <div class="col-sm-3 col-md-3">
+                            <label>Ac's email</label>
+                        </div>
+                        <div class="input_NPP form-group">
+                            @Html.TextBoxFor(model => model.AcMail, new { @class = "form-control input-md" })
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-12 col-md-12">
+                        <div class="col-sm-3 col-md-3">
+                            <label>Region</label>
+                        </div>
+                        <div class="input_NPP form-group">
+                            
+                            @if (Model.Region == null)
+                            {
+                               @Html.DropDownListFor(model => model.Region, (SelectList)ViewBag.Region, new { id = "nppRegion", @style = "width:30%;height:30px", @class = "form-control input-md ms-choice-focus" })
+                            }
+                            else
+                            {
+                                var s = Model.Region.ToString();
+                                <input type="hidden" value="@s" id="selectedF" />
+                                @Html.DropDownListFor(model => model.Region, (SelectList)ViewBag.Region, new { id = "nppRegion", @style = "width:30%;height:30px", @class = "form-control input-md ms-choice-focus" })
+                                @*@Html.DropDownList("Folders", null, new { @class = "form-control ", id = "folderSelect" })*@
+                                <script>
+                                    $("document").ready(function () {
+                                        $('#nppRegion').val($('#selectedF').val());
+                                    });
+                                </script>
+                            }
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-12 col-md-12">
+                        <div class="col-sm-3 col-md-3">
+                            <label>Address</label>
+                        </div>
+                        <div class="input_NPP form-group">
+                            @Html.TextBoxFor(model => model.Address, new { @class = "form-control input-md" })
+                        </div>
+                    </div>
+                </div>
+                @*<div class="row">
+                    <div class="col-xs-12 col-sm-12 col-md-12">
+                        <div class="col-sm-3 col-md-3">
+                            <span>Active</span>
+                        </div>
+                        <div>
+                            @if (Model.State == null)
+                            {
+                                Model.State = false;
+                            }
+                            else
+                            { Model.State = true; }
+                               
+                            @Html.CheckBoxFor(model => model.State.Value, htmlAttributes: new { Name = "IsChecked", @style = "width:20px;height:20px;", @id = "ckeContent" })
+                        </div>
+                    </div>
+                </div>*@
+                <hr class="colorgraph">
+                <div style="padding-bottom:10px">
+                    <input type="submit" value="Update" class="btn btn-primary" />
+                    @Html.ActionLink("Go to Distributors List", "Index", new { @controller = "Distributors" }, new { @class = "btn btn-danger" })
+                </div>
+            </div>
+        </div>
+    }
+    <div class="col-md-12" style="padding-bottom:10px">
+
+
+    </div>
+</div>

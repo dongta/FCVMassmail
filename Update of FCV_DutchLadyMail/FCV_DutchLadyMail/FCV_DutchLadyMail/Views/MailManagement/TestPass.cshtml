@@ -1,0 +1,14 @@
+﻿@{
+    ViewBag.Title = "TestPass";
+    if (ViewBag.MessageCount !=null)
+    {
+        <script type="text/javascript">
+            window.onload = function () {
+                alert("@ViewBag.MessageCount");
+                //window.location.href = "MailManagement/SendMails";
+            };
+        </script>
+    }
+}
+
+<h2>TestPass</h2>

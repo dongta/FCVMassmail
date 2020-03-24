@@ -1,0 +1,127 @@
+﻿@model FCV_DutchLadyMail_Model.Models.ROLE
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#AddPermission').click(function () {
+            var _permissionId = $('#PermissionId').val();
+            var _roleId = $('#Role_Id').val();
+            if (_permissionId == '') {
+                return false;
+            }
+
+            var _parameters = { permissionId: _permissionId, id: _roleId };
+            $.ajax({
+                url: "/Role/AddPermission2RoleReturnPartialView",
+                type: "GET",
+                data: _parameters,
+                success: function (data, textStatus, jqXHR) {
+                    $('#PermissionsTable').html(data);
+                    $('#PermissionId').val("");
+                }
+            });
+        });
+
+        $('#AddAllPermissions').click(function () {
+            var _roleId = $('#Role_Id').val();
+            var _parameters = { id: _roleId };
+            $.ajax({
+                url: "/Role/AddAllPermissions2RoleReturnPartialView",
+                type: "GET",
+                data: _parameters,
+                success: function (data, textStatus, jqXHR) {
+                    $('#PermissionsTable').html(data);
+                    $('#PermissionId').val("");
+                }
+            });
+        });
+    });
+    jQuery(document).ready(function ($) {
+        $('#Permission').multiselect({
+            search: {
+                left: '<input type="text" name="q" class="form-control" placeholder="Search..." />',
+                right: '<input type="text" name="q" class="form-control" placeholder="Search..." />',
+            },
+            fireSearch: function (value) {
+                return value.length > 1;
+            },
+            beforeMoveToRight: function (left, right, options) {
+                var _roleId = $('#Role_Id').val();
+                for (var i = 0; i < left.val().length; i++) {
+                    if (left.val()[i] != '') {
+                        var _parameters = { permissionId: left.val()[i], id: _roleId };
+                        $.ajax({
+                            url: "/Role/AddPermission2RoleReturnPartialView",
+                            type: "GET",
+                            data: _parameters,
+                            success: function (data, textStatus, jqXHR) {
+
+                            },
+                            error: function () {
+                                alert('Error add permission!!');
+                                return false;
+                            }
+                        });
+                    }
+                }
+                return true;
+            },
+            beforeMoveToLeft: function (left, right, options) {
+                var _roleId = $('#Role_Id').val();
+                for (var i = 0; i < right.val().length; i++) {
+                    if (right.val()[i] != '') {
+                        var _parameters = { id: _roleId, permissionId: right.val()[i] };
+                        $.ajax({
+                            url: "/Role/DeletePermissionFromRoleReturnPartialView",
+                            type: "GET",
+                            data: _parameters,
+                            success: function (data, textStatus, jqXHR) {
+
+                            },
+                            error: function () {
+                                alert('Error remove permission!!');
+                                return false;
+                            }
+                        });
+                    }
+                }
+                return true;
+            },
+        });
+    });
+</script>
+@Html.HiddenFor(model => model.Role_Id)
+
+
+@section scripts {
+    <script type="text/javascript">
+
+    </script>
+}
+<fieldset style="padding: 1em; font: 100%; color: Black; border-color: Black; border-style: solid;
+    border-width: thin; border-color: Silver; width: 100%">
+    <legend><strong>Add Permission To Role</strong></legend>
+    <br />
+    <div class="row">
+        <div class="col-xs-5">
+            @Html.DropDownList("PermissionId", null, new { @class = "form-control", @multiple = "multiple", @size = "10", id = "Permission" })
+        </div>
+
+        <div class="col-xs-2">
+            @*<button type="button" id="Permission_rightAll" class="btn btn-block"><i class="glyphicon glyphicon-forward"></i></button>*@
+            <button type="button" id="Permission_rightSelected" class="btn btn-block"><i class="glyphicon glyphicon-chevron-right"></i></button>
+            <button type="button" id="Permission_leftSelected" class="btn btn-block"><i class="glyphicon glyphicon-chevron-left"></i></button>
+            @*<button type="button" id="Permission_leftAll" class="btn btn-block"><i class="glyphicon glyphicon-backward"></i></button>*@
+        </div>
+
+        <div class="col-xs-5">
+            @Html.DropDownList("Role_Permission", null, new { @class = "form-control", @multiple = "multiple", @size = "10", @id = "Permission_to", @name = "to[]" })
+            @*<select name="to[]" id="Permission_to" class="form-control" size="10" multiple="multiple"></select>*@
+        </div>
+    </div>
+    <br />
+    @*<label>
+            Permission:
+        </label>
+        @Html.DropDownList("PermissionId", null, string.Empty, new { style = "width:350px" })*@
+    @*<input type="button" id="AddPermission" value="Add Permission" />*@
+    @*<input type="button" id="AddAllPermissions" value="Add All Permissions" />*@
+</fieldset>

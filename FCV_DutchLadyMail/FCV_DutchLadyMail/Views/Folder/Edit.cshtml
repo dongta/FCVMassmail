@@ -1,0 +1,91 @@
+﻿@model FCV_DutchLadyMail_Model.Models.Folders
+@{
+    ViewBag.Title = "Edit Folder";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    <script src="~/ckeditor/ckeditor.js"></script>
+}
+
+
+
+@using (Html.BeginForm("Edit", "Folder", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        @Html.HiddenFor(model => model.ID, new { @class = "control-label col-md-2" })
+        @Html.HiddenFor(model => model.created_at, new { @class = "control-label col-md-2" })
+        @Html.HiddenFor(model => model.created_time, new { @class = "control-label col-md-2" })
+
+        <div class="row">
+            <label class="col-md-2 control-label">Created By</label>
+            <div class="col-md-10" style="padding-top:7px;">
+                <span>@Model.created_at</span>
+            </div>
+        </div>
+        <div class="row">
+            <label class="col-md-2 control-label">Create Time</label>
+            <div class="col-md-10" style="padding-top:7px;">
+                <span>@Model.created_time</span>
+            </div>
+        </div>
+        <div class="row">
+            <label class="col-md-2 control-label">Last Update Time</label>
+            <div class="col-md-10" style="padding-top:7px;">
+                <span>@Model.updated_at</span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.Name, new { @class = "form-control", @style = "width:60%;" })
+                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.Path, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.Path, new { @class = "form-control", @style = "width:60%;display:initial" })
+                <input type="button" id="pathck" value="Check Path" class="btn btn-danger" />
+                @Html.ValidationMessageFor(model => model.Path, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextAreaFor(model => model.Description, htmlAttributes: new { @class = "form-control", @id = "ckeContent" })
+            </div>
+        </div>
+
+
+
+        <hr />
+        <div style="padding-bottom:10px">
+            <input type="submit" value="Update" class="btn btn-primary" />
+            @Html.ActionLink("Go to Folders List", "Index", new { @controller = "Folder" }, new { @class = "btn btn-danger" })
+        </div>
+    </div>
+}
+
+<script>
+    $("#pathck").click(function () {
+        var path = $("#Path").val();
+        path = path.replace("\\", "\\\\");
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("CheckPath", "Folder")',
+            data: '{ path: "' + path + '" }',
+            contentType: "application/json; charset=utf-8",
+            dataType: "JSON",
+            error: function (xhr, status) {
+            },
+            success: function (response) {
+                alert(response.message);
+            }
+        })
+
+    });
+</script>

@@ -1,0 +1,101 @@
+﻿@{
+    ViewBag.Title = "Log in";
+}
+@model  FCV_DutchLadyMail_Model.Common.Login
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>FCV Mass Mail</title>
+    <link rel="shortcut icon" href="https://www.frieslandcampina.com/en/../app/themes/frieslandcampina/assets/dist/img/favicon.ico" type="image/x-icon">
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="~/Content/lib/bootstrap/bootstrap.min.css" />
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <style>
+        body {
+            position: relative;
+            /*position: fixed;*/
+            background: url("../Content/images/background/image004.png") no-repeat center center fixed;
+            -webkit-background-size: cover;
+            -moz-background-size: cover;
+            -o-background-size: cover;
+            background-size: cover;
+            height: 100vh;
+        }
+        .exactcenter {
+            position: absolute;
+            vertical-align: middle;
+            left: 50%;
+            top: 50%;
+            padding: 20px;
+            transform: translate(-50%, -50%);
+        }
+    </style>
+</head>
+<body>
+    @*<a class="navbar-brand" href="/Home/Index">*@
+        <!-- Logo icon -->
+    @*<div style="float:left">*@
+    <b style="float:left"><img src="/Content/images/fcv-logo.png" alt="homepage" width="300" class="dark-logo"></b>
+   @* </div>*@
+        <!--End Logo icon -->
+        <!-- Logo text -->
+    <div style=" position: absolute; width: 100%; text-align: center;margin-top:60px;">
+        <span style="color: #00710a; @*color: #ffffff;*@font-weight: 700; font-size:25px;font-family: cursive;">WELCOME TO MASSMAIL SYSTEM</span>
+    </div>
+
+    @*</a>*@
+    <div class="container exactcenter">
+        <div class="row">
+            <div class="col-md-4 col-md-offset-4">
+                <div class="login-panel panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Please Sign In</h3>
+                    </div>
+
+                    <div class="panel-body">
+                        @using (Html.BeginForm(new { ReturnUrl = ViewBag.ReturnUrl }))
+                        {
+                            @Html.ValidationSummary(false, "", new { @class = "text-danger" });
+                            <fieldset>
+                                <div class="form-group">
+                                    @Html.TextBoxFor(model => model.UserName, new { @class = "form-control", @autofocus = "autofocus", @placeHolder = "Enter username.." })
+                                    @Html.ValidationMessageFor(model => model.UserName, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="form-group">
+                                    @Html.PasswordFor(model => model.Password, new { @class = "form-control", @placeHolder = "Enter password.." })
+                                    @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="checkbox">
+                                    <label>
+                                        @Html.CheckBoxFor(model => model.RememberMe)Remember Me
+                                    </label>
+                                </div>
+                                <!-- Change this to a button or input when using this as a form -->
+                                <button type="submit" class="btn btn-lg btn-success btn-block">Login</button>
+                            </fieldset>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- jQuery -->
+    <script src="Content/js/lib/jquery/jquery.min.js"></script>
+    <script src="Content/js/lib/bootstrap/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="Content/lib/helper.css" />
+
+</body>
+</html>

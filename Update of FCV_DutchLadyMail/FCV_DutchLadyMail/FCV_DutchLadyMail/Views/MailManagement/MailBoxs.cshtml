@@ -1,0 +1,499 @@
+﻿@model IEnumerable<FCV_DutchLadyMail_Model.Models.SendMails>
+    @{
+    ViewBag.Title = "Sent Mails";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    <link rel="stylesheet" href="~/Content/custom/multiple-select.css" />
+    
+    <script src="~/Scripts/multiple-select.js"></script>
+    <link rel="stylesheet" href="~/Content/lib/data-table/dataTables.bootstrap.min.css" />
+    <script src="~/Content/js/lib/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/Content/js/lib/datatables/dataTables.bootstrap.min.js"></script>
+    <script src="~/Content/custom/ColReorderWithResize.js"></script>
+
+    <style>
+        a{
+            color:black;
+        }
+        div.dataTables_wrapper {
+            width: 100%;
+            margin: 0 auto;
+        }
+        .text-wrap {
+            white-space: normal;
+        }
+
+        .width-200 {
+            width: 100px;
+        }
+        .table td {
+            overflow: hidden; /* this is what fixes the expansion */
+            text-overflow: ellipsis; /* not supported in all browsers, but I accepted the tradeoff */
+            word-wrap: break-word;
+            word-break: break-all;
+        }
+        table.dataTable {
+            border-collapse: collapse !important;
+        }
+        .form-control {
+            height: 28px;
+            padding: 1px;
+        }
+        .ms-choice > span.placeholder {
+            margin-top: 0;
+            color: #67757c;
+        }
+        .form-group {
+            margin-bottom: 0;
+        }
+        tr.group,
+        tr.group:hover {
+            background-color: #ddd !important;
+            border-bottom: 2px solid cadetblue;
+            border-collapse: collapse !important;
+        }
+    </style>
+
+}
+
+<div class="container" style="width:100%">
+    <div id="searhform">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+                    <h4 class="panel-title">
+                        <span class="glyphicon glyphicon-plus"></span> Search
+                    </h4>
+                </a>
+            </div>
+            <div id="collapseOne" class="panel-collapse collapse">
+                <div class="panel-body">
+                    
+                    @using (Html.BeginForm())
+                    {
+
+                        <div class="row">
+                                <div class="col-xs-12 col-sm-12 col-md-12">
+                                    <div style="margin-bottom:10px;">
+                                        <span>Sent Time</span>
+                                    </div>
+                                    <div class="col-sm-2 col-md-2" style=" margin-bottom: 0px;">
+                                        <div style="width: 40px; float: left">From</div>
+                                        @Html.TextBox("dFrom", ViewBag.sDate as string, new { @id = "dFrom", @class = "form-control", @style = "display:initial;width:70%" })
+                                        <script type="text/javascript">
+                                            $(function () {
+                                                $("#dFrom").datepicker({ dateFormat: 'mm/dd/yy' });
+                                            })
+                                        </script>
+                                    </div>
+
+                                    <div class="col-sm-2 col-md-2" style=" margin-bottom: 0px;">
+                                        <div style="width: 40px; float: left">To</div>
+                                        @Html.TextBox("dTo", ViewBag.sDate as string, new { @id = "dTo", @class = "form-control", @style = "display:initial;width:66%" })
+                                        <script type="text/javascript">
+                                            $(function () {
+                                                $("#dTo").datepicker({ dateFormat: 'mm/dd/yy' });
+                                            })
+                                        </script>
+                                    </div>
+                                </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-4 col-md-4" style="height:55px;">
+                                <div class="text_NPP">
+                                    <span>Sent By</span>
+                                </div>
+                                <div class="input_NPP form-group" style="margin-left:10px;">
+                                    @Html.ListBox("SendMails", new SelectList(ViewBag.SendMails, "SentBy", "SentBy"), new { id = "chkListMails", multiple = "multiple", @class = "input-md ms-choice-focus" })
+                                    <script>
+                                        $(function () {
+                                            $('#chkListMails').multipleSelect({
+                                                width: '100%',
+                                                autoOpen: true,
+                                                isOpen: false,
+                                                keepOpen: false,
+                                                placeholder: "Sent By"
+                                            });
+                                        });
+                                    </script>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-12 col-md-12">
+                                <div class="text_NPP">
+                                    <span>Subject</span>
+                                </div>
+                                <div class="input_NPP form-group">
+                                    @Html.TextBox("sSub", ViewBag.sSub as string, new { @class = "form-control", @style = "display:initial;margin:10px" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-4 col-md-4">
+                                <div class="text_NPP">
+                                    <span>To</span>
+                                </div>
+                                <div class="input_NPP form-group">
+                                    @Html.TextBox("sTo", ViewBag.sFrom as string, new { @class = "form-control", @style = "display:initial;margin:10px" })
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-sm-4 col-md-4">
+                                <div class="text_NPP">
+                                    <span>Cc</span>
+                                </div>
+                                <div class="input_NPP form-group">
+                                    @Html.TextBox("sCc", ViewBag.sTo as string, new { @class = "form-control", @style = "display:initial;margin:10px" })
+                                </div>
+                            </div>
+
+                            <div class="col-xs-12 col-sm-4 col-md-4">
+                                <div class="text_NPP">
+                                    <span>Bcc</span>
+                                </div>
+                                <div class="input_NPP form-group">
+                                    @Html.TextBox("sBcc", ViewBag.sTo as string, new { @class = "form-control", @style = "display:initial;margin:10px" })
+                                </div>
+                            </div>
+
+                        </div>
+                        <div style="margin-bottom: 20px; border-bottom: 1px solid #eee; padding: 20px; ">
+                            <button type="button" id="SearchRecord"  name="sub" class="btn btn-theme btn-md" tabindex="9" style="margin-right:30px">Search</button>
+                        </div>
+
+                    }
+
+                </div>
+            </div>
+        </div>     
+    </div>
+    <div class="col-sm-6" style="padding-left:0">
+        <div style=" float:left; padding-bottom:20px">
+        <span>Group by</span>
+    </div>
+        <div class="col-sm-6 col-xs-6 form-group">
+            <select id="groupL" name="group" class="form-control">
+                <option value="1">Sent Time</option>
+                <option value="2">User</option>
+                <option value="3">Subject</option>
+            </select>
+        </div>
+        
+    </div>
+    <div style="float:right">
+        <div style="float:left; padding-bottom:20px">
+            <span>Filter by Distributor Code</span>
+        </div>
+        <div class="col-sm-6 form-group" style="padding-right:0;float:right;">
+            @Html.TextBox("filterCode", ViewBag.filterCode as string, new { @id = "filterCode", @class = "form-control", @style = "display:initial;" })
+        </div>
+    </div>
+    <div style="clear:both"></div>
+        <div id="Preview" style="width:100%">
+            <table class="display table table-bordered table-hover" id="data_Table" style="overflow: hidden;">
+                <thead>
+                    <tr>
+                        <th>
+                            No
+                        </th>
+                        <th>
+                            Sent Time Short
+                        </th>
+                        <th style="min-width:110px;">
+                            Sent Time
+                        </th>
+                        <th style="min-width:80px;">
+                            Sent By
+                        </th>
+                        <th>
+                            From
+                        </th>
+                        <th>
+                            To
+                        </th>
+                        <th>
+                            Cc
+                        </th>
+                        <th>
+                            Bcc
+                        </th>
+                        <th>
+                            Subject
+                        </th>
+                        <th>
+
+                        </th>
+                        <th></th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    @if(Model != null){
+                foreach (var item in Model)
+                {
+                <tr>
+                    <td></td>
+                    <td>
+                        @item.SentTime.Value.ToShortDateString()
+                    </td>
+                    <td>
+                        @item.SentTime.Value.ToString("MM/dd/yyyy HH:mm:ss")
+                        @*@Html.DisplayFor(modelItem => item.SentTime.Value.ToString("dd/MM/yyyy hh:mm:ss"));*@
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.SentBy)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.fromAddress)
+                    </td>
+                    <td>
+                        <div class="text-wrap">
+                            @Html.DisplayFor(modelItem => item.toAddress)
+                        </div>
+                    </td>
+                    <td>
+                        <div class="text-wrap">
+                            @Html.DisplayFor(modelItem => item.ccAddress)
+                        </div>
+                    </td>
+                    <td>
+                        <div class="text-wrap">
+                            @Html.DisplayFor(modelItem => item.bccAddress)
+                        </div>
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Subject)
+                    </td>
+                    <td>
+                        
+                        @if(item.AttachedFiles != null)
+                        {
+                            <span class="fa fa-paperclip" style="font-size: 20px"></span>
+                            @*@Html.ActionLink(" ", "AttachFile", new { @controller = "MailManagement" }, new { @class = "fa fa-paperclip", @style = "font-size:20px" })*@
+                        }
+                    </td>
+                    <td style="min-width:60px;">
+                    @if(item.DistributorCode != null)
+                    {
+                        @Html.ActionLink(" ", "SendMails", new { @controller = "MailManagement",@id=item.ID }, new { @class = "fa fa-mail-forward", @style = "font-size:18px" })
+                    }   
+                        <a href="@Url.Action("Details_blank", "MailManagement", new { id = @item.ID })" target="_blank"><img src="@Url.Content("~/Content/admin/Images/view.png")" alt="Details" /></a>
+                    </td>
+                </tr>
+                }
+            }
+                </tbody>
+            </table>
+        </div>
+        <div id="myModal123"></div>
+    </div>
+
+
+
+<script type="text/javascript">
+    var table_goc = $('#data_Table')[0].outerHTML;
+    var colGroup = 1;
+    var oderCol = 'asc';
+    var idGroup =  $('#groupL').val();
+    if (idGroup == 2)
+    {
+        colGroup = 3;
+    }
+    else if (idGroup == 3) {
+        colGroup = 8;
+    }
+    var collapsedRows = [];
+    var table;
+    var groupCollapseFilter = function (groupName) {
+        return function (settings, searchData, index, rowData, counter) {
+            return searchData[1].indexOf(groupName) == -1;
+        };
+    };
+    if (colGroup == 1) {
+        oderCol = 'desc';
+        colGroup = 2;
+    }
+    var table = $('#data_Table').DataTable({
+    
+        "bAutoWidth": true,
+        "language": {
+            "search": "Quick find:",
+            //"columnDefs": [
+            //{ "visible": false, "targets": 4 }
+            //],
+        },
+        "columnDefs": [{
+            "searchable": false,
+            "orderable": false,
+            "targets": 0
+        },
+        { "visible": false, "targets": 1 }
+        ],
+        "order": [[colGroup, oderCol]],
+        "bDestroy": true,
+        "dom": 'Rlfrtip',
+        "colResize": {
+            "rtl": true
+        },
+        "drawCallback": function (settings) {
+            var api = this.api();
+            var rows = api.rows({ page: 'current' }).nodes();
+
+            var last = null;
+
+            var groupadmin = [];
+            if (colGroup == 2) {
+                colGroup = 1;
+            }
+            api.column(colGroup, { page: 'current' }).data().each(function (group, i) {
+
+                if (last !== group) {
+                    $(rows).eq(i).before(
+                        '<tr class="group" id="' + i + '"><td colspan="10">' + group + '</td></tr><hr />'
+                    );
+                    groupadmin.push(i);
+                    last = group;
+                }
+            });
+
+            for (var k = 0; k < groupadmin.length; k++) {
+                // Code added for adding class to sibling elements as "group_<id>"  
+                $("#" + groupadmin[k]).nextUntil("#" + groupadmin[k + 1]).addClass(' group_' + groupadmin[k]);
+                // Code added for adding Toggle functionality for each group
+                $("#" + groupadmin[k]).click(function () {
+                    var gid = $(this).attr("id");
+                    $(".group_" + gid).slideToggle(300);
+                });
+            }
+        }            
+    });
+    
+    $("#filterCode").on('change keyup patse', function () {
+        var filterCode = $(this).val();
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("FilterMailsbyCode", "MailManagement")',
+            data: '{ filterCode:"' + filterCode + '" }',
+            contentType: "application/json; charset=utf-8",
+            dataType: "JSON",
+            error: function (xhr, status) {
+            },
+            complete: function (response) {
+                $('#Preview').html(response.responseText)
+            }
+        })
+    });
+
+    $("#groupL").on('change', function () {
+        $('#data_Table').html(table_goc);
+        var colGroup = 1;
+        var oderCol = 'asc';
+        var idGroup = $('#groupL').val();
+        if (idGroup == 2) {
+            colGroup = 3;
+        }
+        else if (idGroup == 3) {
+            colGroup = 8;
+        }
+        var collapsedRows = [];
+        var groupCollapseFilter = function (groupName) {
+            return function (settings, searchData, index, rowData, counter) {
+                return searchData[1].indexOf(groupName) == -1;
+            };
+        };
+        if (colGroup == 1) {
+            oderCol = 'desc';
+            colGroup = 2;
+        }
+        var table = $('#data_Table').DataTable({
+            "dom": 'Rlfrtip',
+            "colResize": {
+                "rtl": true
+            },
+            "bDestroy": true,
+            "bAutoWidth": true,
+            "language": {
+                "search": "Quick filter records:",
+            },
+            "columnDefs": [{
+                "searchable": false,
+                "orderable": false,
+                "targets": 0
+            },
+        { "visible": false, "targets": 1 }
+            ],
+            "order": [[colGroup, oderCol]],
+            
+            "drawCallback": function (settings) {
+                var api = this.api();
+                var rows = api.rows({ page: 'current' }).nodes();
+
+                var last = null;
+
+                var groupadmin = [];
+                if (colGroup == 2) {
+                    colGroup = 1;
+                }
+                api.column(colGroup, { page: 'current' }).data().each(function (group, i) {
+
+                    if (last !== group) {
+                        $(rows).eq(i).before(
+                            '<tr class="group" id="' + i + '"><td colspan="10">' + group + '</td></tr><hr />'
+                        );
+                        groupadmin.push(i);
+                        last = group;
+                    }
+                });
+
+                for (var k = 0; k < groupadmin.length; k++) {
+                    // Code added for adding class to sibling elements as "group_<id>"  
+                    $("#" + groupadmin[k]).nextUntil("#" + groupadmin[k + 1]).addClass(' group_' + groupadmin[k]);
+                    // Code added for adding Toggle functionality for each group
+                    $("#" + groupadmin[k]).click(function () {
+                        var gid = $(this).attr("id");
+                        $(".group_" + gid).slideToggle(300);
+                    });
+                }
+            }
+        });
+    });
+
+    $("a.view").click(function () {
+        var _id = $(this).attr("id");
+        $.ajax({
+            url: '/MailManagement/Details',
+            data: { id: _id },
+            dataType: "html",
+            success: function (response) {
+
+                $("#myModal123").html(response)
+                $('#ModalBody').modal('show')
+            }
+        });
+    })
+
+    $("#SearchRecord").click(function () {
+        var dFrom = $("#dFrom");
+        var dTo = $("#dTo");
+        var sTo = $("#sTo");
+        var sCc = $("#sCc");
+        var sBcc = $("#sBcc");
+        var sSub = $("#sSub");
+        var s = $('#chkListMails').val();
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("SearchMailBoxs", "MailManagement")',
+            data: '{ selectednumbers:"' + s + '", dFrom: "' + dFrom.val() + '",dTo: "' + dTo.val() + '",sTo: "' + sTo.val() + '", sCc: "' + sCc.val() + '" , sBcc: "' + sBcc.val() +'", sSub: "' + sSub.val() +'" }',
+            contentType: "application/json; charset=utf-8",
+            dataType: "JSON",
+            error: function (xhr, status) {
+            },
+            complete: function (response) {
+                $('#Preview').html(response.responseText)
+            }
+        })
+    });
+
+    
+</script>
+

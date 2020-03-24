@@ -1,0 +1,52 @@
+﻿@model FCV_DutchLadyMail_Model.Models.ROLE
+@{
+    ViewBag.Title = "Edit - Role: " + @Model.RoleName;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script type="text/javascript">
+    //$(document).ready(function () {
+    //    $(":input[type='submit']").button();
+    //    $(":input[type='button']").button();
+    //});
+</script>
+<div class="container" style="padding-top: 20px;width:100%;">
+    <div class="row">
+        <div class="role-edit">
+            @using (Html.BeginForm())
+            {
+                @Html.ValidationSummary(true)
+                @Html.HiddenFor(model => model.Role_Id)
+                <div class="col-md-6 form-group">
+                    <label>@Html.LabelFor(model => model.RoleName, "Role Name")</label>
+                    @Html.TextBoxFor(model => model.RoleName, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.RoleName)
+                </div>
+                <div class="col-md-6 form-group">
+                    <label>@Html.LabelFor(model => model.RoleDescription, "Role Description")</label>
+                    @Html.TextBoxFor(model => model.RoleDescription, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.RoleDescription)
+                </div>
+                <div class="col-md-6 form-group">
+                    <label>@Html.LabelFor(model => model.IsSysAdmin, "IsSysAdmin")</label>
+                    @Html.EditorFor(model => model.IsSysAdmin, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.IsSysAdmin)
+                </div>
+                <div class="col-md-12" style="padding-bottom:10px">
+                    <input type="submit" value="Save" class="btn btn-primary" />
+                </div>
+            }
+        </div>
+        <hr/>
+        <div class="col-md-12">
+            <div>
+                @Html.Partial("_AddPermission2PermissionsTable4Role", Model)
+            </div>
+        </div>
+        <div class="col-md-12" style="padding-top: 10px; padding-bottom: 10px">
+            @Html.ActionLink("Go to Permissions", "Index", new { @controller = "Permission" }, new { @class = "btn btn-primary" })
+            @Html.ActionLink("Go to Roles", "Index", new { @controller = "Role" }, new { @class = "btn btn-primary" })
+        </div>
+    </div>
+</div>
+

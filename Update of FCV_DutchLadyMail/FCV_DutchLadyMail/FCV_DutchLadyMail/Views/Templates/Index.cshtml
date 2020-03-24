@@ -1,0 +1,153 @@
+﻿@model PagedList.IPagedList<FCV_DutchLadyMail_Model.Models.Templates>
+@using PagedList.Mvc
+@{
+    ViewBag.Title = "Templates Management";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    
+    <script src="~/Scripts/multiple-select.js"></script>
+    <link rel="stylesheet" href="~/Content/custom/normalize.min.css" />
+    <link rel="stylesheet" href="~/Content/custom/multiple-select.css" />
+   <link rel="stylesheet" href="~/Content/lib/data-table/dataTables.bootstrap.min.css" />
+    <script src="~/Content/js/lib/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/Content/js/lib/datatables/dataTables.bootstrap.min.js"></script>
+     <script src="~/Content/custom/ColReorderWithResize.js"></script>
+    <style type="text/css">
+
+        .table-responsive[data-pattern="priority-columns"] > .table > thead > tr > th, .table-responsive[data-pattern="priority-columns"] > .table > tbody > tr > th, .table-responsive[data-pattern="priority-columns"] > .table > tfoot > tr > th, .table-responsive[data-pattern="priority-columns"] > .table > thead > tr > td, .table-responsive[data-pattern="priority-columns"] > .table > tbody > tr > td, .table-responsive[data-pattern="priority-columns"] > .table > tfoot > tr > td {
+            min-width: 20px;
+            max-width: 500px;
+            white-space: normal;
+        }
+        div.dataTables_wrapper div.dataTables_filter input {
+            margin-left: 0.5em;
+             display: inline-block; 
+            width: 300px;
+        }
+        .sticky-table-header.fixed-solution {
+            min-width: 0;
+            position: fixed;
+            height: 0px !important;
+        }
+    </style>
+}
+
+<div class="col-12">
+    <div class="card">
+        <div class="card-body">
+            <div class="card-content">
+                <div class="col-md-12" style="margin-bottom:15px;padding-left:0px">
+                     @Html.ActionLink("Create New", "Create", new { @controller = "Templates" }, new { @class = "btn btn-primary" }) 
+                    <a style="float: right; font-size: 24px;cursor:pointer;" class="fa fa-question-circle-o" data-toggle="modal" data-target="#Helps"></a>
+                </div>
+                <div class="modal fade" id="Helps" role="dialog">
+                    <div class="modal-dialog modal-lg" style="width:95%">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            </div>
+                            <div class="modal-body">
+                                <p>
+                                    Use the <b style="color:red">#DistributorName</b> format to replace the <b>distributor name</b>
+                                    <hr />
+                                    Example: <br />
+
+                                    Dear Distributor #DistributorName,<br />
+
+                                    This month's debt has been attached to the file<br />
+
+                                    Thank you!<br />
+                                </p>
+
+                            </div>
+                            <div class="modal-footer">
+                                <button id="btnClose" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div style="clear:both"></div>
+
+                <div class="table-responsive" data-pattern="priority-columns">
+                    <table class="table table-bordered table-hover" border="1" width="100%" cellpadding="0" cellspacing="0" id="data_table">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>Name</th>
+                                <th>Create By</th>
+                                <th>Create Time</th>
+                                <th>Last Update By</th>
+                                <th>Update Time</th>
+                                <th style="width: 47px;">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{int i = 1;}
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        @(i++)
+                                    </td>
+                                    <td>
+                                        @item.Name
+                                    </td>
+                                    <td>
+                                        @item.CreatedBy
+                                    </td>
+                                    <td>
+                                        @item.CreationTime
+                                    </td>
+                                    <td>
+                                        @item.LastUpdatedBy
+                                    </td>
+                                    <td>
+                                        @item.UpdateTime
+                                    </td>
+                                    <td>
+                                        <a href="@Url.Action("Edit", "Templates", new { id = item.ID })" class="fa fa-edit" style="color: black; font-size: 18px" title="Edit Templates"></a>
+                                        <a href="@Url.Action("Delete", "Templates", new { id = item.ID })" title="Delete Contact List" class="fa fa-trash-o" style="color: black; font-size: 18px" onclick="return confirm('are you sure you wish to remove this item?');"></a>
+                                    </td>
+                                </tr>
+                            }
+                         </tbody>
+                    </table>
+                </div>
+ 
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    var t = $('#data_table').DataTable({
+        "dom": 'Rlfrtip',
+        "bAutoWidth": true,
+        "language": {
+            "search": "Quick find:",
+            "columnDefs": [{
+                "searchable": false,
+                "orderable": false,
+                "targets": 0
+            }],
+            "order": [[1, 'asc']]
+
+        }
+    });
+    t.on('order.dt search.dt', function () {
+        t.column(0, { search: 'applied', order: 'applied' }).nodes().each(function (cell, i) {
+            cell.innerHTML = i + 1;
+        });
+    }).draw();
+
+    $(".collapse.in").each(function () {
+        $(this).siblings(".panel-heading").find(".glyphicon").addClass("glyphicon-minus").removeClass("glyphicon-plus");
+    });
+
+    // Toggle plus minus icon on show hide of collapse element
+    $(".collapse").on('show.bs.collapse', function () {
+        $(this).parent().find(".glyphicon").removeClass("glyphicon-plus").addClass("glyphicon-minus");
+    }).on('hide.bs.collapse', function () {
+        $(this).parent().find(".glyphicon").removeClass("glyphicon-minus").addClass("glyphicon-plus");
+    });
+</script>

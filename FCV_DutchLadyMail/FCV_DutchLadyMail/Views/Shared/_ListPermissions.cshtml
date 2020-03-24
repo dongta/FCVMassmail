@@ -1,0 +1,87 @@
+﻿@model FCV_DutchLadyMail_Model.Models.ROLE
+<script type="text/javascript">
+    $(document).ready(function () {
+        //Unbind the original image 'href' set by the controller...
+        $('.deletePermission').attr('href', 'javascript://');
+        $('.deletePermission').click(function () {
+            $dialog.data('id', $(this).attr('id')).data('permissionId', $(this).attr('permissionId')).dialog("open");
+        });
+
+        var $dialog = $('<div/>')
+            .html("Warning: This will remove the selected Permission from this Role.  Removing this permission may prevent users from accessing areas in the application.  Only remove this permission if you intend to restrict application access on this role.<br/><br/>Do you wish to continue?")
+            .dialog({
+                autoOpen: false,
+                resizable: false,
+                height: 250,
+                modal: true,
+                title: 'Remove Permission',
+                buttons: [
+                    {
+                        text: "Continue",
+                        id: "continuebtn",
+                        click: function () {
+                            var _id = $(this).data('id');
+                            var _permissionId = $(this).data('permissionId');
+
+                            var _parameters = { id: _id, permissionId: _permissionId };
+                            $.ajax({
+                                url: "/Role/DeletePermissionFromRoleReturnPartialView",
+                                type: "GET",
+                                data: _parameters,
+                                success: function (data, textStatus, jqXHR) {
+                                    $('#PermissionsTable').html(data);
+                                }
+                            });
+                            $(this).dialog('close');
+                        }
+                    },
+                    {
+                        text: "Cancel",
+                        id: "cancelbtn",
+                        click: function () {
+                            $(this).dialog("close");
+                        }
+                    }]
+            });
+    });
+</script>
+@{if (Model.PERMISSIONS.Count == 0)
+    {
+        <h2><font color="red">No Associated Permissions...</font></h2>
+        <br />
+    }
+    else
+    {
+        <div class="table-responsive" data-pattern="priority-columns" id="divPermissions">
+            <table id="PermissionTable" class="table table-bordered table-hover" border="1" width="100%" cellpadding="0" cellspacing="0" id="npp-table">
+                <caption class="text-center">List Roles</caption>
+                <thead>
+                    <tr>
+                        <th>
+                            Permission
+                        </th>
+                        <th>
+                            Action
+                        </th>
+                    </tr>
+                </thead>
+                @foreach (FCV_DutchLadyMail_Model.Models.PERMISSION permission in Model.PERMISSIONS.OrderBy(n => n.PermissionDescription))
+                {
+                    <tr>
+                        <td>
+                            @Html.ActionLink(permission.PermissionDescription, "Details", "Permission", new { id = permission.Permission_Id }, null)
+                        </td>
+                        <td>
+                            <center>
+                                <a href="@Url.Action("DeletePermission", "Role", new { id = Model.Role_Id, permissionId = permission.Permission_Id })" class="deletePermission" id=@Model.Role_Id permissionid=@permission.Permission_Id>
+                                    <img src="@Url.Content("~/Content/admin/images/bin.png")" />
+                                </a>
+                            </center>
+                        </td>
+                    </tr>
+                }
+            </table>
+        </div>
+    }
+}
+

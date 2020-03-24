@@ -1,0 +1,15 @@
+﻿@{var str = "";}
+@if (ViewBag.lMail != null)
+{
+    
+    foreach (var item in ViewBag.lMail)
+        {
+            str += item;              
+        }
+}
+@if (ViewBag.DisplayMail != null)
+{
+    str = str + "|" + ViewBag.DisplayMail;
+    
+}
+@str

@@ -1,0 +1,59 @@
+﻿@model FCV_DutchLadyMail_Model.Models.ContactLists
+
+@{
+    ViewBag.Title = "Create ContactList";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container" style="padding-top: 10px; width: 100%">
+    @using (Html.BeginForm("Edit", "ContactList", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-horizontal">
+            <hr />
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            @Html.HiddenFor(model => model.ID, new { @class = "control-label col-md-2" })
+            @Html.HiddenFor(model => model.CreationTime, new { @class = "control-label col-md-2" })
+            @Html.HiddenFor(model => model.LastUpdatedBy, new { @class = "control-label col-md-2" })
+            @Html.HiddenFor(model => model.LastUpdateTime, new { @class = "control-label col-md-2" })
+            @Html.HiddenFor(model => model.LastImportFileName, new { @class = "control-label col-md-2" })
+
+            <div class="form-group">
+                <label class="control-label col-md-2">Name</label>
+                <div class="col-md-10">
+                    @Html.TextBoxFor(model => model.Name, "", new { @type = "text", @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.TextBoxFor(model => model.Description, "", new { @type = "text", @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.Remarks, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.TextAreaFor(model => model.Remarks, 10, 40, new { @type = "text", @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.Remarks, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Update" class="btn btn-primary" />
+                </div>
+            </div>
+            @*<div class="form-group">
+                    <div class="col-md-offset-2 col-md-10 text-success">
+                        @ViewBag.UploadStatus
+                    </div>
+                </div>*@
+        </div>
+    }
+    <div class="col-md-12" style="padding-bottom:10px">
+        @Html.ActionLink("Back to List", "Index", new { @controller = "ContactList" }, new { @class = "btn btn-danger" })
+
+    </div>
+</div>

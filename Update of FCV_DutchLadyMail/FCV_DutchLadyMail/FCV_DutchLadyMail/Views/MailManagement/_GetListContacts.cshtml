@@ -1,0 +1,18 @@
+﻿@model IEnumerable<FCV_DutchLadyMail_Model.Models.ContactList>
+
+        @foreach (var v in Model)
+        {
+            if(v.CatMail.Equals("TO"))
+            { 
+                <option class="to" value='@v.Name'> @v.Email</option>
+            }
+            else if(v.CatMail.Equals("CC"))
+            { 
+                <option class="cc" value='@v.Name'> @v.Email</option>
+            }
+            else if(v.CatMail.Equals("BCC"))
+            { 
+                <option class="bcc" value='@v.Name'> @v.Email</option>
+            }
+        }
+

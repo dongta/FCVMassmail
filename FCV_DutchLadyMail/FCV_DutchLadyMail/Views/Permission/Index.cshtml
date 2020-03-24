@@ -1,0 +1,63 @@
+﻿@using PagedList.Mvc
+@model PagedList.IPagedList<FCV_DutchLadyMail_Model.Models.PERMISSION>
+@{
+    ViewBag.Title = "Permission";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script type="text/javascript">
+    //$(document).ready(function () {
+    //    $(":input[type='button']").button();
+    //});
+</script>
+
+
+<div class="container" style="width:100%">
+    <div class=" table-responsive" data-pattern="priority-columns" id="divPermissions">
+    <table id="PermissionTable" class="table table-bordered table-hover" border="1" width="100%" cellpadding="0" cellspacing="0" id="npp-table">
+        <caption class="text-center">List Permissions</caption>
+        <thead>
+            <tr>
+                <th class="table-header-repeat line-left minwidth-1" style="min-width: 15px; color: #000; font-size: 13px;"> Permission Description</th>
+                <th class="table-header-repeat line-left minwidth-1" style="min-width: 70px; color: #000; font-size: 13px; ">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (FCV_DutchLadyMail_Model.Models.PERMISSION item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.ActionLink(item.PermissionDescription, "Details", new { id = item.Permission_Id })
+                    </td>
+                    <td>
+                        <center>
+                            <a href="@Url.Action("Edit", "Permission", new { id = item.Permission_Id })">
+                                <img src="@Url.Content("~/Content/admin/Images/pen.png")" alt="Edit Permission" />
+                            </a>
+
+                            <a href="@Url.Action("Delete", "Permission", new { id = item.Permission_Id })" onclick="return confirm('Are you sure you wish to remove this item?');">
+                                <img src="@Url.Content("~/Content/admin/Images/bin.png")" alt="Delete Permission" />
+                            </a>
+                        </center>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <div class="col-md-12" style="padding:0">
+        <div class="pull-left">
+            @Html.PagedListPager(Model, page => Url.Action("Index", new { page }))
+        </div>
+    </div>
+    <br />
+    <div>
+        <input class="btn btn-primary" type="button" value="Create Permission" onclick="location.href='@Url.Action("Create", "Permission")'" />
+        @*<input class="btn btn-danger" type="button" id="importPermissions2" name="importPermissions2" value="Import Permissions" onclick="location.href='@Url.Action("Import", "Permission")'" />*@
+        <br />
+    </div>
+    <div style="padding-top:10px">
+        @Html.ActionLink("Go to Roles", "Index", new { @controller = "Role" }, new { @class = "btn btn-danger" })
+    </div>
+</div>
+
+    <br />
+

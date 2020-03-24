@@ -1,0 +1,139 @@
+﻿@model IEnumerable<FCV_DutchLadyMail_Model.Models.SendMails>
+
+    <table class="display table table-bordered table-hover" id="data_Table1" style="overflow: hidden;">
+        <thead>
+            <tr>
+                <th>
+                    No
+                </th>
+                <th>
+                    Sent Time
+                    @*@Html.ActionLink("Sent Time", "MailBoxs", new { sortOrder = ViewBag.SortParm })*@
+                </th>
+                <th>
+                    Sent By
+                </th>
+                <th>
+                    From
+                </th>
+                <th>
+                    To
+                </th>
+                <th>
+                    Cc
+                </th>
+                <th>
+                    Bcc
+                </th>
+                <th>
+                    Subject
+                </th>
+
+                <th></th>
+
+            </tr>
+        </thead>
+        <tbody>
+            @{int i = 1;}
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td></td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.LastTry)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.SentBy)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.fromAddress)
+                    </td>
+                    <td>
+                        <div class="text-wrap width-200">
+                            @Html.DisplayFor(modelItem => item.toAddress)
+                        </div>
+                    </td>
+                    <td>
+                        <div class="text-wrap width-200">
+                            @Html.DisplayFor(modelItem => item.ccAddress)
+                        </div>
+                    </td>
+                    <td>
+                        <div class="text-wrap width-200">
+                            @Html.DisplayFor(modelItem => item.bccAddress)
+                        </div>
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Subject)
+                    </td>
+                    <td>
+                        <a href="@Url.Action("Details_blank", "MailManagement", new { id = @item.ID })" target="_blank"><img src="@Url.Content("~/Content/admin/Images/view.png")" alt="Details" /></a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+<script type="text/javascript">
+    var colGroup = 1;
+    var idGroup =  $('#groupL').val();
+    if (idGroup == 2)
+    {
+        colGroup = 3;
+    }
+    else if (idGroup == 3) {
+        colGroup = 8;
+    }
+    var collapsedRows = [];
+    var table;
+    var groupCollapseFilter = function (groupName) {
+        return function (settings, searchData, index, rowData, counter) {
+            return searchData[1].indexOf(groupName) == -1;
+        };
+    };
+    var table = $('#data_Table1').DataTable({
+        "bAutoWidth": true,
+        "language": {
+            "search": "Quick filter records:",
+        },
+        "columnDefs": [{
+            "searchable": false,
+            "orderable": false,
+            "targets": 0
+        },
+        { "visible": false, "targets": 1 }
+        ],
+        "order": [[colGroup, 'asc']],
+        "bDestroy": true,
+        "drawCallback": function (settings) {
+            var api = this.api();
+            var rows = api.rows({ page: 'current' }).nodes();
+
+            var last = null;
+
+            var groupadmin = [];
+
+            api.column(colGroup, { page: 'current' }).data().each(function (group, i) {
+
+                if (last !== group) {
+                    $(rows).eq(i).before(
+                        '<tr class="group" id="' + i + '"><td colspan="10">' + group + '</td></tr><hr />'
+                    );
+                    groupadmin.push(i);
+                    last = group;
+                }
+            });
+
+            for (var k = 0; k < groupadmin.length; k++) {
+                // Code added for adding class to sibling elements as "group_<id>"  
+                $("#" + groupadmin[k]).nextUntil("#" + groupadmin[k + 1]).addClass(' group_' + groupadmin[k]);
+                // Code added for adding Toggle functionality for each group
+                $("#" + groupadmin[k]).click(function () {
+                    var gid = $(this).attr("id");
+                    $(".group_" + gid).slideToggle(300);
+                });
+            }
+        }            
+    });
+       
+
+</script>

@@ -1,0 +1,12 @@
+﻿@model IEnumerable<FCV_DutchLadyMail_Model.Models.Folders>
+
+@if (Model.Count() != 0) { 
+
+        foreach (var item in Model)
+        {
+            if (item.Name != "")
+            {
+                @Html.Raw("[" + item.ID + "]"+item.Name+";")
+            }   
+        }
+}

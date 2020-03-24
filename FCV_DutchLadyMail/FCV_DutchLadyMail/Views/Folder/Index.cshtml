@@ -1,0 +1,114 @@
+﻿
+@model IEnumerable<FCV_DutchLadyMail_Model.Models.Folders>
+@{
+    ViewBag.Title = "Folders Management";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    <link rel="stylesheet" href="~/Content/lib/data-table/dataTables.bootstrap.min.css" />
+    <script src="~/Content/js/lib/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/Content/js/lib/datatables/dataTables.bootstrap.min.js"></script>
+     <script src="~/Content/custom/ColReorderWithResize.js"></script>
+    <style type="text/css">
+
+        .table-responsive[data-pattern="priority-columns"] > .table > thead > tr > th, .table-responsive[data-pattern="priority-columns"] > .table > tbody > tr > th, .table-responsive[data-pattern="priority-columns"] > .table > tfoot > tr > th, .table-responsive[data-pattern="priority-columns"] > .table > thead > tr > td, .table-responsive[data-pattern="priority-columns"] > .table > tbody > tr > td, .table-responsive[data-pattern="priority-columns"] > .table > tfoot > tr > td {
+            min-width: 20px;
+            max-width: 500px;
+            white-space: normal;
+        }
+        div.dataTables_wrapper div.dataTables_filter input {
+            margin-left: 0.5em;
+            display: inline-block; 
+            width: 300px;
+        }
+        .sticky-table-header.fixed-solution {
+            min-width: 0;
+            position: fixed;
+            height: 0px !important;
+        }
+    </style>
+}
+
+
+<div class="container" style="width:100%">
+    <div style="margin-bottom:30px;font-size:16px;margin-top:20px;">
+        @Html.ActionLink("Create New", "Create", new { @controller = "Folder" }, new { @class = "btn btn-primary" }) 
+    </div>
+    <div id="divFolder">
+
+        <table id="FolderTable" class="table table-bordered table-hover" border="1" width="100%" cellpadding="0" cellspacing="0">
+            <caption class="text-center">List Folders</caption>
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Create By</th>
+                    <th>Create Time</th>
+                    <th style="width: 47px;">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (FCV_DutchLadyMail_Model.Models.Folders item in Model)
+                {
+                    <tr>
+                        <td></td>
+                        <td>
+                            @item.Name
+                        </td>
+                        <td>
+                            @item.Description
+                        </td>
+                        <td>
+                            @item.created_at
+                        </td>
+                        <td>
+                            @item.created_time
+                        </td>
+                        <td>
+                            <center>
+                                <a href="@Url.Action("Edit", "Folder", new { id = item.ID })" class="fa fa-edit" style="color: black; font-size: 18px" title="Edit Templates"></a>
+                                <a href="@Url.Action("Delete", "Folder", new { id = item.ID })" title="Delete Folder" class="fa fa-trash-o" style="color: black; font-size: 18px" onclick="return confirm('are you sure you wish to remove this item?');"></a>
+                           </center>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <br />
+</div>
+<script type="text/javascript">
+
+    var t = $('#FolderTable').DataTable({
+        "dom": 'Rlfrtip',
+        "bAutoWidth": true,
+        "scrollCollapse": true,
+        "language": {
+            "search": "Quick find:",
+            "columnDefs": [{
+                "searchable": false,
+                "orderable": false,
+                "targets": 0
+            }],
+            "order": [[1, 'asc']]
+
+        }
+    });
+    t.columns.adjust().draw();
+    $(".dataTables_scroll").css('overflow', 'auto');
+    t.on('order.dt search.dt', function () {
+        t.column(0, { search: 'applied', order: 'applied' }).nodes().each(function (cell, i) {
+            cell.innerHTML = i + 1;
+        });
+    }).draw();
+
+    $(".collapse.in").each(function () {
+        $(this).siblings(".panel-heading").find(".glyphicon").addClass("glyphicon-minus").removeClass("glyphicon-plus");
+    });
+
+    // Toggle plus minus icon on show hide of collapse element
+    $(".collapse").on('show.bs.collapse', function () {
+        $(this).parent().find(".glyphicon").removeClass("glyphicon-plus").addClass("glyphicon-minus");
+    }).on('hide.bs.collapse', function () {
+        $(this).parent().find(".glyphicon").removeClass("glyphicon-minus").addClass("glyphicon-plus");
+    });
+</script>

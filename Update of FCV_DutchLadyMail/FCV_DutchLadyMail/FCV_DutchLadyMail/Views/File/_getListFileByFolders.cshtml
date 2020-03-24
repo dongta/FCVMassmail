@@ -1,0 +1,35 @@
+﻿@model IEnumerable<FCV_DutchLadyMail_Model.Models.FILE>
+<table id="FileTable" class="table table-bordered table-hover" border="1" width="100%" cellpadding="0" cellspacing="0">
+    <caption class="text-center">List Files</caption>
+    <thead>
+        <tr>
+            <th class="table-header-repeat line-left minwidth-1" style="min-width: 15px; color: #000; font-size: 13px;">User</th>
+            <th class="table-header-repeat line-left minwidth-1" style="min-width: 15px; color: #000; font-size: 13px;">Path</th>
+            <th class="table-header-repeat line-left minwidth-1" style="min-width: 15px; color: #000; font-size: 13px;">Created at</th>
+            <th class="table-header-repeat line-left minwidth-1" style="min-width: 70px; color: #000; font-size: 13px; ">Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (FCV_DutchLadyMail_Model.Models.FILE item in Model)
+        {
+            <tr>
+                <td>
+                    @item.USER.Username
+                </td>
+                <td>
+                    @item.path
+                </td>
+                <td>
+                    @item.created_at
+                </td>
+                <td>
+                    <center>
+                        <a href="@Url.Action("Delete", "File", new { id = item.id })" onclick="return confirm('Are you sure you wish to remove this item?');">
+                            <img src="@Url.Content("~/Content/admin/Images/bin.png")" alt="Delete Permission" />
+                        </a>
+                    </center>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

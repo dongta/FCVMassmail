@@ -1,0 +1,162 @@
+﻿@model FCV_DutchLadyMail_Model.Models.DistributorModel
+
+@{
+    ViewBag.Title = "Contact List Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    <style>
+        hr {
+             margin-top: 0; 
+             margin-bottom: 0; 
+            border: 0;
+            border-top: 1px solid #eee;
+        }
+    </style>
+    <link rel="stylesheet" href="~/Content/lib/data-table/dataTables.bootstrap.min.css" />
+    <script src="~/Content/js/lib/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/Content/js/lib/datatables/dataTables.bootstrap.min.js"></script>
+    <style type="text/css">
+        .table-responsive[data-pattern="priority-columns"] > .table > thead > tr > th, .table-responsive[data-pattern="priority-columns"] > .table > tbody > tr > th, .table-responsive[data-pattern="priority-columns"] > .table > tfoot > tr > th, .table-responsive[data-pattern="priority-columns"] > .table > thead > tr > td, .table-responsive[data-pattern="priority-columns"] > .table > tbody > tr > td, .table-responsive[data-pattern="priority-columns"] > .table > tfoot > tr > td {
+            min-width: 20px;
+            max-width: 500px;
+            white-space: normal;
+        }
+
+        div.dataTables_wrapper div.dataTables_filter input {
+            margin-left: 0.5em;
+            display: inline-block;
+            width: 300px;
+        }
+
+        .sticky-table-header.fixed-solution {
+            min-width: 0;
+            position: fixed;
+            height: 0px !important;
+        }
+    </style>
+}
+<div class="container" style="padding-top: 10px; width: 100%;">
+    <div class="row">
+        <div class="col-6 col-md-2">
+            <span>Code</span>
+        </div>
+        <div class="col-12 col-md-8 form-group">
+            @Model.Code
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-6 col-md-2">
+            <span>Name</span>
+        </div>
+        <div class="col-12 col-md-8 form-group">
+            @Model.Name
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-6 col-md-2">
+            <span>Address</span>
+        </div>
+        <div class="col-12 col-md-8 form-group">
+            @Model.Address
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-6 col-md-2">
+            <span>Region</span>
+        </div>
+        <div class="col-12 col-md-8 form-group">
+            @Model.Region
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-6 col-md-2">
+            <span>AdminMail</span>
+        </div>
+        <div class="col-12 col-md-8 form-group">
+            @Model.AdminMail
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-6 col-md-2">
+            <span>SEmail</span>
+        </div>
+        <div class="col-12 col-md-8 form-group">
+            @Model.SEMail
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-6 col-md-2">
+            <span>AcMail</span>
+        </div>
+        <div class="col-12 col-md-8 form-group">
+            @Model.AcMail
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-6 col-md-2">
+            <span>Manager Mail</span>
+        </div>
+        <div class="col-12 col-md-8 form-group">
+            @Model.ManagerMail
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-6 col-md-2">
+            <span>Active</span>
+        </div>
+        <div class="col-12 col-md-8 form-group">
+            @Model.State
+        </div>
+    </div>
+    <hr />
+    <br />
+
+
+
+
+
+        <div class="col-md-12" style="padding-bottom:10px; padding-left:0px;padding-top:20px">
+            @Html.ActionLink("Go to Distributor List", "Index", new { controller = "Distributors" }, new { @class = "btn btn-danger" })
+        </div>
+</div>
+
+
+<script type="text/javascript">
+
+    var t = $('#data_table').DataTable({
+        "bAutoWidth": true,
+        "language": {
+            "search": "Quick filter records:",
+            "columnDefs": [{
+                "searchable": false,
+                "orderable": false,
+                "targets": 0
+            }],
+            "order": [[1, 'asc']]
+
+        }
+    });
+    t.on('order.dt search.dt', function () {
+        t.column(0, { search: 'applied', order: 'applied' }).nodes().each(function (cell, i) {
+            cell.innerHTML = i + 1;
+        });
+    }).draw();
+
+    $(".collapse.in").each(function () {
+        $(this).siblings(".panel-heading").find(".glyphicon").addClass("glyphicon-minus").removeClass("glyphicon-plus");
+    });
+
+    // Toggle plus minus icon on show hide of collapse element
+    $(".collapse").on('show.bs.collapse', function () {
+        $(this).parent().find(".glyphicon").removeClass("glyphicon-plus").addClass("glyphicon-minus");
+    }).on('hide.bs.collapse', function () {
+        $(this).parent().find(".glyphicon").removeClass("glyphicon-minus").addClass("glyphicon-plus");
+    });
+</script>

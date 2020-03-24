@@ -1,0 +1,52 @@
+﻿@model IEnumerable<FCV_DutchLadyMail_Model.Models.USER>
+<table id="UserTable" class="table table-bordered table-hover" border="1" width="100%" cellpadding="0" cellspacing="0" id="npp-table">
+    <caption class="text-center">List Users From Domain</caption>
+    <thead>
+        <tr>
+            <th width="5%"><input type="checkbox" id="checkAll" value="" /></th> 
+            <th class="table-header-repeat line-left minwidth-1" style="min-width: 15px; color: #000; font-size: 13px;">UserName</th>
+            <th class="table-header-repeat line-left minwidth-1" style="min-width: 45px; color: #000; font-size: 13px;">Display Namess</th>
+            <th class="table-header-repeat line-left minwidth-1" style="min-width: 45px; color: #000; font-size: 13px;">OU</th>
+            <th class="table-header-repeat line-left minwidth-1" style="min-width: 100px; color: #000; font-size: 13px;"> Email</th>
+            <th class="table-header-repeat line-left minwidth-1" style="min-width: 100px; color: #000; font-size: 13px;"> GUID</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td class="row_0">
+                    @{string s = item.Username.ToString() + ";" + item.DisplayName + ";" + item.OU + ";" + item.Email + ";" + item.GUID.ToString();
+                    }
+                    <input type="checkbox" class="ckUser" name="ckUser" value='@s'>
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Username)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DisplayName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.OU)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Email)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.GUID)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<script>
+    //$(function () {
+    //    $("#checkAll").prop('checked', true);
+    //    $("input.ckUser:checkbox").prop('checked', true);
+    //});
+    $("#checkAll").change(function () {
+        $("input.ckUser:checkbox").prop('checked', $(this).prop("checked"));
+    });
+
+</script>

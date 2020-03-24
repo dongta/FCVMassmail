@@ -1,0 +1,173 @@
+﻿<div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="form">
+                    <div id="form-search">
+
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-4 col-md-4">
+                                <div class="text_NPP">
+                                    <span>NPP's Code</span>
+                                </div>
+                                <div class="input_NPP form-group">
+                                    <input type="text" name="NPP" id="code" class="form-control input-md" placeholder="NPP's Code" tabindex="1">
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-sm-4 col-md-4">
+                                <div class="text_NPP">
+                                    <span>NPP's Name</span>
+                                </div>
+                                <div class="input_NPP form-group">
+                                    <input type="text" name="NPP" id="name" class="form-control input-md" placeholder="NPP's Name" tabindex="2">
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-sm-4 col-md-4">
+                                <div class="text_NPP">
+                                    <span>Manager Email</span>
+                                </div>
+                                <div class="input_NPP form-group">
+                                    <input type="text" name="NPP" id="Manager_email" class="form-control input-md" placeholder="Manager Email" tabindex="3">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-4 col-md-4">
+                                <div class="text_NPP">
+                                    <span>Admin's email</span>
+                                </div>
+                                <div class="input_NPP form-group">
+                                    <input type="text" name="NPP" id="Admin_email" class="form-control input-md" placeholder="Admin's email" tabindex="4">
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-sm-4 col-md-4">
+                                <div class="text_NPP">
+                                    <span>SE NPP's email</span>
+                                </div>
+                                <div class="input_NPP form-group">
+                                    <input type="text" name="NPP" id="SE_email" class="form-control input-md" placeholder="SE NPP's email" tabindex="5">
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-sm-4 col-md-4">
+                                <div class="text_NPP">
+                                    <span>Ac's email</span>
+                                </div>
+                                <div class="input_NPP form-group">
+                                    <input type="text" name="NPP" id="Ac_email" class="form-control input-md" placeholder="Ac's email" tabindex="6">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-4 col-md-4">
+                                <div class="text_NPP">
+                                    <span>Region</span>
+                                </div>
+                                <div class="input_NPP form-group">
+                                    @*@Html.ListBox("Region", (SelectList)ViewBag.Region, new { id = "nppRegion", multiple = "multiple", @class = "input-md ms-choice-focus", @placeholder = "Ac's email" })
+                                        <script>
+                                        $(function () {
+                                            $('#nppRegion').multipleSelect({
+                                                width: '100%',
+                                                autoOpen: true,
+                                                isOpen: false,
+                                                keepOpen: false,
+                                                placeholder: "Region"
+                                            });
+                                        });
+                                        </script>*@
+                                    @*<input type="text" name="NPP" id="last_name" class="form-control input-md" placeholder="Region" tabindex="7">*@
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-sm-8 col-md-8">
+                                <div class="text_NPP" style="width:17%">
+                                    <span>Address</span>
+                                </div>
+                                <div class="input_NPP form-group" style="width:83%">
+                                    <input type="text" name="NPP" id="txtAddress" class="form-control input-md" placeholder="Address" tabindex="8">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+                <table class="table table-bordered table-hover" border="1" width="100%" cellpadding="0" cellspacing="0" id="npp-table">
+                    <caption class="text-center">Danh sách các nhà phân phối</caption>
+                    <thead>
+                        <tr>
+                            <th class="table-header-repeat line-left minwidth-1" style="min-width: 15px; color: #000; font-size: 13px; width: 15px;"></th>
+                            <th class="table-header-repeat line-left minwidth-1" style="min-width: 15px; color: #000; font-size: 13px; width: 15px;">STT</th>
+                            <th class="table-header-repeat line-left minwidth-1" style="min-width: 45px; color: #000; font-size: 13px;width: 45px;">NP Code</th>
+                            <th class="table-header-repeat line-left minwidth-1" style="min-width: 100px; color: #000; font-size: 13px; width: 100px;">NPP Name</th>
+                            <th class="table-header-repeat line-left minwidth-1" style="min-width: 85px; color: #000; font-size: 13px;">Region</th>
+                            <th class="table-header-repeat line-left minwidth-1" style="min-width: 100px; color: #000; font-size: 13px; ">Manager Mails</th>
+                            <th class="table-header-repeat line-left minwidth-1" style="min-width: 100px; color: #000; font-size: 13px; ">Admin Mails</th>
+                            <th class="table-header-repeat line-left minwidth-1" style="min-width: 100px; color: #000; font-size: 13px; ">SE Mails</th>
+                            <th class="table-header-repeat line-left minwidth-1" style="min-width: 100px; color: #000; font-size: 13px; ">Ac Mails</th>
+                            <th class="table-header-repeat line-left minwidth-1" style="min-width: 160px; color: #000; font-size: 13px; width: 160px; ">Adress</th>
+                            <th class="table-header-repeat line-left minwidth-1" style="min-width: 50px; color: #000; font-size: 13px;">Controls</th>
+                        </tr>
+                    </thead>
+                    <tbody id="SetDataList">
+                        <tr id="LoadingStatus" style="color:red"></tr>
+                    </tbody>
+
+                </table>
+
+            </div>
+            <div class="modal-footer">
+                <input id="SearchRecord" type="submit" name="sub" value="Search" class="btn btn-theme btn-md" tabindex="9" style="margin-right:30px">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+
+        </div>
+
+        <script>
+            //$("#LoadingStatus").html("Loading....");
+            //$.get("/MailManagement/GetList", null, DataBind);
+            //function DataBind(List) {
+            //    var SetData = $("#SetList");
+            //    for (var i = 0; i < StudentList.length; i++) {
+            //        var Data = "<tr class='row_" + List[i].ID + "'>" +
+            //            "<td>" + List[i].Name + "</td>" +
+            //            "<td>" + List[i].Region + "</td>" +
+            //            "<td>" + List[i].SEMail + "</td>" +
+            //            "<td>" + List[i].AcMail + "</td>" +
+
+            //            "</tr>";
+            //        SetData.append(Data);
+            //        $("#LoadingStatus").html(" ");
+
+            //    }
+            //}
+
+            $("#SearchRecord").click(function () {
+                var data = $("#form-search").serialize();
+                $.ajax({
+                    type: "Post",
+                    url: "/MailManagement/GetList",
+                    data: data,
+                    success: function (List) {
+                        var SetData = $("#SetDataList");
+                        for (var i = 0; i < List.length; i++) {
+                            var Data = "<tr class='row_" + List[i].ID + "'>" +
+                                "<td>" + List[i].Name + "</td>" +
+                                "<td>" + List[i].Region + "</td>" +
+                                "<td>" + List[i].SEMail + "</td>" +
+                                "<td>" + List[i].AcMail + "</td>" +
+
+                                "</tr>";
+                            SetData.append(Data);
+                            $("#LoadingStatus").html(" ");
+
+                        }
+
+                    }
+                })
+            })
+        </script>
+
+    </div>
+</div>

@@ -1,0 +1,566 @@
+﻿@model IEnumerable<FCV_DutchLadyMail_Model.Models.DistributorsView>
+@using PagedList.Mvc
+@{
+    ViewBag.Title = "Distributors Management";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    <script src="~/Scripts/multiple-select.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+    <link rel="stylesheet" href="~/Content/custom/multiple-select.css" />
+   <link rel="stylesheet" href="~/Content/lib/data-table/dataTables.bootstrap.min.css" />
+    <script src="~/Content/js/lib/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/Content/js/lib/datatables/dataTables.bootstrap.min.js"></script>
+     <script src="~/Content/custom/ColReorderWithResize.js"></script>
+    
+    <style type="text/css">
+
+        table {
+            /*word-wrap: break-word;*/
+             width: 100%;
+        }
+        .form-control {
+            font-size:13px;
+            padding:0px;
+        }
+        td p {
+            margin-bottom: 0px;
+        }
+        .text_NPP {
+            width: 36.36%;
+            float: left;
+            padding-top: 6px;
+        }
+        .input_NPP {
+            width: 63.63%;
+            float: left;
+        }
+    @@media screen and (max-width:767px) {
+        .input_NPP {
+            width: 63.63% !important;
+            float: left;
+        }
+
+        .text_NPP {
+            width: 36.36% !important;
+            float: left;
+            padding-top: 6px;
+        }
+    }
+        div.dataTables_wrapper {
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        .text-wrap {
+            white-space: normal;
+        }
+
+        .width-200 {
+            width: 150px;
+        }
+        table.dataTable {
+            border-collapse: collapse !important;
+        }
+
+        .form-control {
+            height: 28px;
+            padding: 1px;
+        }
+        .table td {
+            overflow: hidden; /* this is what fixes the expansion */
+            text-overflow: ellipsis; /* not supported in all browsers, but I accepted the tradeoff */
+            word-wrap: break-word;
+        }
+        .ms-choice > span.placeholder {
+            margin-top: 0;
+            color: #67757c;
+        }
+
+        .form-group {
+            margin-bottom: 0;
+        }
+        tr.group,
+        tr.group:hover {
+            background-color: #ddd !important;
+            border-bottom: 2px solid cadetblue;
+            border-collapse: collapse !important;
+        }
+    </style> 
+    
+}
+
+<div class="container" style="width:100%">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne"><span class="glyphicon glyphicon-plus"></span> Search</a>
+            </h4>
+        </div>
+        <div id="collapseOne" class="panel-collapse collapse">
+            <div class="panel-body">
+                <form role="form" method="post" class="register-form" style="padding: 30px; ">
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-4 col-md-4">
+                            <div class="text_NPP">
+                                <span>Dis's Code</span>
+                            </div>
+                            <div class="input_NPP form-group">
+                                <input type="text" name="NPP" id="code" class="form-control input-md" placeholder="NPP's Code" tabindex="1">
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-sm-4 col-md-4">
+                            <div class="text_NPP">
+                                <span>Dis's Name</span>
+                            </div>
+                            <div class="input_NPP form-group">
+                                <input type="text" name="NPP" id="name" class="form-control input-md" placeholder="NPP's Name" tabindex="2">
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-sm-4 col-md-4">
+                            <div class="text_NPP">
+                                <span>Manager Email</span>
+                            </div>
+                            <div class="input_NPP form-group">
+                                <input type="text" name="NPP" id="Manager_email" class="form-control input-md" placeholder="Manager Email" tabindex="3">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-4 col-md-4">
+                            <div class="text_NPP">
+                                <span>Admin's email</span>
+                            </div>
+                            <div class="input_NPP form-group">
+                                <input type="text" name="NPP" id="Admin_email" class="form-control input-md" placeholder="Admin's email" tabindex="4">
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-sm-4 col-md-4">
+                            <div class="text_NPP">
+                                <span>SE Dis's email</span>
+                            </div>
+                            <div class="input_NPP form-group">
+                                <input type="text" name="NPP" id="SE_email" class="form-control input-md" placeholder="SE NPP's email" tabindex="5">
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-sm-4 col-md-4">
+                            <div class="text_NPP">
+                                <span>Ac's email</span>
+                            </div>
+                            <div class="input_NPP form-group">
+                                <input type="text" name="NPP" id="Ac_email" class="form-control input-md" placeholder="Ac's email" tabindex="6">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-4 col-md-4">
+                            <div class="text_NPP">
+                                <span>Region</span>
+                            </div>
+                            <div class="input_NPP form-group">
+                                @Html.ListBox("Region", (SelectList)ViewBag.Region, new { id = "nppRegion", multiple = "multiple", @class = "input-md ms-choice-focus", @placeholder = "Ac's email" })
+                                <script>
+                                    $(function () {
+                                        $('#nppRegion').multipleSelect({
+                                            width: '100%',
+                                            autoOpen: true,
+                                            isOpen: false,
+                                            keepOpen: false,
+                                            placeholder: "Region"
+                                        });
+                                    });
+                                </script>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-sm-8 col-md-8">
+                            <div class="text_NPP" style="width:17%">
+                                <span>Address</span>
+                            </div>
+                            <div class="input_NPP form-group" style="width:83%">
+                                <input type="text" name="NPP" id="txtAddress" class="form-control input-md" placeholder="Address" tabindex="8">
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr class="colorgraph">
+                    <div class="row">
+                        <button type="button" id="SearchRecord" name="sub" class="btn btn-theme btn-md" tabindex="9" style="margin-right:30px">Search</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="row col-md-12" style="padding-bottom:20px;">
+        @Html.ActionLink("Create New", "Create", new { @controller = "Distributors" }, new { @class = "btn btn-primary" })
+        <input type="button" id="modalImport" value="Import" class="btn btn-danger btn-md" data-toggle="modal" data-target="#ModalImportFile" />
+        <input type="submit" id="export" name="sub" value="Export" class="btn btn-danger btn-md" tabindex="9">
+        
+    </div>
+    <div class="modal fade" id="ModalImportFile" role="dialog">
+        <div class="modal-dialog modal-lg" style="width:95%">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <form id="formModalUpload" enctype="multipart/form-data">
+                        <div class="form-horizontal">
+
+                            <div class="form-group">
+
+                                <div class="control-label col-md-2"></div>
+                                <div class="col-md-10">
+                                    <input type="file" id="FileUpload" name="FileUpload" class="" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-offset-2 col-md-10">
+                                    <button id="btnUpload" type="button" class="btn btn-default" data-dismiss="modal">Upload</button>
+
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button id="btnClose" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div id="Preview" class="table-responsive" data-pattern="priority-columns">
+                <table class="table table-bordered table-hover" border="0" width="100%" cellpadding="0" cellspacing="0" id="npp-table">
+                    <caption class="text-center">Distributors List</caption>
+                    <thead>
+                        <tr>
+                            <th class="table-header-repeat line-left minwidth-1" style="min-width: 45px; color: #000; font-size: 13px;width: 45px;">Code</th>
+                            <th class="table-header-repeat line-left minwidth-1" style="min-width: 100px; color: #000; font-size: 13px; width: 100px;">Name</th>
+                            <th class="table-header-repeat line-left minwidth-1" style="min-width: 55px; color: #000; font-size: 13px;">Region</th>
+                            <th class="table-header-repeat line-left minwidth-1" style="min-width: 160px; color: #000; font-size: 13px; width: 160px; ">Address</th>
+                            <th class="table-header-repeat line-left minwidth-1" style="min-width: 50px; color: #000; font-size: 13px;">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{int i = 1;}
+                        @foreach (var item in Model)
+                        {
+                            <tr id="row_@item.ID">
+                     
+                                <td class="row_2">
+                                    <span>@item.Code</span>
+
+                                </td>
+                                <td class="row_3">
+                                    <span>@item.Name</span>                                 
+                                </td>
+                                <td class="row_4 table-header-repeat line-left minwidth-1">
+                                    @item.Regions.Name
+ 
+                                </td>
+                                <td class="row_9">
+                                    @item.Address 
+                                </td>
+                                <td style="width: 47px;">
+                                    <center>
+                                        <a href="@Url.Action("Edit", "Distributors", new { id = item.ID })" class="fa fa-edit" style="color: black; font-size: 18px" title="Edit Distributor"></a>
+                                        <a href="@Url.Action("Delete", "Distributors", new { id = item.ID })" title="Delete Distributor" class="fa fa-trash-o" style="color: black; font-size: 18px" onclick="return confirm('are you sure you wish to remove this item?');"></a>
+                                    </center>
+                                </td> 
+                            </tr>
+                        }
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+@*<script type="text/javascript" src="http://ajax.cdnjs.com/ajax/libs/json2/20110223/json2.js"></script>*@
+<script type="text/javascript">
+
+    var colGroup = 2;
+    var collapsedRows = [];
+    var table;
+    var groupCollapseFilter = function (groupName) {
+        return function (settings, searchData, index, rowData, counter) {
+            return searchData[1].indexOf(groupName) == -1;
+        };
+    };
+    var table = $('#npp-table').DataTable({
+        "dom": 'Rlfrtip',
+        "bAutoWidth": true,
+        "language": {
+            "search": "Quick find:",
+        },
+        "paging": false,
+        "columnDefs": [{
+            "searchable": false,
+            "orderable": false,
+            "targets": 0
+        }
+        //{ "visible": false, "targets": 1 }
+        ],
+        "order": [[colGroup, 'asc']],
+        "bDestroy": true,
+        "drawCallback": function (settings) {
+            var api = this.api();
+            var rows = api.rows({ page: 'current' }).nodes();
+
+            var last = null;
+
+            var groupadmin = [];
+
+            api.column(colGroup, { page: 'current' }).data().each(function (group, i) {
+
+                if (last !== group) {
+                    $(rows).eq(i).before(
+                        '<tr class="group" id="' + i + '"><td colspan="10">' + group + '</td></tr><hr />'
+                    );
+                    groupadmin.push(i);
+                    last = group;
+                }
+            });
+
+            for (var k = 0; k < groupadmin.length; k++) {
+
+                // Code added for adding class to sibling elements as "group_<id>"  
+                $("#" + groupadmin[k]).nextUntil("#" + groupadmin[k + 1]).addClass(' group_' + groupadmin[k]);
+                // Code added for adding Toggle functionality for each group
+                if (k != 0) {
+                    var gid = $("#" + groupadmin[k]).attr("id");
+                    $(".group_" + gid).slideToggle(300);
+                }
+                $("#" + groupadmin[k]).click(function () {
+                    var gid = $(this).attr("id");
+                    $(".group_" + gid).slideToggle(300);
+                });
+            }
+        }
+    });
+
+    $("#SearchRecord").click(function () {
+        var txtID = $("#id");
+        var txtName = $("#name");
+        var txtCode = $("#code");
+        var txtRegion = $("#nppRegion");
+        var txtManager_email = $("#Manager_email");
+        var txtSE_email = $("#SE_email");
+        var txtAc_email = $("#Ac_email");
+        var txtAdmin_email = $("#Admin_email");
+        var txtAddress = $("#txtAddress");
+        var selectednumbers = [];
+        var s = $('#nppRegion').val();
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("GetListSearch", "Distributors")',
+            data: '{ selectednumbers:"' + s + '", Region: "' + txtRegion.val() + '",Code: "' + txtCode.val() + '",Name: "' + txtName.val() + '", ManagerMail: "' + txtManager_email.val() + '" , SEMail: "' + txtSE_email.val() + '" , AcMail: "' + txtAc_email.val() + '", AdminMail: "' + txtAdmin_email.val() + '", Address: "' + txtAddress.val() + '" }',
+            contentType: "application/json; charset=utf-8",
+            dataType: "JSON",
+            error: function (xhr, status) {
+            },
+            complete: function (response) {
+                $('#Preview').html(response.responseText)
+            }
+        })
+    });
+
+    $("#export").click(function () {
+        //window.location = '/Distributors/ExportExcel';
+        $.ajax({
+            type: "GET",
+            url: '@Url.Action("ExportExcel", "Distributors")',
+            async: true,
+            error: function (xhr, status) {
+            },
+            success: function (response) {
+                window.location = "/Distributors/ExportExcel";
+            }
+        })
+    });
+
+    $("#btnUpload").click(function () {
+        //Lấy ra files
+        var file_data = $('#FileUpload').prop('files')[0];
+        //lấy ra kiểu file
+        var type = file_data.type;
+        //Xét kiểu file được upload
+        var match = ["xls", "xlsx"];
+        //kiểm tra kiểu file
+        //khởi tạo đối tượng form data
+        var form_data = new FormData();
+        //thêm files vào trong form data
+        form_data.append('file', file_data);
+        //}
+
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("ImportExcel", "Distributors")',
+            contentType: false, // Not to set any content header
+            processData: false,
+            data: form_data,
+            error: function (xhr, status) {
+            },
+            complete: function (response) {
+                //alert("Import distributors completed !");
+                location.reload();
+
+            }
+        })
+    });
+
+    //Add event handler.
+    $("body").on("click", "#btnAdd", function () {
+        var txtID = $("#id");
+        var txtName = $("#name");
+        var txtCode = $("#code");
+        var txtManager_email = $("#Manager_email");
+        var txtSE_email = $("#SE_email");
+        var txtAc_email = $("#Ac_email");
+        var txtAdmin_email = $("#Admin_email");
+        var txtAddress = $("#txtAddress");
+        $.ajax({
+            type: "POST",
+            url: "/Distributors/Insert",
+            data: '{  Code: "' + txtCode.val() + '",Name: "' + txtName.val() + '", ManagerMail: "' + txtManager_email.val() + '" , SEMail: "' + txtSE_email.val() + '" , AcMail: "' + txtAc_email.val() + '", AdminMail: "' + txtAdmin_email.val() + '", Address: "' + txtAddress.val() + '" }',
+            contentType: "application/json; charset=utf-8",
+            dataType: "JSON",
+            error: function (xhr, status) {
+                alert(status);
+            },
+            success: function (response) {
+                alert(response);
+
+            }
+        });
+    });
+
+    //Edit event handler.
+    $("body").on("click", "#npp-table .Edit", function () {
+        var row = $(this).closest("tr");
+        $("td", row).each(function () {
+            if ($(this).find("input").length > 0) {
+                $(this).find("input").show();
+                $(this).find("span").hide();
+            }
+            if ($(this).find("select").length > 0) {
+                //alert($(this).find("select").val());
+                $(this).find("select").show();
+                $(this).find("span").hide();
+            }
+        });
+        row.find(".Update").show();
+        row.find(".Cancel").show();
+        row.find(".Delete").hide();
+        $(this).hide();
+    });
+
+    //Update event handler.
+    $("body").on("click", "#npp-table .Update", function () {
+        var row = $(this).closest("tr");
+        $("td", row).each(function () {
+            if ($(this).find("input").length > 0) {
+                var span = $(this).find("span");
+                var input = $(this).find("input");
+                span.html(input.val());
+                span.show();
+                input.hide();
+            }
+            if ($(this).find("select").length > 0) {
+                var span = $(this).find("span");
+                var select = $(this).find("select");
+                //alert(select.val());
+                span.html(select.val());
+                span.show();
+                select.hide();
+            }
+        });
+
+        row.find(".Edit").show();
+        row.find(".Delete").show();
+        row.find(".Cancel").hide();
+        $(this).hide();
+
+        var data = {};
+        data.ID = row.find(".row_0").find("input").val();
+        data.Code = row.find(".row_2").find("span").html();
+        data.Name = row.find(".row_3").find("span").html();
+        data.Region = row.find(".row_4").find("select").val();
+        data.ManagerMail = row.find(".row_5").find("span").html();
+        data.AdminMail = row.find(".row_6").find("span").html();
+        data.SEMail = row.find(".row_7").find("span").html();
+        data.AcMail = row.find(".row_8").find("span").html();
+        data.Address = row.find(".row_9").find("span").html();
+        $.ajax({
+            type: "POST",
+            url: "/Distributors/Edit",
+            data: '{data:' + JSON.stringify(data) + '}',
+            contentType: "application/json; charset=utf-8",
+            dataType: "json"
+        });
+    });
+
+    //Cancel event handler.
+    $("body").on("click", "#npp-table .Cancel", function () {
+        var row = $(this).closest("tr");
+        $("td", row).each(function () {
+            if ($(this).find("input").length > 0) {
+                var span = $(this).find("span");
+                var input = $(this).find("input");
+                //input.val(span.html());
+                span.show();
+                input.hide();
+            }
+            if ($(this).find("select").length > 0) {
+                var span = $(this).find("span");
+                var select = $(this).find("select");
+                //alert(select.val());
+                //span.html(select.val());
+                span.show();
+                select.hide();
+            }
+        });
+        row.find(".Edit").show();
+        row.find(".Delete").show();
+        row.find(".Update").hide();
+        $(this).hide();
+    });
+
+    //Delete event handler.
+    $("body").on("click", "#npp-table .Delete", function () {
+        if (confirm("Do you want to delete this row?")) {
+            var row = $(this).closest("tr");
+            var id = row.find(".row_2").find("span").html();
+            $.ajax({
+                type: "POST",
+                url: "/Distributors/Delete",
+                data: '{id: ' + id + '}',
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                complete: function () {
+                    if ($("#npp-table tr").length > 2) {
+                        row.remove();
+                    } else {
+                        row.find(".Edit").hide();
+                        row.find(".Delete").hide();
+                        row.find("span").html('&nbsp;');
+                    }
+                }
+            });
+        }
+    });
+</script>
+
+
+
+
+
+
+

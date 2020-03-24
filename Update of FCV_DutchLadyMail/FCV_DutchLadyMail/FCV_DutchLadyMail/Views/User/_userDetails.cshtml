@@ -1,0 +1,31 @@
+﻿@model FCV_DutchLadyMail_Model.Models.USER
+@{
+    if (Model != null)
+    {
+        <div class="container" style="padding-top:20px" style="width:100%;">
+            <div class="row">
+                <div class="col-md-2 col-xs-12 col-sm-4">
+                    <img class="img-responsive"
+                         onerror="this.onerror=null;this.src='https://www.svgimages.com/svg-image/s5/man-passportsize-silhouette-icon-256x256.png';"
+                         src="" alt="">
+                </div>
+                <div class="col-md-10 col-xs-12 col-sm-8 ">
+                    <div class="container">
+                        <h2>Account: @Model.Username</h2>
+                    </div>
+                    <hr>
+                    <ul class="container details">
+                        <li><p><span>Full Name: </span>@Model.Lastname  @Model.Firstname</p></li>
+                        <li><p><span>Email: </span> @Model.EMail</p></li>
+                        <li><p><span>Inactive: </span> @Model.Inactive</p></li>
+                    </ul>
+                    <hr />
+                    <div class="pull-right">
+                        <input class="btn btn-warning" type="button" value="Edit" onclick="location.href='@Url.Action("Edit", "User", new { id = Model.User_Id })'" />
+                    </div>
+                </div>
+            </div>
+        </div>
+            <hr/>
+    }
+}

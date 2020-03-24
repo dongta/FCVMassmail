@@ -1,0 +1,164 @@
+﻿@model FCV_DutchLadyMail_Model.Models.SMTPProfiles
+
+@{
+    ViewBag.Title = "Edit Mail Configuration";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container" style="padding-top: 10px; width: 100%">
+    @using (Html.BeginForm("Edit", "MailConfiguration", FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-horizontal">
+            <hr />
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+            @Html.HiddenFor(model => model.ID)
+            @*@Html.HiddenFor(model => model.MaxTries)
+            @Html.HiddenFor(model => model.TryInterval)*@
+
+            <div class="row">
+                <div class="col-6 col-md-4">
+                    <span>Name</span>
+                </div>
+                <div class="col-12 col-md-7 form-group">
+                    @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                    @Html.TextBoxFor(model => model.Name, new { @class = "form-control" })
+
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-6 col-md-4">
+                    <span>SMTPServer</span>
+                </div>
+                <div class="col-12 col-md-7 form-group">
+                    @Html.ValidationMessageFor(model => model.SMTPServer, "", new { @class = "text-danger" })
+                    @Html.TextBoxFor(model => model.SMTPServer, new { @class = "form-control" })
+
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-6 col-md-4">
+                    <span>SMTPPort</span>
+                </div>
+                <div class="col-12 col-md-7 form-group">
+                    @Html.ValidationMessageFor(model => model.SMTPPort, "", new { @class = "text-danger" })
+                    @Html.TextBoxFor(model => model.SMTPPort, new { @class = "form-control" })
+
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-6 col-md-4">
+                    <span>Account</span>
+                </div>
+                <div class="col-12 col-md-7 form-group">
+                    @Html.ValidationMessageFor(model => model.Account, "", new { @class = "text-danger" })
+                    @Html.TextBoxFor(model => model.Account, new { @class = "form-control" })
+
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-6 col-md-4">
+                    <span>Password</span>
+                </div>
+                <div class="col-12 col-md-7 form-group">
+                    @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+                    @Html.PasswordFor(model => model.Password, new { @class = "form-control",value = Model.Password }) 
+                </div>
+                @*<div><a id="ViewPass" href="javascript:void(0)" class="fa fa-eye" style="font-size:24px; color:black; padding-left:20px;"></a></div>*@
+                <script type="text/javascript">
+                    $("#ViewPass").click(function () {
+                        $.ajax({
+                            type: "GET",
+                            url: '@Url.Action("ViewPass", "MailConfiguration")',
+                            data: { pass: $("#Password").val() },
+                            async: true,
+                            error: function (xhr, status) {
+                            },
+                            success: function (response) {
+                                alert("Ok");
+                            }
+                        })
+                    });
+                </script>
+            </div>
+
+            <div class="row">
+                <div class="col-6 col-md-4">
+                    <span>Address</span>
+                </div>
+                <div class="col-12 col-md-7 form-group">
+                    @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
+                    @Html.TextBoxFor(model => model.Address, new { @class = "form-control" })
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-6 col-md-4">
+                    <span>DisplayName</span>
+                </div>
+                <div class="col-12 col-md-7 form-group" >
+                    @Html.ValidationMessageFor(model => model.DisplayName, "", new { @class = "text-danger" })
+                    @Html.TextBoxFor(model => model.DisplayName, new { @class = "form-control" })
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-6 col-md-4">
+                    <span>SSLEnable</span>
+                </div>
+                <div class="col-12 col-md-7 form-group">
+                    @Html.ValidationMessageFor(model => model.SSLEnable, "", new { @class = "text-danger" })
+                    @Html.CheckBoxFor(model => model.SSLEnable.Value, htmlAttributes: new { Name = "IsCheckedSSL", @style = "width:20px;height:20px;", @id = "ckeContent" })
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-6 col-md-4">
+                    <span>Description</span>
+                </div>
+                <div class="col-12 col-md-7 form-group">
+                    @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                    @Html.TextBoxFor(model => model.Description, new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-6 col-md-4">
+                    <span>MaxTries</span>
+                </div>
+                <div class="col-12 col-md-8 form-group">
+                    @Html.ValidationMessageFor(model => model.MaxTries, "", new { @class = "text-danger" })
+                    @Html.TextBoxFor(model => model.MaxTries, new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-6 col-md-4">
+                    <span>TryInterval</span>
+                </div>
+                <div class="col-12 col-md-8 form-group">
+                    @Html.ValidationMessageFor(model => model.TryInterval, "", new { @class = "text-danger" })
+                    @Html.TextBoxFor(model => model.TryInterval, new { @class = "form-control" })
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-6 col-md-4">
+                    <span>Enable</span>
+                </div>
+                <div class="col-12 col-md-7 form-group">
+                    @Html.ValidationMessageFor(model => model.SSLEnable, "", new { @class = "text-danger" })
+                    @Html.CheckBoxFor(model => model.Active.Value, htmlAttributes: new { Name = "IsChecked", @style = "width:20px;height:20px;", @id = "ckeContent" })
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12" style="padding-bottom:10px">
+            <input type="submit" value="Update" class="btn btn-primary" />
+            @Html.ActionLink("Go to Mail Configuration List", "Index", new { @controller = "MailConfiguration" }, new { @class = "btn btn-danger" })
+        </div>
+
+    }
+
+    

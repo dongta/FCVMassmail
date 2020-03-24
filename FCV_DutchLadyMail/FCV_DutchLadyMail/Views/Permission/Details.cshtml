@@ -1,0 +1,44 @@
+﻿@model FCV_DutchLadyMail_Model.Models.PERMISSION
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script type="text/javascript">
+    //$(document).ready(function () {
+    //    $(":input[type='button']").button();
+    //});
+</script>
+<div class="container" style="padding-top: 10px; width: 100%">
+    <div class="col-md-12">
+        <div class="table-responsive">
+            <table id="PermissionTable" class="table table-bordered table-hover" border="1" width="100%" cellpadding="0" cellspacing="0" id="npp-table">
+                <tr>
+                    <td>
+                        @Html.LabelFor(model => model.PermissionDescription, "Description")
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => model.PermissionDescription)
+                    </td>
+                </tr>
+            </table>
+            <br />
+            <input class="btn btn-primary" type="button" value="Edit Permission" onclick="location.href='@Url.Action("Edit", "Permission", new { id = Model.Permission_Id })'" />
+        </div>
+        <br />
+    </div>
+    <div>
+        <fieldset>
+            <legend>
+                <h3>
+                    Roles Associated with this Permission
+                </h3>
+            </legend>
+            <div id="RolesTable">
+                @Html.Partial("_ListRolesTable4Permission", Model)
+            </div>
+        </fieldset>
+    </div>
+</div>
+<div class="col-md-12">
+    @Html.ActionLink("Go to Permissions", "Index", new { controller = "Permission" }, new { @class = "btn btn-danger" })
+</div>

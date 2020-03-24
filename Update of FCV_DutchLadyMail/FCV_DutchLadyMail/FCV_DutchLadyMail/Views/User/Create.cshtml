@@ -1,0 +1,52 @@
+﻿@model FCV_DutchLadyMail_Model.Models.USER
+@{
+    ViewBag.Title = "Create User";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $(":input[type='submit']").button();
+    })
+</script>
+
+
+<div class="container" style="width:100%;">
+    @using (Html.BeginForm("Create", "User", FormMethod.Post))
+    {
+        @Html.ValidationSummary(false, "", new { @class = "text-danger" });
+
+        <fieldset class="scheduler-border">
+            <form>
+                <div class="row">
+                    <div class="col-xs-6 form-group">
+                        <label>@Html.LabelFor(model => model.Username, "Username")</label>
+                        @Html.TextBoxFor(model => model.Username, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.Username)
+                    </div>
+                    <div class="col-xs-6 form-group">
+                        <label> @Html.LabelFor(model => model.Password, "Password")</label>
+                        @Html.TextBoxFor(model => model.Password, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.Password)
+                    </div>
+                    <div class="col-xs-6 form-group">
+                        <label> @Html.LabelFor(model => model.Firstname, "Firstname")</label>
+                        @Html.TextBoxFor(model => model.Firstname, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.Firstname)
+                    </div>
+                    <div class="col-xs-6 form-group">
+                        <label> @Html.LabelFor(model => model.Lastname, "Lastname")</label>
+                        @Html.TextBoxFor(model => model.Lastname, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.Lastname)
+                    </div>
+
+                </div>
+                <div style="padding-bottom:10px">
+                    <button class="btn btn-primary" type="submit" value="Create">Create</button>
+                    @Html.ActionLink("Go to Users", "Index", new { @controller = "User" }, new { @class = "pull-right btn btn-danger" })
+
+                </div>
+            </form>
+        </fieldset>
+    }
+</div>

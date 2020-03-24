@@ -1,0 +1,91 @@
+﻿@model FCV_DutchLadyMail_Model.Models.PERMISSION
+<script type="text/javascript">
+    $(document).ready(function () {
+        //Unbind the original image 'href' set by the controller...
+        $('.deleteRole').attr('href', 'javascript://');
+        $('.deleteRole').click(function () {
+            $dialog.data('permissionId', $(this).attr('permissionId')).data('roleId', $(this).attr('roleId')).dialog("open");
+        });
+
+        var $dialog = $('<div/>')
+            .html("Warning: This will remove the selected Role from this Permission.  Removing this Role may prevent users from accessing areas in the application.  Only remove this Role if you intend to restrict application access.<br/><br/>Do you wish to continue?")
+            .dialog({
+                autoOpen: false,
+                resizable: false,
+                height: 250,
+                modal: true,
+                title: 'Remove Role',
+                buttons: [
+                    {
+                        text: "Continue",
+                        id: "continuebtn",
+                        click: function () {
+                            var _permissionId = $(this).data('permissionId');
+                            var _roleId = $(this).data('roleId');
+
+                            var _parameters = { permissionId: _permissionId, id: _roleId };
+                            $.ajax({
+                                url: "/Permission/DeleteRoleFromPermissionReturnPartialView",
+                                type: "GET",
+                                data: _parameters,
+                                success: function (data, textStatus, jqXHR) {
+                                    $('#RolesTable').html(data);
+                                }
+                            });
+                            $(this).dialog('close');
+                        }
+                    },
+                    {
+                        text: "Cancel",
+                        id: "cancelbtn",
+                        click: function () {
+                            $(this).dialog("close");
+                        }
+                    }]
+            });
+    });
+</script>
+@{if (Model.ROLES.Count == 0)
+    {
+        <h2><font color="red">No Associated Roles...</font></h2>
+        <br />
+    }
+  else
+  {
+    <div class="container" style="padding-top: 10px; width: 100%">
+        <div class="">
+            <div class="table-responsive" data-pattern="priority-columns">
+                <table id="PermissionTable" class="table table-bordered table-hover" border="1" width="100%" cellpadding="0" cellspacing="0" id="npp-table">
+                    <caption class="text-center">List Roles</caption>
+                    <thead>
+                        <tr>
+                            <th class="table-header-repeat line-left minwidth-1" style="min-width: 15px; color: #000; font-size: 13px; "> Role</th>
+                            <th class="table-header-repeat line-left minwidth-1" style="min-width: 15px; color: #000; font-size: 13px; "> Role Description</th>
+                            <th class="tabe-header-repeat line-left minwidth-1" style="min-width: 15px; color: #000; font-size: 13px; ">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (FCV_DutchLadyMail_Model.Models.ROLE role in Model.ROLES.OrderBy(u => u.RoleDescription))
+                        {
+                            <tr>
+                                <td>
+                                    @Html.ActionLink(role.RoleName, "Details", new { id = role.Role_Id })
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => role.RoleDescription)
+                                </td>
+                                <td>
+                                    <center>
+                                        <a href="@Url.Action("DeletePermission", "Permission", new { id = role.Role_Id, permissionId = Model.Permission_Id })" class="deleteRole" permissionid=@Model.Permission_Id roleid=@role.Role_Id>
+                                            <img src="@Url.Content("~/Content/admin/images/bin.png")" alt="Delete Permission" />
+                                        </a>
+                                    </center>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+  }}

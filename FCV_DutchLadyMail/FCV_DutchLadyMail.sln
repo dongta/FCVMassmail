@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.21005.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FCV_DutchLadyMail", "FCV_DutchLadyMail\FCV_DutchLadyMail.csproj", "{6BD0EF26-A793-437B-B5B6-BF13DFCE0B76}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FCV_DutchLadyMail_Model", "FCV_DutchLadyMail_Model\FCV_DutchLadyMail_Model.csproj", "{CE6F5496-8351-46C5-910A-DF3021145F97}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6BD0EF26-A793-437B-B5B6-BF13DFCE0B76}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6BD0EF26-A793-437B-B5B6-BF13DFCE0B76}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6BD0EF26-A793-437B-B5B6-BF13DFCE0B76}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6BD0EF26-A793-437B-B5B6-BF13DFCE0B76}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CE6F5496-8351-46C5-910A-DF3021145F97}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CE6F5496-8351-46C5-910A-DF3021145F97}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CE6F5496-8351-46C5-910A-DF3021145F97}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CE6F5496-8351-46C5-910A-DF3021145F97}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

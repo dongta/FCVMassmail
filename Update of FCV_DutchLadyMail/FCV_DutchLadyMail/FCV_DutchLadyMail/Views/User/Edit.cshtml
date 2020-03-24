@@ -1,0 +1,45 @@
+﻿@model FCV_DutchLadyMail_Model.Models.USER
+@{
+    ViewBag.Title = "User - " + Model.Username;
+    if ((Model.Username != null) && (Model.Username != ""))
+    {
+        ViewBag.Title = ViewBag.Title + " (" + Model.Username + ")";
+    }
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script type="text/javascript">
+    $(document).ready(function () {
+        $(":input[type='button']").button();
+        $(":input[type='submit']").button();
+    });
+</script>
+<div class="container" style="width:100%;">
+    @*@using (Html.BeginForm("Edit", "User", FormMethod.Post))
+    {
+        @Html.ValidationSummary(true)
+        <input name='User_Id' id='User_Id' type="hidden" value="@ViewBag.UserId" />
+        <input name='Username' id='Username' type="hidden" value="@Model.Username" />
+        <div style="padding-top:20px">
+            @Html.Partial("_userDetailsEdit", Model)
+            <button type="submit" value="" class="btn btn-primary pull-right">Save</button>
+        </div>
+
+    }*@
+    <div class="">
+        <div class="col-md-12" id="RolesTable">
+            @Html.Partial("_ListUserRoleTable", Model)
+        </div>
+        <div class="col-md-12" id="EditableUserRole">
+            @Html.Partial("_ListEditableUserRoleTable")
+        </div>
+
+        <div class="col-md-12" style="padding:10px">
+            @Html.ActionLink("Go to Roles", "Index", new { @controller = "Role" }, new { @class = "btn btn-primary" })
+            @Html.ActionLink("Go to Users", "Index", new { @controller = "User" }, new { @class = "btn btn-danger" })
+        </div>
+    </div>
+</div>
+<br />
+
+
+

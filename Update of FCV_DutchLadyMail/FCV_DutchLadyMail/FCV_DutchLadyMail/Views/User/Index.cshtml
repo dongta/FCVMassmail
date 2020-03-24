@@ -1,0 +1,241 @@
+﻿@model IEnumerable<FCV_DutchLadyMail_Model.Models.USER>
+@{
+    ViewBag.Title = "Users Management";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    <style type="text/css">
+
+        table {
+            word-wrap: break-word;
+            width: 100%;
+        }
+
+        .form-control {
+            font-size: 13px;
+            padding: 0px;
+        }
+
+        td p {
+            margin-bottom: 0px;
+        }
+
+        .text_NPP {
+            width: 36.36%;
+            float: left;
+            padding-top: 6px;
+        }
+
+        .input_NPP {
+            width: 63.63%;
+            float: left;
+        }
+
+        @@media screen and (max-width:767px) {
+            .input_NPP {
+                width: 63.63% !important;
+                float: left;
+            }
+
+            .text_NPP {
+                width: 36.36% !important;
+                float: left;
+                padding-top: 6px;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="~/Content/lib/data-table/dataTables.bootstrap.min.css" />
+    <script src="~/Content/js/lib/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/Content/js/lib/datatables/dataTables.bootstrap.min.js"></script>
+    <style type="text/css">
+
+        .table-responsive[data-pattern="priority-columns"] > .table > thead > tr > th, .table-responsive[data-pattern="priority-columns"] > .table > tbody > tr > th, .table-responsive[data-pattern="priority-columns"] > .table > tfoot > tr > th, .table-responsive[data-pattern="priority-columns"] > .table > thead > tr > td, .table-responsive[data-pattern="priority-columns"] > .table > tbody > tr > td, .table-responsive[data-pattern="priority-columns"] > .table > tfoot > tr > td {
+            min-width: 20px;
+            max-width: 500px;
+            white-space: normal;
+        }
+
+        div.dataTables_wrapper div.dataTables_filter input {
+            margin-left: 0.5em;
+            display: inline-block;
+            width: 300px;
+        }
+
+        .sticky-table-header.fixed-solution {
+            min-width: 0;
+            position: fixed;
+            height: 0px !important;
+        }
+    </style>
+}
+
+<script>
+    $(function () {
+        $("#pbFilter").click(function () {
+            $.get("/User/filter4Users", { _surname: $("#SurnameId").val() }, function (data) {
+                $("#divUsers").html(data);
+            })
+        })
+    });
+
+    $(function () {
+        $("#pbReset").click(function () {
+            $("#SurnameId").val('');
+            $.get("/User/filterReset", {}, function (data) {
+                $("#divUsers").html(data);
+            })
+        })
+    });
+
+    //$(document).ready(function () {
+    //    $(":input[type='button']").button();
+    //});
+</script>
+
+<div class="container" style="width:100%">
+    <div class="modal fade" id="modNewUser" role="dialog">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Add User</h4>
+                </div>
+                <form id="frmNewUser">
+
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="txtUserName">User Name</label>
+                            <input name="UserName" type="text" class="form-control input-sm" id="txtUserName" placeholder="Enter User Name">
+                        </div>
+                        <div class="form-group">
+                            <label for="txtDisplayName">Display Name</label>
+                            <input name="DisplayName" type="text" class="form-control input-sm" id="txtDisplayName" placeholder="Enter Display Name">
+                        </div>
+                        <div class="form-group">
+                            <label for="txtEmail">Email</label>
+                            <input name="Email" type="email" class="form-control input-sm" id="txtEmail" placeholder="Enter Email">
+                        </div>
+                        <div class="row" style=" text-align:center;color:blue ; font-size:12px;">Default password: fcv@123a</div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-sm btn-success">Submit</button>
+                        <button type="button" class="btn btn-sm btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <input class="btn btn-primary" type="button" style="display:none; margin-top:20px;" value="Add From Domain" id="pbFilter" name="pbFilter" data-toggle="modal" data-target="#myModal" />
+    <div class="fa fa-plus btn btn-sm btn-success" data-toggle="modal" data-target="#modNewUser"> NEW </div>
+    <hr />
+    <div class="modal fade" id="myModal" role="dialog">
+        <div class="modal-dialog modal-lg" style="width:95%">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="table-responsive" data-pattern="priority-columns" id="divUsersDomain">
+                        <div class="col-xs-12 col-sm-4 col-md-4">
+                            <div class="text_NPP">
+                                <span>Search</span>
+                            </div>
+                            <div class="input_NPP form-group">
+                                <input type="text" name="User" id="Name" class="form-control input-md" tabindex="1">
+                            </div>
+                        </div>
+                    </div>
+                    <hr />
+                    <span id="mess" style="color:red;font-weight:bold"></span>
+                    <hr />
+                    <button type="button" id="SearchRecord" name="sub" class="btn btn-theme btn-md" tabindex="9" style="margin-right:30px">Search</button>
+                    <div id="Preview">
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="btnAdd" type="button" class="btn btn-default">Add</button>
+                    <button id="btnClose" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+    <div>
+        @Html.Partial("_ListUserTable", Model)
+    </div>
+    <div style="padding-bottom:10px">
+
+        @*<input class="btn btn-primary" type="button" value="Create User" onclick="location.href='@Url.Action("Create", "User")'" />*@
+        <br />
+    </div>
+</div>
+<script>
+    $("#SearchRecord").click(function () {
+        var txtName = $("#Name");
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("GetListSearch", "User")',
+            data: '{ name: "' + txtName.val() + '"}',
+            contentType: "application/json; charset=utf-8",
+            dataType: "JSON",
+            error: function (xhr, status) {
+            },
+            complete: function (response) {
+                $('#Preview').html(response.responseText)
+            }
+        })
+    })
+    $('#myModal').on('show.bs.modal', function () {
+        $('.modal .modal-body').css('overflow-y', 'auto');
+        $('.modal .modal-body').css('max-height', $(window).height() * 0.7);
+    });
+
+    $('#ModalFilesL').on('click', '#btnClose', function () {
+        location.reload();
+        $("#viewModalFilesL").prop("checked", false);
+    });
+    $('#ModalFilesL').on('click', '.close', function () {
+        location.reload();
+        $("#viewModalFilesL").prop("checked", false);
+    });
+
+    $("#btnAdd").click(function () {
+        var json = [];
+
+        //converting to formname:formvalue format
+        $.each($('input.ckUser[type="checkbox"]').serializeArray(), function (i, field) {
+            json[i] = field.value;
+        });
+        var s = json.join('|');
+
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("AddFromDomain", "User")',
+            data: '{ paramJson:"' + s + '" }',
+            contentType: "application/json; charset=utf-8",
+            dataType: "JSON",
+            error: function (xhr, status) {
+            },
+            success: function (response) {
+                $('#mess').append(response.mess);
+            }
+        })
+
+    });
+
+    $("#frmNewUser").submit(function (e) {
+            e.preventDefault();
+            $.post("User/NewUser", $(this).serialize(), function (data) {
+                alert(data.Message);
+                console.log(data);
+                if (data.success == true) {
+                    $("#modNewUser").modal('hide');
+                }
+            })
+        });
+
+</script>
+
+
+

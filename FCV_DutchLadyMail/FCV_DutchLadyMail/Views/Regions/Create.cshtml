@@ -1,0 +1,42 @@
+﻿@model FCV_DutchLadyMail_Model.Models.Region
+@{
+    ViewBag.Title = "Create Region";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    <script src="~/ckeditor/ckeditor.js"></script>
+}
+
+
+
+@using (Html.BeginForm("Create", "Regions", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        @Html.HiddenFor(model => model.ID, htmlAttributes: new { @class = "control-label col-md-2" })
+
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.Name, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-md-2 control-label">Description</label>
+            <div class="col-md-10">
+                @Html.TextAreaFor(model => model.Note, 5, 40, new { @type = "text", @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Note, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <hr class="colorgraph">
+        <div style="padding-bottom:10px">
+            <input type="submit" value="Create" class="btn btn-primary" />
+            @Html.ActionLink("Go to Regions List", "Index", new { @controller = "Regions" }, new { @class = "btn btn-danger" })
+        </div>
+    </div>
+}
+

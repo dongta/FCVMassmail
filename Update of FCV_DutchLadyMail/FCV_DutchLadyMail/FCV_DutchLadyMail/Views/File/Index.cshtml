@@ -1,0 +1,65 @@
+﻿@using PagedList.Mvc
+@model PagedList.IPagedList<FCV_DutchLadyMail_Model.Models.FILE>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+       <link rel="stylesheet" href="~/Content/lib/data-table/dataTables.bootstrap.min.css" />
+    <script src="~/Content/js/lib/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/Content/js/lib/datatables/dataTables.bootstrap.min.js"></script>
+}
+<script type="text/javascript">
+    //$(document).ready(function () {
+    //    $(":input[type='button']").button();
+    //})
+</script>
+
+
+<div class="container" style="width:100%">
+
+    <div class="row" style="margin-top:20px;">
+        <div class="col-6 col-md-4">
+            <span>Select Folders</span>
+        </div>
+        <div class="col-md-4">
+            @Html.DropDownList("Folders", new SelectList(ViewBag.Folders, "ID", "Name"), "-- Please select --", htmlAttributes: new { @class = "form-control ", id = "folderSelect" })
+        </div>
+        <div class="col-md-2">
+            <input class="btn btn-danger" type="button" value="Folder Manager" onclick="location.href='@Url.Action("Index", "Folder")'" />
+        </div>
+    </div>
+    <hr />
+    <div class="table-responsive" data-pattern="priority-columns" id="divFiles">
+
+        
+    </div>
+    <div>
+        @*<input id="UploadFile" class="btn btn-primary" type="button" value="Upload File" />*@
+    </div>
+    <br />
+</div>
+
+<script>
+    $('#UploadFile').on('click', function () {
+        var id1 = $("#folderSelect").val().toString();
+        window.location.href = "../File/UploadFiles/"+id1;
+    })
+    $('#folderSelect').on('change', function () {
+                console.log($(this).val());
+                $.ajax({
+                    url: '@Url.Action("GetListFile", "File")',
+                    dataType: "json",
+                    type: "GET",
+                    contentType: 'application/json; charset=utf-8', //define a contentType of your request
+                    cache: false,
+                    data: { test: $(this).val().toString() },
+                    complete: function (response) {
+                        // data is your result from controller
+                        $('#divFiles').html(response.responseText)
+                    },
+                    error: function (xhr) {
+                        
+                    }
+                });
+
+            })
+</script>

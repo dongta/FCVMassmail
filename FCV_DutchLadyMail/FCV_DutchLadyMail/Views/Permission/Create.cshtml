@@ -1,0 +1,37 @@
+﻿@model FCV_DutchLadyMail_Model.Models.PERMISSION
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script type="text/javascript">
+    //$(document).ready(function () {
+    //    $(":input[type='submit']").button();
+    //    $(":input[type='text']").text();
+    //});
+</script>
+<div class="container" style="padding-top: 10px; width: 100%">
+    <div class="">
+        @using (Html.BeginForm())
+        {
+            @Html.ValidationSummary(true)
+            <div class="col-xs-6 form-group">
+                <label>@Html.LabelFor(model => model.PermissionName, "Permission Name")</label>
+                @Html.TextBoxFor(model => model.PermissionName, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.PermissionName)
+            </div>
+            <div class="col-xs-6 form-group">
+                <label>@Html.LabelFor(model => model.PermissionDescription, "Permission Description")</label>
+                @Html.TextBoxFor(model => model.PermissionDescription, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.PermissionDescription)
+            </div>
+            <div class="col-md-12" style="padding-bottom:10px">
+                <input type="submit" value="Create" class="btn btn-primary" />
+
+            </div>
+        }
+    </div>
+    <div class="col-md-12" style="padding-bottom:10px">
+        @Html.ActionLink("Go to Permissions", "Index", new { @controller = "Permission" }, new { @class = "btn btn-danger" })
+
+    </div>
+</div>

@@ -1,0 +1,118 @@
+﻿
+@model IEnumerable<FCV_DutchLadyMail_Model.Models.DistributorsView>
+@*<script src="~/Content/js/lib/jquery/jquery.min.js"></script>
+<script src="~/Content/js/lib/bootstrap/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap.min.css" />
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+<script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap.min.js"></script>*@
+
+
+<table class="table table-bordered table-hover" border="1" width="100%" cellpadding="0" cellspacing="0" id="npp-table1">
+    <caption class="text-center">List Distributors</caption>
+    <thead>
+        <tr>
+            <th width ="5%"><input type="checkbox" id="checkAll" value="" /></th> 
+            <th width="8%">Code</th>
+            <th width="15%">Name</th>
+            <th width="8%">Region</th>
+            <th width="20%">Manager Mails</th>
+            <th width="20%">Admin Mails</th>
+            <th width="20%">SE Mails</th>
+            <th width="15%">Ac Mails</th>
+            <th width="25%">Adress</th>
+        </tr>
+    </thead>
+    <tbody id="SetDataList">
+        <tr id="LoadingStatus" style="color:red"></tr>
+        @{int i = 1;}
+        @foreach (var item in Model)
+        {
+            <tr id="row_@item.ID">
+                <td class="row_0">
+                    @{string s = item.ID.ToString();
+                    }
+                    <input type="checkbox" class="ckDis" name="chkT" value=@s>
+                </td>
+                @*<td class="row_1 table-header-repeat line-left minwidth-1">
+                    @(i++)
+                </td>*@
+                <td class="row_2">
+                    <span>@item.Code</span>
+                    @*<input type="text" name="NPP" id="code" class="form-control input-md" value="" tabindex="1">*@
+
+                </td>
+                <td class="row_3">
+                    <span>@item.Name</span>
+                    
+                </td>
+                <td class="row_4">
+                    <span>@item.Regions.Name</span>
+                </td>
+                <td class="row_5">
+                    <span>@item.ManagerMail</span>
+                    
+                </td>
+                <td class="row_6">
+                    <span>@item.AdminMail</span>
+                </td>
+                <td class="row_7">
+                    <span>@item.SEMail</span>
+                  
+                </td>
+                <td class="row_8">
+                    <span>@item.AcMail</span>
+                </td>
+                <td class="row_9">
+                    <span>@item.Address</span>
+                </td>
+               
+            </tr>
+        }
+    </tbody>
+
+</table>
+<div id="myPager">
+    @*@Html.PagedListPager(Model, page => Url.Action(@"GetListSearch", new { page}))*@
+</div>
+   <script>
+       $(function () {
+           $("#checkAll").prop('checked', true);
+           $("input.ckDis:checkbox").prop('checked', true);
+       });
+       $("#checkAll").change(function () {
+           $("input.ckDis:checkbox").prop('checked', $(this).prop("checked"));
+       });
+
+        var t = $('#npp-table1').DataTable({
+            "bAutoWidth": false,
+            "scrollX": true,
+            "language": {
+                "search": "Quick filter records:",
+                "columnDefs": [{
+                    "searchable": false,
+                    "orderable": false,
+                    "targets": 0
+                }],
+             "order": [[1, 'asc']]
+
+            }
+        });
+       t.on('order.dt search.dt', function () {
+           t.column(0, { search: 'applied', order: 'applied' }).nodes().each(function (cell, i) {
+               cell.innerHTML = i + 1;
+           });
+       }).draw();
+
+       $(".collapse.in").each(function () {
+           $(this).siblings(".panel-heading").find(".glyphicon").addClass("glyphicon-minus").removeClass("glyphicon-plus");
+       });
+
+       // Toggle plus minus icon on show hide of collapse element
+       $(".collapse").on('show.bs.collapse', function () {
+           $(this).parent().find(".glyphicon").removeClass("glyphicon-plus").addClass("glyphicon-minus");
+       }).on('hide.bs.collapse', function () {
+           $(this).parent().find(".glyphicon").removeClass("glyphicon-minus").addClass("glyphicon-plus");
+       });
+
+    </script>

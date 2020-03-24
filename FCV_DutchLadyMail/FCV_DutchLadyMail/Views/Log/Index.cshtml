@@ -1,0 +1,55 @@
+﻿@using PagedList.Mvc
+@model PagedList.IPagedList<FCV_DutchLadyMail_Model.Models.LOG_ACCESS>
+@{
+    ViewBag.Title = "Permission";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script type="text/javascript">
+    //$(document).ready(function () {
+    //    $(":input[type='button']").button();
+    //});
+</script>
+
+
+<div class="container" style="width:100%;">
+    <div class=" table-responsive" data-pattern="priority-columns" id="divPermissions">
+    <table id="PermissionTable" class="table table-bordered table-hover" border="1" width="100%" cellpadding="0" cellspacing="0" id="npp-table">
+        <caption class="text-center">Log access</caption>
+        <thead>
+            <tr>
+                <th class="table-header-repeat line-left minwidth-1" style="min-width: 70px; color: #000; font-size: 13px; ">Time</th>
+                <th class="table-header-repeat line-left minwidth-1" style="min-width: 15px; color: #000; font-size: 13px;"> User Name</th>
+                <th class="table-header-repeat line-left minwidth-1" style="min-width: 70px; color: #000; font-size: 13px; ">Page</th>
+                <th class="table-header-repeat line-left minwidth-1" style="min-width: 70px; color: #000; font-size: 13px; ">Action</th>
+                @*<th class="table-header-repeat line-left minwidth-1" style="min-width: 70px; color: #000; font-size: 13px; ">Action</th>*@
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (FCV_DutchLadyMail_Model.Models.LOG_ACCESS item in Model)
+            {
+                <tr>
+                    <td>
+                        @item.created_at
+                    </td>
+                    <td>
+                        @item.USER.Username
+                    </td>
+                    <td>
+                        @item.page
+                    </td>
+                    <td style="text-align:center">
+                        @Html.Raw(item.status == true ? "<span class='label label-success'>Access</span>" : "<span class='label label-danger'>Deny</span>")
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <div class="col-md-12" style="padding:0">
+        <div class="pull-left">
+            @Html.PagedListPager(Model, page => Url.Action("Index", new { page }))
+        </div>
+    </div>
+</div>
+
+</div>
+

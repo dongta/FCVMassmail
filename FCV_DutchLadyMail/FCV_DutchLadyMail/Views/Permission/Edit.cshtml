@@ -1,0 +1,43 @@
+﻿@model FCV_DutchLadyMail_Model.Models.PERMISSION
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script type="text/javascript">
+    //$(document).ready(function () {
+    //    $(":input[type='submit']").button();
+    //    $(":input[type='button']").button();
+    //});
+</script>
+<div class="container" style="padding-top: 10px; width: 100%">
+    <div class="col-md-12">
+        @using (Html.BeginForm())
+        {
+            @Html.ValidationSummary(true)
+
+            @Html.HiddenFor(model => model.Permission_Id)
+            @Html.HiddenFor(model => model.PermissionName)
+            <div class="col-md-12 form-group">
+                <label>@Html.LabelFor(model => model.PermissionDescription, "Description")</label>
+                @Html.TextBoxFor(model => model.PermissionDescription, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.PermissionDescription)
+            </div>
+            <div class="col-md-12">
+                <input type="submit" value="Update Permission" class="btn btn-primary" />
+            </div>
+        }
+    </div>
+    <div class="col-md-12">
+        <div id="RolesTable">
+            @Html.Partial("_ListRolesTable4Permission", Model)
+        </div>
+        <div>
+            @Html.Partial("_AddRole4Permission", Model)
+        </div>
+    </div>
+    <div class="col-md-12" style="padding-bottom:10px; padding-top:10px">
+        @Html.ActionLink("Go to Permissions", "Index", new { @controller = "Permission" }, new { @class = "btn btn-primary" })
+    </div>
+</div>
+

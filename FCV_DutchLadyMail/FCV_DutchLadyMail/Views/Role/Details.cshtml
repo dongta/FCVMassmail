@@ -1,0 +1,68 @@
+﻿@model FCV_DutchLadyMail_Model.Models.ROLE
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script type="text/javascript">
+    //$(function () {
+    //    $(":input[type='button']").button();
+    //})
+</script>
+<div class="container" style="padding-top: 10px; width: 100%;">
+    <div class="col-md-12">
+        <div class="table-responsive">
+            <table id="PermissionTable" class="table table-bordered table-hover" border="1" width="100%" cellpadding="0" cellspacing="0" id="npp-table">
+                <tr>
+                    <td>
+                        @Html.LabelFor(model => model.RoleName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => model.RoleName, new { style = "width:350px" })
+                        @Html.ValidationMessageFor(model => model.RoleName)
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.LabelFor(model => model.RoleDescription)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => model.RoleDescription, new { style = "width:90%" })
+                        @Html.ValidationMessageFor(model => model.RoleDescription)
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        @Html.LabelFor(model => model.IsSysAdmin, "System Role")
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => model.IsSysAdmin)
+                        @Html.ValidationMessageFor(model => model.IsSysAdmin)
+                    </td>
+                </tr>
+            </table>
+            <br />
+            <input class="btn btn-primary" type="button" value="Edit" onclick="location.href='@Url.Action("Edit", "Role", new { id = Model.Role_Id })'" />
+            <div>
+                <fieldset>
+                    <legend>
+                        <h3>
+                            Permissions Associated with this Role
+                        </h3>
+                    </legend>
+
+                    <div id="PermissionsTable">
+                        @Html.Partial("_ListPermissions", Model)
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+    </div>
+    <br />
+    <div class="col-md-12" style="padding-bottom:10px">
+        @Html.ActionLink("Go to Roles", "Index", new { controller = "Role" }, new { @class = "btn btn-danger" })
+    </div>
+</div>
+
+

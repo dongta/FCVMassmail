@@ -1,0 +1,96 @@
+﻿@model IEnumerable<FCV_DutchLadyMail_Model.Models.Region>
+@{
+    ViewBag.Title = "Regions Management";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    <link rel="stylesheet" href="~/Content/lib/data-table/dataTables.bootstrap.min.css" />
+    <script src="~/Content/js/lib/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/Content/js/lib/datatables/dataTables.bootstrap.min.js"></script>
+    <style type="text/css">
+
+        .table-responsive[data-pattern="priority-columns"] > .table > thead > tr > th, .table-responsive[data-pattern="priority-columns"] > .table > tbody > tr > th, .table-responsive[data-pattern="priority-columns"] > .table > tfoot > tr > th, .table-responsive[data-pattern="priority-columns"] > .table > thead > tr > td, .table-responsive[data-pattern="priority-columns"] > .table > tbody > tr > td, .table-responsive[data-pattern="priority-columns"] > .table > tfoot > tr > td {
+            min-width: 20px;
+            max-width: 500px;
+            white-space: normal;
+        }
+        div.dataTables_wrapper div.dataTables_filter input {
+            margin-left: 0.5em;
+             display: inline-block; 
+            width: 300px;
+        }
+        .sticky-table-header.fixed-solution {
+            min-width: 0;
+            position: fixed;
+            height: 0px !important;
+        }
+    </style>
+}
+
+<div class="col-12">
+    <div class="card">
+        <div class="card-body">
+            <div class="card-content">
+                <div style="margin-bottom:30px">
+                    @Html.ActionLink("Create New", "Create", new { @controller = "Regions" }, new { @class = "btn btn-primary" })
+                </div>
+  
+                <table class="table table-bordered table-hover" border="1" width="100%" cellpadding="0" cellspacing="0" id="data_table">
+                    <caption class="text-center">Regions List</caption>
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th width="20%">
+                                Name
+                            </th>
+                            <th>
+                                Description
+                            </th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td style="width: 27px;"></td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Name)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Note)
+                                </td>
+                                <td style="width: 47px;">
+                                    <center>
+                                        <a href="@Url.Action("Edit", "Regions", new { id = item.ID })" class="fa fa-edit" style="color: black; font-size: 18px" title="Edit Region"></a>
+                                        <a href="@Url.Action("Delete", "Regions", new { id = item.ID })" title="Delete Region" class="fa fa-trash-o" style="color: black; font-size: 18px" onclick="return confirm('are you sure you wish to remove this item?');"></a>
+                                    </center>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>  
+                </table>
+
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+
+    var t = $('#data_table').DataTable({
+        "bAutoWidth": true,
+        "language": {
+            "search": "Quick find:"      
+        },
+        "columnDefs": [{
+            "searchable": false,
+            "orderable": false,
+            "targets": 0
+        }],
+            "aaSorting": [[1, 'asc']]
+    });
+    
+    t.on('order.dt search.dt', function () {
+        t.column(0, {}).nodes().each(function (cell, i) {
+            cell.innerHTML = i + 1;
+        });
+    }).draw();
+</script>

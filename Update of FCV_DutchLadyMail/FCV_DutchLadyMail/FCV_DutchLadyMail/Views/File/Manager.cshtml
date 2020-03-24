@@ -1,0 +1,16 @@
+﻿@{
+    ViewBag.Title = "Manager";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<input type="button" id="test" value="Upload Files" class="btn btn-primary" />
+
+<script>
+    $("#test").click(function () {
+        var finder = new CKFinder();
+        finder.selectActionFunction = function (fileUrl) {
+            fileUrl = fileUrl.substring(fileUrl.lastIndexOf("/") + 1);
+        };
+        finder.popup();
+    });
+</script>

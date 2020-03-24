@@ -1,0 +1,47 @@
+﻿
+@model IEnumerable<FCV_DutchLadyMail_Model.Models.Contact>
+
+
+<table class="table table-bordered table-hover" border="1" width="100%" cellpadding="0" cellspacing="0" id="npp-table">
+    <caption class="text-center">Mails Address in Contact list</caption>
+    <thead>
+        <tr>
+            <th width ="10%" style="min-width:30px;"><input type="checkbox" id="checkAllL" value="" /></th> 
+            <th width="90%">Mail Address</th>
+        </tr>
+    </thead>
+    <tbody id="SetDataList">
+        <tr id="LoadingStatus" style="color:red"></tr>
+        @{int i = 1;}
+        @foreach (var item in Model)
+        {
+            <tr id="row_@item.ID">
+                <td class="row_0">
+                    @{string s = item.Email.ToString();
+                      
+                    }
+                    <input type="checkbox" class="ckContact" name="chkT" value=@s>
+                </td>
+                <td class="row_2">
+                    <span>@item.Email</span>
+                    @*<input type="text" name="NPP" id="code" class="form-control input-md" value="" tabindex="1">*@
+
+                </td>
+            </tr>
+        }
+    </tbody>
+
+</table>
+<div id="myPager">
+    @*@Html.PagedListPager(Model, page => Url.Action(@"GetListSearch", new { page}))*@
+</div>
+   <script>
+       $(function () {
+           $("#checkAllL").prop('checked',true);
+           $("input.ckContact:checkbox").prop('checked',true);
+       });
+       $("#checkAllL").change(function () {
+           $("input.ckContact:checkbox").prop('checked', $(this).prop("checked"));
+       });
+    
+    </script>

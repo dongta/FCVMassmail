@@ -1,0 +1,29 @@
+﻿@model FCV_DutchLadyMail_Model.Models.USER
+@{if (Model != null)
+{
+    <div id="expanderContent" class="container" style="width:100%;">
+        <div class="row">
+            <div class="col-xs-6 form-group">
+                @Html.LabelFor(model => model.DisplayName)
+                @Html.TextBoxFor(model => model.Firstname, new { @class = " form-control" })
+                @Html.ValidationMessageFor(model => model.Firstname)
+            </div>
+            <div class="col-xs-6 form-group">
+                @Html.LabelFor(model => model.Lastname)
+                @Html.TextBoxFor(model => model.Lastname, new { @class = " form-control" })
+                @Html.ValidationMessageFor(model => model.Lastname)
+            </div>
+            <div class="col-xs-6 form-group">
+                @Html.LabelFor(model => model.EMail)
+                @Html.TextBoxFor(model => model.EMail, new { @class = " form-control" })
+                @Html.ValidationMessageFor(model => model.EMail)
+            </div>
+            <div class="col-xs-12 form-group">
+                @Html.LabelFor(model => model.Inactive)
+                @Html.TextBoxFor(model => model.Inactive, new { @class = " form-control" })
+                @Html.ValidationMessageFor(model => model.Inactive)
+            </div>
+        </div>
+    </div>
+}
+}

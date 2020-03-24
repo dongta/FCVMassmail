@@ -1,0 +1,59 @@
+﻿@model IEnumerable<FCV_DutchLadyMail_Model.Models.ROLE>
+@{
+    ViewBag.Title = "Roles Manager";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container" style="width:100%;">
+    <div>
+        <div class="table-responsive" data-pattern="priority-columns" id="divUsers">
+            <table id="RoleTable" class="table table-bordered table-hover" border="1" cellpadding="0" cellspacing="0">
+                <caption class="text-center">List Roles</caption>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Description</th>
+                        <th>Admin</th>
+                        <th style="min-width:70px">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.ActionLink(item.RoleName, "Details", new { id = item.Role_Id })
+                            </td>
+                            <td>
+                                @Html.Display(item.RoleDescription)
+                            </td>
+                            <td>
+                                @item.IsSysAdmin
+                            </td>
+                            <td>
+                                <center>
+                                    <a href="@Url.Action("Edit", "Role", new { id = item.Role_Id })">
+                                        <img src="@Url.Content("~/Content/admin/Images/pen.png")" alt="Edit Role" />
+                                    </a>
+                                    <a href="@Url.Action("Delete", "Role", new { id = item.Role_Id })" onclick="return confirm('Are you sure you wish to remove this item?');">
+                                        <img src="@Url.Content("~/Content/admin/Images/bin.png")" alt="Delete Role" />
+                                    </a>
+                                </center>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <br />
+    <div style="padding-bottom:10px">
+        
+        <input class="btn btn-primary" type="button" value="Create Role" onclick="location.href='@Url.Action("Create", "Role")'" />
+        @*<input class="btn btn-warning" type="button" value="Import Role" onclick="location.href='@Url.Action("Import", "Role")'" />*@
+        @Html.ActionLink("Go to Users", "Index", new { controller = "User" }, new { @class = "btn btn-danger" })
+    </div>
+</div>
+
+

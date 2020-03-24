@@ -1,0 +1,8 @@
+﻿@if (ViewBag.Files != null)
+{
+    foreach (var item in ViewBag.Files)
+    {
+        @Html.Raw(item + ",");
+       @*<option class="files" value='@item'> @item</option>*@
+    }
+}

@@ -1,0 +1,235 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    @using FCV_DutchLadyMail_Model.Common;
+    <script src="~/Content/js/lib/jquery/jquery.min.js"></script>
+    <script src="~/Content/js/lib/bootstrap/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="~/Content/lib/helper.css" />
+    <link rel="stylesheet" href="~/Content/lib/bootstrap/bootstrap.min.css" />
+    <link href="~/Content/icons/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+    @*
+        Phan quyen
+    *@
+    <style>
+        /*body #main-wrapper .page-wrapper {
+            background: url("../Content/images/background/image004.png") no-repeat center center fixed;
+            -webkit-background-size: cover;
+            -moz-background-size: cover;
+            -o-background-size: cover;
+            background-size: cover;
+        }*/
+    </style>
+    <script src="@Url.Content("~/Scripts/jquery-ui-1.10.3.custom.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/jquery-common.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/multiselect.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/ckfinder/ckfinder.js")" type="text/javascript"></script>
+    <link href="@Url.Content("~/Content/admin/themes/ui-lightness/jquery-ui-1.10.3.min.css")" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+    @*@Scripts.Render("~/bundles/jquery")*@
+    @RenderSection("scripts", required: false)
+    <div class="modal fade" id="modChangePassword" role="dialog">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Change password</h4>
+                </div>
+                <div class="modal-body">
+                    <form id="frmChangePass">
+                        <div class="form-group">
+                            <label for="newpasssword">New password</label>
+                            <input required name="NewPass" type="password" class="form-control" id="newpasssword" placeholder="Enter new password">
+                        </div>
+                        <div class="form-group">
+                            <label for="renewpasssword">Confirm password</label>
+                            <input required name="ReNewPass" type="password" class="form-control" id="renewpasssword" placeholder="Confirm your new password">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="preloader">
+        <svg class="circular" viewBox="25 25 50 50">
+            <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10" />
+        </svg>
+    </div>
+    <!-- Main wrapper  -->
+    <div id="main-wrapper">
+        <!-- header header  -->
+
+        <div class="header col-md-12" id="myHeader">
+            <nav class="navbar top-navbar navbar-expand-md navbar-light">
+                <!-- Logo -->
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="~/Home/Index">
+                        <!-- Logo icon -->
+                        <b><img src="@Url.Content("~/Content/")images/logo.png" alt="homepage" class="dark-logo" /></b>
+                        <!--End Logo icon -->
+                        <!-- Logo text -->
+                        <span><img src="@Url.Content("~/Content/")images/logo-text.png" alt="homepage" class="dark-logo" /></span>
+                    </a>
+                </div>
+                <!-- End Logo -->
+                <div class="navbar-collapse">
+                    <!-- toggle and nav items -->
+                    <ul class="navbar-nav mr-auto mt-md-0">
+                        <!-- This is  -->
+                        <li class="nav-item"> <a class="nav-link nav-toggler hidden-md-up text-muted  " href="javascript:void(0)"><i class="mdi mdi-menu"></i></a> </li>
+                        <li class="nav-item m-l-10"> <a class="nav-link sidebartoggler hidden-sm-down text-muted  " href="javascript:void(0)"><i class="ti-menu"></i></a> </li>
+
+                    </ul>
+                    <!-- User profile and search -->
+                    <ul class="navbar-nav my-lg-0" style="float:right">
+
+                        <!-- Profile -->
+                        <li class="nav-item dropdown">
+                            @{var Identity = (IdentityUser)Session["Identity"];}
+                            <span data-toggle="modal" data-target="#modChangePassword" style="cursor:pointer; display: inline-block; font: normal normal normal 14px/1 FontAwesome; font-size: 16px; text-rendering: auto; -webkit-font-smoothing: antialiased;">@Identity.FullName <i class="fa fa-cog"></i> |</span>
+                            <a class="animated nav-link dropdown-toggle" href=@Url.Content("~/Login/LogOut") title="Log out">
+                                <i class="fa fa-sign-out" style="font-size:18px;"></i>
+                            </a>
+
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </div>
+
+        <!-- End header header -->
+        <!-- Left Sidebar  -->
+        <div class="left-sidebar" id="left-sidebar">
+            <!-- Sidebar scroll-->
+            <div class="scroll-sidebar" id="scroll-sidebar">
+                <!-- Sidebar navigation-->
+                <nav class="sidebar-nav" style="overflow: visible;">
+                    <ul id="sidebarnav">
+                        <li class="nav-devider"></li>
+
+                        <li>
+                            <a class="has-arrow  " href="#" aria-expanded="false"><i class="fa fa-envelope"></i><span class="hide-menu">Email</span></a>
+                            <ul aria-expanded="false" class="collapse">
+                                <li><a href="/MailManagement/Mailboxs">Sent Mails</a></li>
+                                <li><a href="/MailManagement/SendMails">Compose</a></li>
+                                <li><a href="/ContactList/">Contact List</a></li>
+                                <li><a href="/Templates/">Templates</a></li>
+                                <li><a href="~/Signatures/">Signatures</a></li>
+                                <li><a href="~/Folder/Index">Folders</a></li>
+                                @*<li><a href="~/File">Files</a></li>*@
+                            </ul>
+                        </li>
+                        <li>
+                            <a class="has-arrow  " href="#" aria-expanded="false"><i class="fa fa-drivers-license"></i><span class="hide-menu">Distributors</span></a>
+                            <ul aria-expanded="false" class="collapse">
+                                <li><a href="~/Distributors">Distributors</a></li>
+                                <li><a href="~/Regions">Regions</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a class="has-arrow  " href="#" aria-expanded="false"><i class="fa fa-address-book-o"></i><span class="hide-menu">Users</span></a>
+                            <ul aria-expanded="false" class="collapse">
+                                <li><a href="~/User">Users</a></li>
+                                <li><a href="~/Role">Roles</a></li>
+                                <li><a href="~/Permission">Permissions</a></li>
+                                <li><a href="~/Log">Access Log</a></li>
+                            </ul>
+                        </li>
+                        <li>
+
+                            <a class="has-arrow  " href="#" aria-expanded="false"><i class="fa fa-cog"></i><span class="hide-menu">Settings</span></a>
+                            <ul aria-expanded="false" class="collapse">
+                                <li><a href="~/MailConfiguration">Mail Configuration </a></li>
+                            </ul>
+                        </li>
+
+                    </ul>
+
+
+                </nav>
+                <!-- End Sidebar navigation -->
+            </div>
+            <!-- End Sidebar scroll-->
+        </div>
+        <!-- End Left Sidebar  -->
+        <!-- Page wrapper  -->
+        <div class="page-wrapper">
+            <!-- Bread crumb -->
+            <div class="row page-titles">
+                <div class="col-md-5 align-self-center">
+                    <h3 class="text-primary">@ViewBag.Title</h3>
+                </div>
+            </div>
+            <!-- End Bread crumb -->
+            <!-- Container fluid  -->
+            <div class="row bg-white m-l-0 m-r-0 box-shadow">
+                @RenderBody()
+            </div>
+            <!-- End PAge Content -->
+        </div>
+        <!-- End Container fluid  -->
+        <!-- footer -->
+        <footer class="footer">
+            <p>&copy; @DateTime.Now.Year - JSC</p>
+        </footer>
+        <!-- End footer -->
+    </div>
+    <!-- End Page wrapper  -->
+    </div>
+
+    <!-- Bootstrap tether Core JavaScript -->
+    <script src="@Url.Content("~/Content/")js/lib/bootstrap/js/popper.min.js"></script>
+
+
+    <!-- slimscrollbar scrollbar JavaScript -->
+    <script src="@Url.Content("~/Content/")js/jquery.slimscroll.js"></script>
+    <!--Menu sidebar -->
+    <script src="@Url.Content("~/Content/")js/sidebarmenu.js"></script>
+    <!--stickey kit -->
+    <script src="@Url.Content("~/Content/")js/lib/sticky-kit-master/dist/sticky-kit.min.js"></script>
+    <!--Custom JavaScript -->
+    <!-- Amchart -->
+
+
+
+
+    <script src="@Url.Content("~/Content/")js/lib/calendar-2/moment.latest.min.js"></script>
+    <!-- scripit init-->
+    @*<script src="@Url.Content("~/Content/")js/lib/calendar-2/semantic.ui.min.js"></script>*@
+    <!-- scripit init-->
+    <script src="@Url.Content("~/Content/")js/lib/calendar-2/prism.min.js"></script>
+    <!-- scripit init-->
+    <script src="@Url.Content("~/Content/")js/lib/calendar-2/pignose.calendar.min.js"></script>
+    <!-- scripit init-->
+    <script src="@Url.Content("~/Content/")js/lib/calendar-2/pignose.init.js"></script>
+
+    <script src="@Url.Content("~/Content/")js/lib/owl-carousel/owl.carousel.min.js"></script>
+    <script src="@Url.Content("~/Content/")js/lib/owl-carousel/owl.carousel-init.js"></script>
+
+    <!-- scripit init-->
+
+    <script src="@Url.Content("~/Content/")js/scripts.js"></script>
+    <script>
+        $("#frmChangePass").submit(function (e) {
+            e.preventDefault();
+            $.post("User/ChangePassword", $(this).serialize(), function (data) {
+                alert(data.Message);
+                if (data.success == true) {
+                    $("#modChangePassword").modal('hide');
+                }
+            })
+        });
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,1072 @@
+﻿@model FCV_DutchLadyMail_Model.Models.SendMails
+@{
+    if (ViewBag.MessageCount !=null)
+    {
+        <script type="text/javascript">
+            window.onload = function () {
+                alert("@ViewBag.MessageCount");
+
+            };
+        </script>
+    }
+}
+@{
+    ViewBag.Title = "Compose";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+
+    <link rel="stylesheet" href="~/Content/custom/multiple-select.css" />
+    <script src="~/Scripts/multiple-select.js"></script>
+    <script src="~/ckeditor/ckeditor.js"></script>
+    <script src="~/Content/js/lib/form-validation/jquery.validate.min.js" type="text/javascript"></script>
+    <script>
+        $("html,body").animate({ scrollTop: 75 }, "slow");
+    </script>
+    <style type="text/css">
+        fieldset {
+            width: 95%;
+        }
+
+        table {
+            table-layout: fixed;
+        }
+
+            table td {
+                word-wrap: break-word;
+            }
+
+            table th {
+                word-wrap: break-word;
+            }
+
+        .modal-body {
+            max-height: calc(100vh - 210px);
+            overflow-y: auto;
+        }
+
+        .form-group {
+            margin-bottom: 3px;
+        }
+
+        .form-control {
+            height: 28px;
+            padding: 1px;
+        }
+
+        .ms-choice > span.placeholder {
+            margin-top: 0;
+            color: #67757c;
+        }
+    </style>
+
+}
+<ul class="nav nav-tabs">
+    <li class="active"><a data-toggle="tab" href="#home">To Distributors</a></li>
+    <li><a data-toggle="tab" href="#menu1">Contact Lists</a></li>
+</ul>
+
+<div class="tab-content">
+    <div id="home" style="margin:15px;" class="tab-pane fade in active">
+        <fieldset>
+
+
+
+            <div id="unckDis">
+                <div class="row">
+                    <div class="col-md-2 text-right">
+
+                        <span>Use Distributors</span>
+                    </div>
+                    <div class="col-md-10 form-group">
+                        <input type="button" class="btn btn-primary" value="Distributors" id="ckModal" data-toggle="modal" data-target="#myModal" />
+                    </div>
+                </div>
+            </div>
+            <div id="modalDis">
+
+                <form id="formModal">
+                    <div class="modal fade" id="myModal" role="dialog">
+                        <div class="modal-dialog modal-lg" style="width:95%;">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                </div>
+                                <div class="modal-body" style="min-height:250px;">
+                                    <div style="float: left; padding: 0" class="col-xs-12 col-sm-4 col-md-4">
+                                        <div style="text-align: left; padding: 0; padding-top: 10px;" class="col-xs-12 col-sm-4 col-md-4">
+                                            <span>Regions</span>
+                                        </div>
+                                        <div class="col-xs-12 col-sm-8 col-md-8" style="text-align:  left;">
+                                            @Html.ListBox("Region", (SelectList)ViewBag.Region, new { id = "nppRegion", multiple = "multiple", @class = "input-md ms-choice-focus", @placeholder = "Ac's email" })
+                                            <script>
+                                                $(function () {
+                                                    $('#nppRegion').multipleSelect({
+                                                        width: '100%',
+                                                        autoOpen: true,
+                                                        isOpen: false,
+                                                        keepOpen: false,
+                                                        placeholder: "Region"
+                                                    });
+                                                });
+                                            </script>
+                                        </div>
+                                    </div>
+                                    <br />
+                                    <div style="clear:both;padding-bottom:20px;"></div>
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            <h4 class="panel-title">
+                                                <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne"><span class="glyphicon glyphicon-plus"></span> Search</a>
+                                            </h4>
+                                        </div>
+                                        <div id="collapseOne" class="panel-collapse collapse">
+                                            <div class="panel-body">
+                                                <div id="form-search">
+                                                    <div class="row">
+                                                        <div class="col-xs-12 col-sm-4 col-md-4">
+                                                            <div class="text_NPP">
+                                                                <span>Code</span>
+                                                            </div>
+                                                            <div class="input_NPP form-group">
+                                                                <input type="text" name="NPP" id="code" class="form-control input-md" placeholder="NPP's Code" tabindex="1">
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-xs-12 col-sm-4 col-md-4">
+                                                            <div class="text_NPP">
+                                                                <span>Name</span>
+                                                            </div>
+                                                            <div class="input_NPP form-group">
+                                                                <input type="text" name="NPP" id="name" class="form-control input-md" placeholder="NPP's Name" tabindex="2">
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-xs-12 col-sm-4 col-md-4">
+                                                            <div class="text_NPP">
+                                                                <span>Manager Email</span>
+                                                            </div>
+                                                            <div class="input_NPP form-group">
+                                                                <input type="text" name="NPP" id="Manager_email" class="form-control input-md" placeholder="Manager Email" tabindex="3">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-xs-12 col-sm-4 col-md-4">
+                                                            <div class="text_NPP">
+                                                                <span>Admin's email</span>
+                                                            </div>
+                                                            <div class="input_NPP form-group">
+                                                                <input type="text" name="NPP" id="Admin_email" class="form-control input-md" placeholder="Admin's email" tabindex="4">
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-xs-12 col-sm-4 col-md-4">
+                                                            <div class="text_NPP">
+                                                                <span>SE's email</span>
+                                                            </div>
+                                                            <div class="input_NPP form-group">
+                                                                <input type="text" name="NPP" id="SE_email" class="form-control input-md" placeholder="SE NPP's email" tabindex="5">
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-xs-12 col-sm-4 col-md-4">
+                                                            <div class="text_NPP">
+                                                                <span>Ac's email</span>
+                                                            </div>
+                                                            <div class="input_NPP form-group">
+                                                                <input type="text" name="NPP" id="Ac_email" class="form-control input-md" placeholder="Ac's email" tabindex="6">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-xs-12 col-sm-4 col-md-4">
+
+                                                        </div>
+                                                        <div class="col-xs-12 col-sm-8 col-md-8">
+                                                            <div class="text_NPP" style="width:17%">
+                                                                <span>Address</span>
+                                                            </div>
+                                                            <div class="input_NPP form-group">
+                                                                <input type="text" name="NPP" id="txtAddress" class="form-control input-md" placeholder="Address" tabindex="8">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <hr />
+                                                    <button type="button" id="SearchRecord" onclick="func(this)" name="sub" class="btn btn-theme btn-md" tabindex="9" style="margin-right:30px">Search</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <hr />
+                                    <div style="float: left; padding: 0" class="col-xs-12 col-sm-4 col-md-4">
+                                        <div style="text-align: left; padding: 0; padding-top: 10px;" class="col-xs-12 col-sm-4 col-md-4">
+                                            <span>Groups</span>
+                                        </div>
+                                        <div class="col-xs-12 col-sm-8 col-md-8" style="text-align:  left;">
+                                            @Html.DropDownList("Group", (IEnumerable<SelectListItem>)ViewBag.Group, new { id = "groupMails", multiple = "multiple", @class = "input-md ms-choice-focus", @placeholder = "Ac's email" })
+                                            <script>
+                                                $(function () {
+                                                    $('#groupMails').multipleSelect({
+                                                        width: '100%',
+                                                        autoOpen: true,
+                                                        isOpen: false,
+                                                        keepOpen: false,
+                                                        placeholder: "Group Mails"
+                                                    });
+                                                });
+                                            </script>
+
+                                        </div>
+                                    </div>
+
+                                    <button id="btnTo" type="button" class="btn btn-default">Add To</button>
+                                    <button id="btnCc" type="button" class="btn btn-default">Add Cc</button>
+                                    <button id="btnBcc" type="button" class="btn btn-default">Add Bcc</button>
+
+                                    <hr />
+                                    <div id="Preview">
+
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button id="btnClose" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+
+            <div id="mailContent">
+                <div id="ToMail">
+                    <div class="row">
+                        <div class="col-md-2 text-right">
+                            <span>TO <span style="color:red">(*)</span></span>
+                        </div>
+                        <div class="col-md-10 form-group">
+                             @Html.TextBoxFor(model => model.toAddress, "", new { @id = "sToDisplay", @type = "text", @class = "form-control", @disabled = "disabled" })
+                            <input type="hidden" id="sTo" class="form-control" />
+                        </div>
+                    </div>
+                </div>
+                <div id="CcMail">
+                    <div class="row">
+                        <div class="col-md-2 text-right">
+                            <span>CC</span>
+                        </div>
+                        <div class="col-md-10 form-group">
+                            @Html.TextBoxFor(model => model.ccAddress, "", new { @id = "sCcDisplay", @type = "text", @class = "form-control",@disabled = "disabled" })
+                            <input type="hidden" id="sCc" class="form-control" />
+                        </div>
+                    </div>
+                </div>
+                <div id="BccMail">
+                    <div class="row">
+                        <div class="col-md-2 text-right">
+                            <span>BCC</span>
+                        </div>
+                        <div class="col-md-10 form-group">
+                            @Html.TextBoxFor(model => model.bccAddress, "", new { @id = "sBccDisplay", @type = "text", @class = "form-control", @disabled = "disabled" })
+                            <input type="hidden" id="sBcc" class="form-control" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-6 col-md-6">
+                        <div class="col-md-4 text-right">
+                            <span>Addtional CC</span>
+                        </div>
+                        <div class="col-12 col-md-8 form-group" style="padding-right: 0; text-align: left; padding-left:10px;">
+                            @*@{var s1 = ViewBag.SessionIdentity.ToString();
+                            }
+                            <input type="hidden" value="@s1" id="mailIdentity" />*@
+                            <input type="text" id="AddCC" class="form-control" />
+                            @*<input type="checkbox" id="cctome" name="cctome" />*@
+                        </div>
+                    </div>
+
+                    <div class="col-6 col-md-6">
+                        <div class="col-md-4 text-right">
+                            <span>Addtional BCC</span>
+                        </div>
+                        <div class="col-12 col-md-8 form-group" style="padding-right: 0;text-align:left">
+                            <input type="text" id="AddBCC" class="form-control" />
+                            @*<input type="checkbox" id="cctome" name="cctome" />*@
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="row">
+
+                    <div class="col-6 col-md-6">
+                        <div class="col-md-4 text-right" style="padding-left: 0px;">
+                            <span>Attach Files in Folder</span>
+                        </div>
+                        <div class="col-12 col-md-4 form-group" style="padding-right: 0; padding-left: 10px;">
+
+                            @if (String.IsNullOrWhiteSpace(Html.DisplayFor(ta => ta.AttachedFolder).ToString()))
+                            {
+                                @Html.DropDownList("Folder", new SelectList(ViewBag.Folder, "ID", "Name"), "-- Please select --", htmlAttributes: new { @class = "form-control ", id = "FolderSelect" })
+                                <script>
+                                    $("document").ready(function () {
+                                        $("#FolderSelect").val($("#FolderSelect option:eq(1)").val());
+                                    });
+                                </script>
+                            }
+                            else
+                            {
+                                var s = Model.AttachedFolder.ToString();
+                                <input type="hidden" value="@s" id="selectedF" />
+                                @Html.DropDownList("Folder", new SelectList(ViewBag.Folder, "ID", "Name"), "-- Please select --", new { @class = "form-control ", id = "FolderSelect" })
+                                <script>
+                                    $("document").ready(function () {
+
+                                        $('#FolderSelect option').map(function () {
+                                            var selectedText = $('#selectedF').val();
+                                            if ($(this).text() == selectedText) return this;
+                                        }).attr('selected', 'selected');
+                                        //$('#FolderSelect').text();
+                                    });
+                                </script>
+                            }
+
+                        </div>
+                    </div>
+                    <div class="col-6 col-md-3" style="margin-left:-30px;">
+                        <div class="col-md-4 text-right">
+                            <span>Template</span>
+                        </div>
+                        @*@if (Model.Template == 0 || Model.ContactListID !=0)*@
+                        <div class="col-md-8 form-group">
+                            @if (String.IsNullOrWhiteSpace(Html.DisplayFor(ta => ta.Template).ToString()))
+                            {
+                                @Html.DropDownList("Temp", new SelectList(ViewBag.Template, "ID", "Name"), "-- Not used --", htmlAttributes: new { @class = "form-control ", id = "templateselect" })
+                            }
+                            else
+                            {
+                                var s = Model.Template.ToString();
+                                <input type="hidden" value="@s" id="selectedT" />
+                                @Html.DropDownList("Temp", new SelectList(ViewBag.Template, "ID", "Name"), "-- Not used --", htmlAttributes: new { @class = "form-control ", id = "templateselect" })
+                                <script>
+                                    $("document").ready(function () {
+                                        $('#templateselect').val($('#selectedT').val())
+                                    });
+                                </script>
+                            }
+
+                        </div>
+                    </div>
+                    <div class="col-6 col-md-3" style="margin-left:30px;">
+                        <div class="col-md-4 text-right">
+                            <span>Signature</span>
+                        </div>
+                        <div class="col-12 col-md-8 form-group" style="padding-right: 0">
+
+                            @Html.DropDownList("Sig", new SelectList(ViewBag.Signature, "ID", "Name"), "-- Please select --", htmlAttributes: new { @class = "form-control ", id = "Sigselect" })
+
+                        </div>
+                    </div>
+                </div>
+
+                
+
+                <div class="row">
+                    <div class="col-md-2 text-right">
+                        <span>Subject <span style="color:red">(*)</span></span>
+                    </div>
+                    <div class="col-12 col-md-10 form-group">
+                        @Html.TextBoxFor(m => m.Subject, new { @class = "form-control input-md", id = "subject" })
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-2 text-right">
+                        <span>Content <span style="color:red">(*)</span></span>
+                    </div>
+                    <div class="col-12 col-md-10 form-group">
+                        @Html.TextAreaFor(m => m.Body, new { @id = "body-mails" })
+                        <script>
+                            CKEDITOR.replace("body-mails",
+                                {
+                                    height: 160,
+                                    language: 'en',
+                                    image_previewText: " ",
+                                    removePlugins: "help"
+
+                                });
+                        </script>
+                    </div>
+                </div>
+                <div style="float:right; padding-top:15px">
+                    <input type="submit" class="btn btn-primary" id="sendMail" name="submitButton" value="Send" />
+                </div>
+
+            </div>
+        </fieldset>
+        <script type="text/javascript">
+
+
+            $('#templateselect').on('change', function () {
+                console.log($(this).val());
+                $.ajax({
+                    url: '@Url.Action("GetTemplateData", "MailManagement")',
+                    dataType: "json",
+                    type: "GET",
+                    contentType: 'application/json; charset=utf-8', //define a contentType of your request
+                    cache: false,
+                    data: { test: $(this).val().toString() },
+                    success: function (data) {
+                        // data is your result from controller
+                        if (data.success) {
+                            CKEDITOR.instances['body-mails'].setData(data.message);
+                        }
+                    },
+                    error: function (xhr) {
+                        CKEDITOR.instances['body-mails'].setData("");
+                    }
+                });
+
+            })
+
+            $('#Sigselect').on('change', function () {
+                $.ajax({
+                    url: '@Url.Action("GetSigData", "MailManagement")',
+                    dataType: "json",
+                    type: "GET",
+                    contentType: 'application/json; charset=utf-8', //define a contentType of your request
+                    cache: false,
+                    data: { signid: $(this).val().toString() },
+                    success: function (data) {
+                        // data is your result from controller
+                        if (data.success) {
+                            var getdata = CKEDITOR.instances['body-mails'].getData();
+                            CKEDITOR.instances['body-mails'].setData(getdata + data.message);
+                        }
+                    },
+                    error: function (xhr) {
+
+                    }
+                });
+            });
+
+            $("#sendMail").click(function () {
+                if (!$("#sTo").val().toString().trim()) {
+                    alert("Field TO is required");
+                    $("#sTo").focus();
+                }
+                else if (!$("#subject").val()) {
+                    alert("Field SUBJECT is required");
+                    $("#subject").focus();
+                }
+                else if (CKEDITOR.instances['body-mails'].getData().toString() == '') {
+                    alert("Field BODY is required");
+                    CKEDITOR.instances['body-mails'].focus();
+                }
+                else {
+                    var lstTo = $("#sTo").val();
+                    var lstCc = $("#sCc").val();
+                    var lstBcc = $("#sBcc").val();
+                    var Addcc = $("#AddCC").val();
+                    var Addbcc = $("#AddBCC").val();
+                    //var cctome = false;
+                    //if ($("#cctome").is(':checked')) {
+                    //    cctome = true;
+                    //}
+                    var FolderSelect = $("#FolderSelect option:selected").val();
+
+                    var txtID = $("#subject");
+                    var value = CKEDITOR.instances['body-mails'].getData().replace(/"/g, '&quot;').toString();
+                    var temp = $('#templateselect').val();
+                    $.ajax({
+                        url: '@Url.Action("SendMails", "MailManagement")',
+                        type: "POST",
+                        data: '{ To:"' + lstTo + '", Cc: "' + lstCc + '",Bcc:"' + lstBcc + '", Sub: "' + txtID.val() + '", Bod: "' + value + '", Temp: "' + temp + '", AddCC: "' + Addcc + '", AddBCC: "' + Addbcc + '", Files: "' + FolderSelect + '"}',
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "JSON",
+                        complete: function (msg) {
+                            //alert('All mail sented!');
+                            location.reload();
+                        }
+                    });
+                }
+
+            });
+
+            $("#btnUpload").click(function () {
+                //Lấy ra files
+                var file_data = $('#FileUpload').prop('files')[0];
+                //lấy ra kiểu file
+                var type = file_data.type;
+                //Xét kiểu file được upload
+                var match = ["xls", "xlsx"];
+                //khởi tạo đối tượng form data
+                var form_data = new FormData();
+                //thêm files vào trong form data
+                form_data.append('file', file_data);
+                //}
+
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("ImportExcel", "MailManagement")',
+                    contentType: false, // Not to set any content header
+                    processData: false,
+                    data: form_data,
+                    error: function (xhr, status) {
+                    },
+                    complete: function (response) {
+                        $(response.responseText).filter('.to').clone().appendTo("#lstTo");
+                        $(response.responseText).filter('.cc').clone().appendTo("#lstCc");
+                        $(response.responseText).filter('.bcc').clone().appendTo("#lstBcc");
+
+                    }
+                })
+            });
+
+
+
+            $('#ModalContacts').on('click', '#btnClose', function () {
+                $("#ckModalContact").prop("checked", false);
+
+            });
+
+
+            $("#btnTo").click(function () {
+                var json = [];
+
+                //converting to formname:formvalue format
+                $.each($('input.ckDis[type="checkbox"]').serializeArray(), function (i, field) {
+                    json[i] = field.value;
+                });
+                var s = $("#groupMails").val();
+
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("GetMailDistributors", "MailManagement")',
+                    data: '{ paramJson:"' + json + '", Group: "' + s + '" }',
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "JSON",
+                    error: function (xhr, status) {
+                    },
+                    complete: function (response) {
+                        var lstStr = response.responseText.split("|");
+                        if (lstStr[0] != null)
+                            $('#sToDisplay').val(lstStr[1]);
+                        if (lstStr[1] != null)
+                            $('#sTo').val(lstStr[0]);
+                    }
+                })
+
+            });
+
+            $("#btnCc").click(function () {
+                var json = [];
+
+                //converting to formname:formvalue format
+                $.each($('input.ckDis[type="checkbox"]').serializeArray(), function (i, field) {
+                    json[i] = field.value;
+                });
+                var s = $("#groupMails").val();
+
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("GetMailDistributors", "MailManagement")',
+                    data: '{ paramJson:"' + json + '", Group: "' + s + '" }',
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "JSON",
+                    error: function (xhr, status) {
+                    },
+                    complete: function (response) {
+                        var lstStr = response.responseText.split("|");
+                        if (lstStr[0] != null)
+                            $('#sCcDisplay').val(lstStr[1]);
+                        if (lstStr[1] != null)
+                            $('#sCc').val(lstStr[0]);
+                    }
+                })
+
+            });
+
+            $("#btnBcc").click(function () {
+                var json = [];
+
+                //converting to formname:formvalue format
+                $.each($('input.ckDis[type="checkbox"]').serializeArray(), function (i, field) {
+                    json[i] = field.value;
+                });
+                var s = $("#groupMails").val();
+
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("GetMailDistributors", "MailManagement")',
+                    data: '{ paramJson:"' + json + '", Group: "' + s + '" }',
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "JSON",
+                    error: function (xhr, status) {
+                    },
+                    complete: function (response) {
+                        var lstStr = response.responseText.split("|");
+                        if (lstStr[0] != null)
+                            $('#sBccDisplay').val(lstStr[1]);
+                        if (lstStr[1] != null)
+                            $('#sBcc').val(lstStr[0]);
+                    }
+                })
+
+            });
+
+
+            $('#myModal').on('click', '#btnClose', function () {
+                $("#formModal")[0].reset();
+                $("#npp-table").remove();
+                $("#myPager").remove();
+                $(".ms-choice").find("span").html("Region");
+                $("#ckModal").prop("checked", false);
+
+            });
+            $('#nppRegion').on('change', function () {
+                var txtID = $("#id");
+                var txtName = $("#name");
+                var txtCode = $("#code");
+                var txtRegion = $("#nppRegion");
+                var txtManager_email = $("#Manager_email");
+                var txtSE_email = $("#SE_email");
+                var txtAc_email = $("#Ac_email");
+                var txtAdmin_email = $("#Admin_email");
+                var txtAddress = $("#txtAddress");
+                var selectednumbers = [];
+                var s = $('#nppRegion').val();
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("GetListSearch", "MailManagement")',
+                    data: '{ selectednumbers:"' + s + '", Region: "' + txtRegion.val() + '",Code: "' + txtCode.val() + '",Name: "' + txtName.val() + '", ManagerMail: "' + txtManager_email.val() + '" , SEMail: "' + txtSE_email.val() + '" , AcMail: "' + txtAc_email.val() + '", AdminMail: "' + txtAdmin_email.val() + '", Address: "' + txtAddress.val() + '" }',
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "JSON",
+                    error: function (xhr, status) {
+                    },
+                    complete: function (response) {
+                        $('#Preview').html(response.responseText)
+                    }
+                })
+                //});
+
+            });
+            function func(x) {
+                //$("#SearchRecord").click(function () {
+                var txtID = $("#id");
+                var txtName = $("#name");
+                var txtCode = $("#code");
+                var txtRegion = $("#nppRegion");
+                var txtManager_email = $("#Manager_email");
+                var txtSE_email = $("#SE_email");
+                var txtAc_email = $("#Ac_email");
+                var txtAdmin_email = $("#Admin_email");
+                var txtAddress = $("#txtAddress");
+                var selectednumbers = [];
+                var s = $('#nppRegion').val();
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("GetListSearch", "MailManagement")',
+                    data: '{ selectednumbers:"' + s + '", Region: "' + txtRegion.val() + '",Code: "' + txtCode.val() + '",Name: "' + txtName.val() + '", ManagerMail: "' + txtManager_email.val() + '" , SEMail: "' + txtSE_email.val() + '" , AcMail: "' + txtAc_email.val() + '", AdminMail: "' + txtAdmin_email.val() + '", Address: "' + txtAddress.val() + '" }',
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "JSON",
+                    error: function (xhr, status) {
+                    },
+                    complete: function (response) {
+                        $('#Preview').html(response.responseText)
+                    }
+                })
+                //});
+
+            }
+
+        </script>
+    </div>
+
+    <div id="menu1" style="margin:15px;" class="tab-pane fade">
+        <fieldset>
+
+
+
+            <div id="uncKContacts">
+                <div class="row">
+                    <div class="col-md-2 text-right">
+                        <span>Contacts List</span>
+                    </div>
+                    <div class="col-md-10 form-group">
+                        @Html.DropDownList("Contact", new SelectList(ViewBag.Contact, "ID", "Name"), "-- Please select --", htmlAttributes: new { @class = "form-control ", id = "ContactSelect" })
+                    </div>
+                </div>
+            </div>
+
+            <div id="mailContent">
+                <div id="ToMail">
+                    <div class="row">
+                        <div class="col-md-2 text-right">
+                            <span>TO <span style="color:red">(*)</span></span>
+                        </div>
+                        <div class="col-md-10 form-group">
+                            <input type="text" id="sToL" class="form-control" />
+                        </div>
+                    </div>
+                </div>
+                <div id="CcMail">
+                    <div class="row">
+                        <div class="col-md-2 text-right">
+                            <span>CC</span>
+                        </div>
+                        <div class="col-md-10 form-group">
+                            <input type="text" id="sCcL" class="form-control" />
+                        </div>
+                    </div>
+                </div>
+                <div id="BccMail">
+                    <div class="row">
+                        <div class="col-md-2 text-right">
+                            <span>BCC</span>
+                        </div>
+                        <div class="col-md-10 form-group">
+                            <input type="text" id="sBccL" class="form-control" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-6 col-md-6">
+                        <div class="col-md-4 text-right">
+                            <span>Template</span>
+                        </div>
+                        <div class="col-md-8 form-group" style="padding-left:10px;">
+                            @Html.DropDownList("Temp", new SelectList(ViewBag.Template, "ID", "Name"), "-- Not used --", htmlAttributes: new { @class = "form-control ", id = "TempL" })
+                        </div>
+                    </div>
+                    <div class="col-6 col-md-6">
+                        <div class="col-md-4 text-right">
+                            <span>Signature</span>
+                        </div>
+                        <div class="col-12 col-md-8 form-group" style="padding-right: 0">
+                            @Html.DropDownList("Sig", new SelectList(ViewBag.Signature, "ID", "Name"), "-- Please select --", htmlAttributes: new { @class = "form-control ", id = "SigL" })
+
+                        </div>
+                    </div>
+                </div>
+                <div id="ViewFiles">
+                    <div id="unckFile">
+                        <div class="row">
+                            <div class="col-6 col-md-6">
+                                <div class="col-md-4 text-right">
+                                    <input class="btn btn-primary" style="padding: 3px 12px;" value="Attach Files" type="button" id="viewModalFilesL" data-toggle="modal" data-target="#ModalFilesL" />
+                                </div>
+                                <div class="col-md-8 form-group" style="padding-left:10px;">
+                                    <input type="text" id="lstFilesL" class="form-control" />
+                                </div>
+                            </div>
+                            @*<div class="col-6 col-md-6">
+                                <div class="col-md-6 text-right">
+                                    <span>CC to me</span>
+                                </div>
+                                <div class="col-12 col-md-6 form-group" style="padding-right: 0;text-align:left">
+                                    <input type="checkbox" id="cctomeL" name="cctomeL" />
+                                </div>
+                            </div>*@
+                    </div>
+                    <div class="modal fade" id="ModalFilesL" role="dialog">
+                        <div class="modal-dialog modal-lg" style="width:60%">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                </div>
+                                <div class="modal-body">
+                                    <form id="formModalContacts" enctype="multipart/form-data">
+                                        <div class="form-horizontal">
+                                            <div class="form-group">
+                                                <div class="col-md-10">
+                                                    <input type="file" multiple="multiple" id="FileUploadL" name="FileUpload" class="" />
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="col-md-10">
+                                                    <button id="btnUploadL" type="button" class="btn btn-primary" style="margin-top:20px" data-dismiss="modal">Upload</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                    <button id="btnClose" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+
+                <div class="row">
+                    <div class="col-md-2 text-right">
+                        <span>Subject <span style="color:red">(*)</span></span>
+                    </div>
+                    <div class="col-12 col-md-10 form-group">
+                        @Html.TextBoxFor(m => m.Subject, new { @class = "form-control input-md", id = "subjectL" })
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-2 text-right">
+                        <span>Content <span style="color:red">(*)</span></span>
+                    </div>
+                    <div class="col-12 col-md-10 form-group">
+                        @Html.TextBoxFor(m => m.Body, new { @id = "body-mailsL" })
+                        <script>
+                            CKEDITOR.replace("body-mailsL",
+                                {
+                                    height: 160,
+                                    language: 'en',
+                                    image_previewText: " ",
+                                    removePlugins: "help"
+
+                                });
+                        </script>
+                    </div>
+                </div>
+
+                <div style="float:right; padding-top:15px">
+                    <input type="submit" class="btn btn-primary" id="sendMailL" name="submitButton" value="Send" />
+                </div>
+
+            </div>
+        </fieldset>
+    </div>
+</div>
+
+<div class="modal fade" id="ModalContactsL" role="dialog">
+    <div class="modal-dialog modal-lg" style="width:60%">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div id="BodyModalContact" class="modal-body">
+                
+            </div>
+            <div class="modal-footer">
+                <button id="btnAddToL" type="button" class="btn btn-default" data-dismiss="modal">Add To</button>
+                <button id="btnClose" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+            <script>
+    $('#ModalFilesL').on('click', '#btnClose', function () {
+        $("#viewModalFilesL").prop("checked", false);
+    });
+    $('#ModalFilesL').on('click', '.close', function () {
+        $("#viewModalFilesL").prop("checked", false);
+    });
+    $('#ModalContactsL').on('click', '#btnClose', function () {
+        $("#ckModalContactL").prop("checked", false);
+
+    });
+    $('#ModalContactsL').on('click', '.close', function () {
+        $("#ckModalContactL").prop("checked", false);
+
+    });
+            </script>
+
+            <script type="text/javascript">
+
+
+                $("#TempL").on('change', function () {
+                    $.ajax({
+                        url: '@Url.Action("GetTemplateData", "MailManagement")',
+                        dataType: "json",
+                        type: "GET",
+                        contentType: 'application/json; charset=utf-8', //define a contentType of your request
+                        cache: false,
+                        data: { test: $(this).val().toString() },
+                        success: function (data) {
+                            // data is your result from controller
+                            if (data.success) {
+                                var editor = CKEDITOR.instances['body-mailsL'];
+                                editor.setData(data.message);
+                                //editor.insertHtml("<br/>");
+
+                            }
+                        },
+                        error: function (xhr) {
+                            CKEDITOR.instances['body-mailsL'].setData("");
+                        }
+                    })
+
+                });
+
+                $('#SigL').on('change', function () {
+                    $.ajax({
+                        url: '@Url.Action("GetSigData", "MailManagement")',
+                        dataType: "json",
+                        type: "GET",
+                        contentType: 'application/json; charset=utf-8', //define a contentType of your request
+                        cache: false,
+                        data: { signid: $(this).val().toString() },
+                        success: function (data) {
+                            // data is your result from controller
+                            if (data.success) {
+                                var getdata = CKEDITOR.instances['body-mailsL'].getData();
+                                CKEDITOR.instances['body-mailsL'].setData(getdata + data.message);
+                                CKEDITOR.instances['body-mailsL'].insertHtml("hfdfsf");
+                            }
+                        },
+                        error: function (xhr) {
+
+                        }
+                    });
+                });
+
+
+                $("#btnUploadL").click(function () {
+
+
+                    //Lấy ra files
+                    //var file_data = $('#FileUploadL').prop('files');
+                    //lấy ra kiểu file
+                    //khởi tạo đối tượng form data
+                    var form_data = new FormData();
+                    //thêm files vào trong form data
+                    $.each($("#FileUploadL")[0].files, function (i, file) {
+                        form_data.append('file', file);
+                    });
+
+                    $.ajax({
+                        type: "POST",
+                        url: '@Url.Action("AttachFiles", "MailManagement")',
+                        contentType: false, // Not to set any content header
+                        processData: false,
+                        data: form_data,
+                        error: function (xhr, status) {
+                        },
+                        complete: function (response) {
+                            //alert("Upload finished !")
+                            var data = $('#lstFilesL').val();
+                            $('#lstFilesL').val(data+ response.responseText);
+
+                        }
+                    })
+                });
+
+
+                $("#sendMailL").click(function () {
+                    if (!$("#sToL").val()) {
+                        alert("Field TO is required");
+                        $("#sToL").focus();
+                    }
+                    else if (!$("#subjectL").val()) {
+                        alert("Field SUBJECT is required");
+                        $("#subjectL").focus();
+                    }
+                    else if (CKEDITOR.instances['body-mailsL'].getData().toString() == '') {
+                        alert("Field BODY is required");
+                        CKEDITOR.instances['body-mailsL'].focus();
+                    }
+                    else {
+                        var lstTo = $("#sToL").val();
+                        var lstCc = $("#sCcL").val();
+                        var lstBcc = $("#sBccL").val();
+                        var lstFiles = $("#lstFilesL").val();
+
+
+                        var cctomeL = false;
+                        if ($("#cctomeL").is(':checked')) {
+                            cctomeL = true;
+                        }
+                        var FolderSelect = $("#FolderSelect option:selected").text();
+
+                        
+
+                        var txtID = $("#subjectL");
+                        var value = CKEDITOR.instances['body-mailsL'].getData().replace(/"/g, '&quot;');
+                        var temp = $('#ContactSelect').val();
+                        $.ajax({
+                            url: '@Url.Action("SendMailsL", "MailManagement")',
+                            type: "POST",
+                            processData: false,
+                            data: '{ To:"' + lstTo + '", Cc: "' + lstCc + '",Bcc:"' + lstBcc + '", Sub: "' + txtID.val() + '", Bod: "' + value.toString() + '", ContactID: "' + temp + '", cctomeL: "' + cctomeL + '", Files: "' + lstFiles + '"}',
+                            contentType: "application/json; charset=utf-8",
+                            dataType: "JSON",
+                            complete: function (msg) {
+                                //alert('All mail sent !');
+                                location.reload();
+                            }
+                        });
+                    }
+                });
+
+
+
+                $('#ContactSelect').on('change', function () {
+
+                    $.ajax({
+                        type: "GET",
+                        url: '@Url.Action("GetListContactNoID", "MailManagement")',
+                        data: { conid: $(this).val().toString() },
+                        dataType: "json",
+                        contentType: 'application/json; charset=utf-8', //define a contentType of your request
+                        cache: false,
+                        error: function (xhr, status) {
+                        },
+                        complete: function (response) {
+                            $('#BodyModalContact').html(response.responseText);
+                            $('#ModalContactsL').modal('show');
+                        }
+                    })
+                    //});
+
+                });
+                $("#btnAddToL").click(function () {
+                    var json = [];
+
+                    //converting to formname:formvalue format
+                    $.each($('input.ckContact[type="checkbox"]').serializeArray(), function (i, field) {
+                        $('#sToL').val($('#sToL').val() + field.value + ",");
+                    });
+
+                });
+
+                $('#myModal').on('click', '#btnClose', function () {
+                    $("#formModal")[0].reset();
+                    $("#npp-table").remove();
+                    $("#myPager").remove();
+                    $(".ms-choice").find("span").html("Region");
+                    $("#ckModal").prop("checked", false);
+
+                });
+                function func(x) {
+                    //$("#SearchRecord").click(function () {
+                    var txtID = $("#id");
+                    var txtName = $("#name");
+                    var txtCode = $("#code");
+                    var txtRegion = $("#nppRegion");
+                    var txtManager_email = $("#Manager_email");
+                    var txtSE_email = $("#SE_email");
+                    var txtAc_email = $("#Ac_email");
+                    var txtAdmin_email = $("#Admin_email");
+                    var txtAddress = $("#txtAddress");
+                    var selectednumbers = [];
+                    var s = $('#nppRegion').val();
+                    $.ajax({
+                        type: "POST",
+                        url: '@Url.Action("GetListSearch", "MailManagement")',
+                        data: '{ selectednumbers:"' + s + '", Region: "' + txtRegion.val() + '",Code: "' + txtCode.val() + '",Name: "' + txtName.val() + '", ManagerMail: "' + txtManager_email.val() + '" , SEMail: "' + txtSE_email.val() + '" , AcMail: "' + txtAc_email.val() + '", AdminMail: "' + txtAdmin_email.val() + '", Address: "' + txtAddress.val() + '" }',
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "JSON",
+                        error: function (xhr, status) {
+                        },
+                        complete: function (response) {
+                            $('#Preview').html(response.responseText)
+                        }
+                    })
+                    //});
+
+                }
+
+            </script>
+

@@ -1,0 +1,35 @@
+namespace FCV_DutchLadyMail_Model.Models
+{
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
+    using System.ComponentModel.DataAnnotations.Schema;
+    using System.Data.Entity.Spatial;
+
+    [Table("ROLES")]
+    public partial class ROLE
+    {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public ROLE()
+        {
+            PERMISSIONS = new HashSet<PERMISSION>();
+            USERS = new HashSet<USER>();
+        }
+
+        [Key]
+        public int Role_Id { get; set; }
+
+        [Required]
+        [StringLength(200)]
+        public string RoleName { get; set; }
+
+        [StringLength(250)]
+        public string RoleDescription { get; set; }
+
+        public bool IsSysAdmin { get; set; }
+
+        public virtual ICollection<PERMISSION> PERMISSIONS { get; set; }
+
+        public virtual ICollection<USER> USERS { get; set; }
+    }
+}
