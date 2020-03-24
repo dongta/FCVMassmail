@@ -213,6 +213,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\DomainProcess.cs" />
     <Compile Include="Object\IVGResult.cs" />
     <Compile Include="Object\NewUser.cs" />
     <Compile Include="Object\Pass.cs" />
