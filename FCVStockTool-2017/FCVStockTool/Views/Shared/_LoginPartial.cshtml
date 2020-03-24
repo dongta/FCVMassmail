@@ -1,0 +1,43 @@
+﻿@using Microsoft.AspNet.Identity
+@{
+    var cookie = Request.Cookies["StockTool"];
+    var RoleName = string.Empty;
+    var DisplayName = string.Empty;
+    if (cookie != null && cookie["Role"] != null)
+    {
+        RoleName = cookie["Role"].ToString();
+        DisplayName = cookie["DisplayName"].ToString();
+    }
+}
+@if (RoleName != string.Empty)
+{
+    using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+    {
+    @Html.AntiForgeryToken()
+
+    <ul class="nav navbar-nav navbar-right">
+        <li>
+            @Html.ActionLink(@FCVStockTool.Language.Resource.Hi +" " + DisplayName + "!", "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage" })
+        </li>
+        <li><a href="/Account/LogOff">@FCVStockTool.Language.Resource.LogOff</a></li>
+    </ul>
+    }
+}
+else
+{
+    <ul class="nav navbar-nav navbar-right">
+        @*<li>@Html.ActionLink("Register", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>*@
+        <li>@Html.ActionLink(@FCVStockTool.Language.Resource.Login, "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
+    </ul>
+}
+<ul class="nav navbar-nav navbar-right">
+    <li>
+        <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+            @FCVStockTool.Language.Resource.Lang <span class="caret"></span>
+        </a>
+        <ul class="dropdown-menu">
+            <li>@Html.ActionLink("Tiếng Việt", "ChangeLanguage", "ChangeLanguage", new { culture = "vi", returnUrl = Request.ServerVariables["http_referer"] }, null)</li>
+            <li>@Html.ActionLink("English", "ChangeLanguage", "ChangeLanguage", new { culture = "en", returnUrl = Request.ServerVariables["http_referer"] }, null)</li>
+        </ul>
+    </li>
+</ul>

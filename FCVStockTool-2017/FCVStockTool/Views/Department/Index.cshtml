@@ -1,0 +1,88 @@
+﻿@model Department
+@{
+    ViewBag.Title = @FCVStockTool.Language.Department.Department.InforDetail;
+}
+<div class="page-header">
+    <h1>@FCVStockTool.Language.Department.Department.ListDep</h1>
+</div>
+@Html.ValidationSummary(true)
+
+<div class="panel panel-info">
+    <div class="panel-body">
+
+        <div class="col-lg-8">
+        </div><!-- /.col-lg-6 -->
+        @using (Html.BeginForm())
+        {
+            <div class="col-lg-4">
+                <div class="input-group">
+
+                    <input id="searchString" name="searchString" type="text" class="form-control" placeholder="@FCVStockTool.Language.Department.Department.Search...">
+                    <span class="input-group-btn">
+                        <button class="btn btn-default btn-search" type="submit">@FCVStockTool.Language.Department.Department.Search</button>
+                    </span>
+
+                </div><!-- /input-group -->
+            </div><!-- /.col-lg-6 -->
+        }
+    </div>
+    <div class="table-responsive">
+        <table class="table">
+            <tr>
+                <th>@FCVStockTool.Language.Department.Department.Code</th>
+                <th>@FCVStockTool.Language.Department.Department.Name</th>
+                <th></th>
+            </tr>
+            @foreach (var c in ViewBag.Departments)
+            {
+                <tr>
+                    <td><center>@c.Id</center></td>
+                    <td>@c.Name</td>
+                    <td><center><a href="/Department/Index/@c.Id?PageNo=@ViewBag.CurrentPage">@FCVStockTool.Language.Department.Department.EditDep</a></center></td>
+                </tr>
+            }
+        </table>
+    </div>
+    <div class="panel-footer">
+        <div class="btn-toolbar" role="toolbar" aria-label="...">
+            @for (int i = 1; i <= @ViewBag.TotalPage; i++)
+            {
+                <div class="btn-group" role="group" aria-label="...">
+                    <a href="/Department/Index?PageNo=@i" class="btn btn-default display-inline">@i</a>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form id="frmImport" action="/Department/Import" method="post" enctype="multipart/form-data">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">@FCVStockTool.Language.Department.Department.ImportDep</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <label for="file">@FCVStockTool.Language.Category.Category.FileName:</label>
+                        <input type="file" name="file" id="file" />
+                    </div>
+                    <div class="row">
+                        <a href="/Files/ImportTemplates/Department_Template.xlsx">Template</a>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="btnOK" type="submit" class="btn btn-primary">Import</button>
+                    <button type="button" class="btn btn-default cancel" data-dismiss="modal">@FCVStockTool.Language.Department.Department.Close</button>
+                </div>
+            </form>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+@section scripts{
+    <script>
+        $("#btnDelete").click(function () { return ConfirmDelete() });
+    </script>
+}

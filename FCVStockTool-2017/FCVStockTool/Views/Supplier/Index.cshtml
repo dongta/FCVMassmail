@@ -1,0 +1,159 @@
+﻿@model Supplier
+@{
+    ViewBag.Title = @FCVStockTool.Language.Supplier.Supplier.ListSupplier;
+}
+<div class="page-header">
+    <h1>@FCVStockTool.Language.Supplier.Supplier.ListSupplier</h1>
+</div>
+@Html.ValidationSummary(true)
+
+@using (Html.BeginForm())
+{
+    @Html.HiddenFor(m => m.Id)
+    <div class="panel panel-info">
+        <div class="panel-heading">@FCVStockTool.Language.Supplier.Supplier.InforDetail</div>
+        <!-- Default panel contents -->
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-3 form-group">
+                    <div>@FCVStockTool.Language.Supplier.Supplier.Code</div>
+                    @Html.TextBoxFor(m => m.Code, new { @class = "form-control", @readonly = "readonly" })
+                </div>
+                <div class="col-md-3 form-group">
+                    <div>@FCVStockTool.Language.Supplier.Supplier.Name</div>
+                    @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.Name)
+                </div>
+                <div class="col-md-3 form-group">
+                    <div>@FCVStockTool.Language.Supplier.Supplier.Address</div>
+                    @Html.TextBoxFor(m => m.Address, new { @class = "form-control" })
+                </div>
+                <div class="col-md-3 form-group">
+                    <div>@FCVStockTool.Language.Supplier.Supplier.Email</div>
+                    @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3 form-group">
+                    <div>@FCVStockTool.Language.Supplier.Supplier.PhoneNumber</div>
+                    @Html.TextBoxFor(m => m.PhoneNumber, new { @class = "form-control" })
+                </div>
+                <div class="col-md-3 form-group">
+                    <div>@FCVStockTool.Language.Supplier.Supplier.Fax</div>
+                    @Html.TextBoxFor(m => m.Fax, new { @class = "form-control" })
+                </div>
+                <div class="col-md-3 form-group">
+                    <div>@FCVStockTool.Language.Supplier.Supplier.Website</div>
+                    @Html.TextBoxFor(m => m.Website, new { @class = "form-control" })
+                </div>
+                <div class="col-md-3 form-group">
+                    <div>@FCVStockTool.Language.Supplier.Supplier.Description</div>
+                    @Html.TextBoxFor(m => m.Description, new { @class = "form-control" })
+                </div>
+            </div>
+            <br />
+            <div class="row">
+                <div class="col-md-12 button-list ">
+                    <button disabled="@(Model.Id > 0 ? true : false)" onclick="form.action = '/Supplier/Create?PageNo=@ViewBag.CurrentPage'" class="btn btn-info">@FCVStockTool.Language.Supplier.Supplier.CreateSup</button>
+                    <button disabled="@(Model.Id > 0 ? false : true)" onclick="form.action = '/Supplier/Edit?PageNo=@ViewBag.CurrentPage'" class="btn btn-info">@FCVStockTool.Language.Supplier.Supplier.UpdateSup</button>
+                    <a id="btnDelete" href="/Supplier/Delete/@(Model.Id)?PageNo=@ViewBag.CurrentPage" class="btn btn-info">@FCVStockTool.Language.Supplier.Supplier.DeleteSup</a>
+                    <button id="btnImport" class="btn btn-info" data-toggle="modal" data-target="#myModal">Import</button>
+                    <button id="btnExport" class="btn btn-info cancel" onclick="form.action = '/Supplier/Export'">Export</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+    <div class="panel panel-info">
+        <div class="panel-body">
+            <div class="col-lg-8">
+            </div><!-- /.col-lg-6 -->
+
+            @using (Html.BeginForm())
+            {
+                <div class="col-lg-4">
+                    <div class="input-group">
+
+                        <input id="searchString" name="searchString" type="text" class="form-control" placeholder="@FCVStockTool.Language.Supplier.Supplier.Search...">
+                        <span class="input-group-btn">
+                            <button class="btn btn-default btn-search" type="submit">@FCVStockTool.Language.Supplier.Supplier.Search</button>
+                        </span>
+
+                    </div><!-- /input-group -->
+                </div><!-- /.col-lg-6 -->
+            }
+
+        </div>
+        <div class="table-responsive">
+            <table class="table">
+                <tr>
+                    <th>@FCVStockTool.Language.Supplier.Supplier.Code</th>
+                    <th>@FCVStockTool.Language.Supplier.Supplier.Name</th>
+                    <th>@FCVStockTool.Language.Supplier.Supplier.Address</th>
+                    <th>@FCVStockTool.Language.Supplier.Supplier.PhoneNumber</th>
+                    <th>@FCVStockTool.Language.Supplier.Supplier.Email</th>
+                    <th>@FCVStockTool.Language.Supplier.Supplier.Fax</th>
+                    <th>@FCVStockTool.Language.Supplier.Supplier.Website</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+                @foreach (var c in ViewBag.Suppliers)
+                {
+                    <tr>
+                        <td><center>@c.Code</center></td>
+                        <td><center>@c.Name</center></td>
+                        <td><center>@c.Address</center></td>
+                        <td><center>@c.PhoneNumber</center></td>
+                        <td><center>@c.Email</center></td>
+                        <td><center>@c.Fax</center></td>
+                        <td><center>@c.Website</center></td>
+                        <td><center><a href="/Supplier/Index/@c.Id?PageNo=@ViewBag.CurrentPage">@FCVStockTool.Language.Supplier.Supplier.EditSup</a></center></td>
+                        <td><center><a href="/SupplierContact/Index?supplierid=@c.Id">@FCVStockTool.Language.Supplier.Supplier.Contacts</a></center></td>
+                    </tr>
+                }
+            </table>
+        </div>
+        <div class="panel-footer">
+            <div class="btn-toolbar" role="toolbar" aria-label="...">
+                @for (int i = 1; i <= @ViewBag.TotalPage; i++)
+                {
+                    <div class="btn-group" role="group" aria-label="...">
+                        <a href="/Supplier/Index?PageNo=@i" class="btn btn-default display-inline">@i</a>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form id="frmImport" action="/Supplier/Import" method="post" enctype="multipart/form-data">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title">@FCVStockTool.Language.Supplier.Supplier.ImportSup</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <label for="file">@FCVStockTool.Language.Category.Category.FileName:</label>
+                            <input type="file" name="file" id="file" />
+                        </div>
+                        <div class="row">
+                            <a href="/Files/ImportTemplates/Supplier_Template.xlsx">Template</a>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button id="btnOK" type="submit" class="btn btn-primary">Import</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">@FCVStockTool.Language.Supplier.Supplier.Close</button>
+                    </div>
+                </form>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+@section scripts{
+    <script>
+        $("#btnDelete").click(function () { return ConfirmDelete() });
+    </script>
+}
+

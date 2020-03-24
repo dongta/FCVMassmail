@@ -1,0 +1,121 @@
+﻿@model Category
+@{
+    ViewBag.Title = @FCVStockTool.Language.Category.Category.ListCategory;
+}
+
+<div class="page-header">
+    <h1>@FCVStockTool.Language.Category.Category.ListCategory</h1>
+</div>
+
+
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(m => m.Id)
+    <div class="panel panel-info">
+        <div class="panel-heading">@FCVStockTool.Language.Category.Category.InforDetail</div>
+        <!-- Default panel contents -->
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-2 form-group">
+                    <div>@FCVStockTool.Language.Category.Category.Code</div>
+                    @Html.TextBoxFor(m => m.Code, new { @class = "form-control", @readonly = "readonly" })
+                </div>
+                <div class="col-md-4 form-group">
+                    <div>@FCVStockTool.Language.Category.Category.Name</div>
+                    @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.Name)
+                </div>
+                <div class="col-md-6 form-group">
+                    <div>@FCVStockTool.Language.Category.Category.Note</div>
+                    @Html.TextBoxFor(m => m.Description, new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 button-list ">
+                    <button disabled="@(Model.Id > 0 ? true : false)" onclick="form.action = '/Category/Create?PageNo=@ViewBag.CurrentPage'" class="btn btn-info">@FCVStockTool.Language.Category.Category.CreateCate</button>
+                    <button disabled="@(Model.Id > 0 ? false : true)" onclick="form.action = '/Category/Edit?PageNo=@ViewBag.CurrentPage'" class="btn btn-info">@FCVStockTool.Language.Category.Category.UpdateCate</button>
+                    <a id="btnDelete" href="/Category/Delete/@(Model.Id)?PageNo=@ViewBag.CurrentPage" class="btn btn-info">@FCVStockTool.Language.Category.Category.DeleteCate</a>
+                    <button id="btnImport" class="btn btn-info" data-toggle="modal" data-target="#myModal">Import</button>
+                    <button id="btnExport" onclick="form.action = '/Category/Export'" class="btn btn-info cancel">Export</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+<div class="panel panel-info">
+    <div class="panel-body">
+        <div class="col-lg-8">
+        </div><!-- /.col-lg-6 -->
+        @using (Html.BeginForm())
+        {
+            <div class="col-lg-4">
+                <div class="input-group">
+
+                    <input id="searchString" name="searchString" type="text" class="form-control" placeholder="@FCVStockTool.Language.Category.Category.Search...">
+                    <span class="input-group-btn">
+                        <button class="btn btn-default btn-search" type="submit">@FCVStockTool.Language.Category.Category.Search</button>
+                    </span>
+
+                </div><!-- /input-group -->
+            </div><!-- /.col-lg-6 -->
+        }
+    </div>
+    <div class="table-responsive">
+        <table class="table">
+            <tr>
+                <th>@FCVStockTool.Language.Category.Category.Code</th>
+                <th>@FCVStockTool.Language.Category.Category.Name</th>
+                <th></th>
+            </tr>
+            @foreach (var c in ViewBag.Categories)
+            {
+                <tr>
+                    <td><center>@c.Code</center></td>
+                    <td>@c.Name</td>
+                    <td><center><a href="/Category/Index/@c.Id?PageNo=@ViewBag.CurrentPage">@FCVStockTool.Language.Category.Category.EditCate</a></center></td>
+                </tr>
+            }
+        </table>
+    </div>
+    <div class="panel-footer">
+        <div class="btn-toolbar" role="toolbar" aria-label="...">
+            @for (int i = 1; i <= @ViewBag.TotalPage; i++)
+            {
+                <div class="btn-group" role="group" aria-label="...">
+                    <a href="/Category/Index?PageNo=@i" class="btn btn-default display-inline">@i</a>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form id="frmImport" action="/Category/Import" method="post" enctype="multipart/form-data">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">@FCVStockTool.Language.Category.Category.ImportCate</h4>
+                </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <label for="file">@FCVStockTool.Language.Category.Category.FileName:</label>
+                            <input type="file" name="file" id="file" />
+                        </div>
+                        <div class="row">
+                            <a href="/Files/ImportTemplates/Category_Template.xlsx">Template</a>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button id="btnOK" type="submit" class="btn btn-primary">Import</button>
+                        <button type="button" class="btn btn-default cancel">@FCVStockTool.Language.Category.Category.Close</button>
+                    </div>
+            </form>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+@section scripts{
+    <script>
+        $("#btnDelete").click(function () { return ConfirmDelete() });
+    </script>
+}

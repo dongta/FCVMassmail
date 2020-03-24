@@ -1,0 +1,155 @@
+﻿@model SupplierContact
+@{
+    ViewBag.Title = "SupplierContact Management Page";
+}
+
+<h2>SupplierContact Management Page</h2>
+<br />
+@Html.ValidationSummary(true)
+
+@using (Html.BeginForm())
+{
+    @Html.HiddenFor(m => m.Id)
+    <fieldset>
+        <legend>Thông tin chi tiết</legend>
+        <div class="row">
+            <div class="col-md-3 form-group">
+                <div>Tên</div>
+                @Html.TextBoxFor(m => m.Name, new { @class = "form-control"})
+            </div>
+            <div class="col-md-3 form-group">
+                <div>Chức vụ</div>
+                @Html.TextBoxFor(m => m.Position, new { @class = "form-control" })
+            </div>
+            <div class="col-md-3 form-group">
+                <div>Số ĐT</div>
+                @Html.TextBoxFor(m => m.Phone, new { @class = "form-control" })
+            </div>
+            <div class="col-md-3 form-group">
+                <div>Email</div>
+                @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3 form-group">
+                <div>Nhà cung cấp</div>
+                @Html.DropDownListFor(m => m.SupplierId, (SelectList)ViewBag.Suppliers,"-- Chọn nhà cung cấp --" ,new { @class = "form-control" })
+            </div>
+            <div class="col-md-9 form-group">
+                <div>Ghi chú</div>
+                @Html.TextBoxFor(m => m.Note, new { @class = "form-control" })
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-md-12 button-list ">
+                <button onclick="form.action = '/SupplierContact/Create?PageNo=@ViewBag.CurrentPage'" class="btn btn-default">Tạo</button>
+                <button onclick="form.action = '/SupplierContact/Edit?PageNo=@ViewBag.CurrentPage'" class="btn btn-default">Cập nhật</button>
+                <a id="btnDelete" href="/SupplierContact/Delete/@(Model.Id)?PageNo=@ViewBag.CurrentPage" class="btn btn-default">Xóa</a>
+            </div>
+        </div>
+    </fieldset>
+    <br />
+    <br />
+}
+<fieldset>
+    <legend>
+        <div class="row">
+            <div class="col-lg-8">
+                Danh sách
+            </div><!-- /.col-lg-6 -->
+            @using (Html.BeginForm())
+            {
+                <div class="col-lg-4">
+                    <div class="input-group">
+
+                        <input id="searchString" name="searchString" type="text" class="form-control" placeholder="@FCVStockTool.Language.Supplier.Supplier.Search...">
+                        <span class="input-group-btn">
+                            <button class="btn btn-default btn-search" type="submit">@FCVStockTool.Language.Supplier.Supplier.Search</button>
+                        </span>
+
+                    </div><!-- /input-group -->
+                </div><!-- /.col-lg-6 -->
+            }
+        </div><!-- /.row -->
+    </legend>
+    <div class="table-responsive">
+        <table class="table">
+            <tr>
+                <th>Tên</th>
+                <th>Chức vụ</th>
+                <th>Số ĐT</th>
+                <th>Email</th>
+                <th>Ghi chú</th>
+                <th></th>
+            </tr>
+            @foreach (var c in ViewBag.SupplierContacts)
+            {
+                <tr>
+                    <td>@c.Name</td>
+                    <td>@c.Position</td>
+                    <td>@c.Phone</td>
+                    <td>@c.Email</td>
+                    <td>@c.Note</td>
+                    <td><a href="/SupplierContact/Index/@c.Id?PageNo=@ViewBag.CurrentPage">Edit</a></td>
+                </tr>
+            }
+        </table>
+    </div>
+    <div>
+        @for (int i = 1; i <= @ViewBag.TotalPage; i++)
+        {
+            <a href="/SupplierContact/Index?PageNo=i" class="btn btn-default display-inline">@i</a>
+        }
+    </div>
+</fieldset>
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form id="frmImport" action="/SupplierContact/Import" method="post" enctype="multipart/form-data">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Import nhóm sản phẩm</h4>
+                </div>
+                <div class="modal-body">
+                    <label for="file">Filename:</label>
+                    <input type="file" name="file" id="file" />
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button id="btnOK" type="button" class="btn btn-primary">Import</button>
+                </div>
+            </form>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+@section scripts{
+    <script>
+        $("#btnDelete").click(function () { return ConfirmDelete() });
+        $("button#btnOK").click(function () {
+            var formData = new FormData();
+            var totalFiles = $("#file")[0].files.length;
+            for (var i = 0; i < totalFiles; i++) {
+                var file = $("#file")[0].files[i];
+                formData.append("file", file);
+            }
+            $.ajax({
+                type: "POST",
+                url: "/SupplierContact/Import",
+                data: formData,
+                dataType: 'json',
+                contentType: false,
+                processData: false,
+                success: function (msg) {
+                    $("#myModal").modal('hide');
+                    location.reload();
+                },
+                error: function () {
+                    alert("failure");
+                }
+            });
+        });
+    </script>
+}

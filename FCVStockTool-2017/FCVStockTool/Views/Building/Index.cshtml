@@ -1,0 +1,131 @@
+﻿@model Building
+@{
+    ViewBag.Title = "Danh sách trung tâm";
+}
+
+<div class="page-header">
+    <h1>Danh sách trung tâm</h1>
+</div>
+@Html.ValidationSummary(true)
+
+@using (Html.BeginForm())
+{
+    @Html.HiddenFor(m => m.Id)
+    <div class="panel panel-info">
+        <div class="panel-heading">Thông tin chi tiết</div>
+        <!-- Default panel contents -->
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-2 form-group">
+                    <div>Mã</div>
+                    @Html.TextBoxFor(m => m.Code, new { @class = "form-control"})
+                </div>
+                <div class="col-md-4 form-group">
+                    <div>Tên</div>
+                    @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+                </div>
+                <div class="col-md-6 form-group">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 button-list ">
+                    <button onclick="form.action = '/Building/Create?PageNo=@ViewBag.CurrentPage'" class="btn btn-info">Tạo</button>
+                    <button onclick="form.action = '/Building/Edit?PageNo=@ViewBag.CurrentPage'" class="btn btn-info">Cập nhật</button>
+                    <a id="btnDelete" href="/Building/Delete/@(Model.Id)?PageNo=@ViewBag.CurrentPage" class="btn btn-info">Xóa</a>
+                    <button id="btnImport" class="btn btn-info" data-toggle="modal" data-target="#myModal">Import</button>
+                    <button id="btnExport" class="btn btn-info">Export</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="panel panel-info">
+        <div class="panel-body">
+            <div class="col-lg-8">
+            </div><!-- /.col-lg-6 -->
+            <div class="col-lg-4">
+                <div class="input-group">
+                    <input name="searchtext" type="text" class="form-control" placeholder="Từ khóa...">
+                    <span class="input-group-btn">
+                        <button class="btn btn-default" type="button" onclick="form.action='/Building/Search'">Tìm kiếm</button>
+                    </span>
+                </div><!-- /input-group -->
+            </div><!-- /.col-lg-6 -->
+        </div>
+        <div class="table-responsive">
+            <table class="table">
+                <tr>
+                    <th>Mã</th>
+                    <th>Tên</th>
+                    <th></th>
+                </tr>
+                @foreach (var c in ViewBag.Buildings)
+                {
+                    <tr>
+                        <td>@c.Code</td>
+                        <td>@c.Name</td>
+                        <td><a href="/Building/Index/@c.Id?PageNo=@ViewBag.CurrentPage">Edit</a></td>
+                    </tr>
+                }
+            </table>
+        </div>
+        <div class="panel-footer">
+            <div class="btn-toolbar" role="toolbar" aria-label="...">
+                @for (int i = 1; i <= @ViewBag.TotalPage; i++)
+                {
+                    <div class="btn-group" role="group" aria-label="...">
+                        <a href="/Building/Index?PageNo=i" class="btn btn-default display-inline">@i</a>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form id="frmImport" action="/Building/Import" method="post" enctype="multipart/form-data">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title">Import nhóm sản phẩm</h4>
+                    </div>
+                    <div class="modal-body">
+                        <label for="file">Filename:</label>
+                        <input type="file" name="file" id="file" />
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button id="btnOK" type="button" class="btn btn-primary">Import</button>
+                    </div>
+                </form>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+}
+@section scripts{
+    <script>
+                $("#btnDelete").click(function () { return ConfirmDelete() });
+                $("button#btnOK").click(function () {
+                    var formData = new FormData();
+                    var totalFiles = $("#file")[0].files.length;
+                    for (var i = 0; i < totalFiles; i++) {
+                        var file = $("#file")[0].files[i];
+                        formData.append("file", file);
+                    }
+                    $.ajax({
+                        type: "POST",
+                        url: "/Building/Import",
+                        data: formData,
+                        dataType: 'json',
+                        contentType: false,
+                        processData: false,
+                        success: function (msg) {
+                            $("#myModal").modal('hide');
+                            location.reload();
+                        },
+                        error: function () {
+                            alert("failure");
+                        }
+                    });
+                });
+    </script>
+}

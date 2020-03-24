@@ -1,0 +1,145 @@
+﻿@model Product
+@{
+    ViewBag.Title = @FCVStockTool.Language.Product.Product.ListProduct;
+}
+
+<div class="page-header">
+    <h1>@FCVStockTool.Language.Product.Product.ListProduct</h1>
+</div>
+@Html.ValidationSummary(true)
+
+@using (Html.BeginForm("Index","Product"))
+{
+    @Html.HiddenFor(m => m.Id)
+    <div class="panel panel-info">
+        <div class="panel-heading">@FCVStockTool.Language.Product.Product.Infordetail</div>
+        <!-- Default panel contents -->
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-4 form-group">
+                    <div>@FCVStockTool.Language.Product.Product.Code</div>
+                    @Html.TextBoxFor(m => m.Code, new { @class = "form-control", @readonly = "readonly" })
+                </div>
+                <div class="col-md-4 form-group">
+                    <div>@FCVStockTool.Language.Product.Product.Name</div>
+                    @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.Name)
+                </div>
+                <div class="col-md-4 form-group">
+                    <div>@FCVStockTool.Language.Product.Product.Category</div>
+                    @Html.DropDownListFor(m => m.CategoryId, (SelectList)ViewBag.Categories, "-- " + @FCVStockTool.Language.Product.Product.ChooseCate + " --", new { @class = "form-control", onchange = "this.form.submit();" })
+                    @Html.ValidationMessageFor(m => m.CategoryId)
+                </div>
+                @*<div class="col-md-3 form-group">
+                    <div>@FCVStockTool.Language.Product.Product.Pro</div>
+                    @Html.DropDownListFor(m => m.ParentId, (SelectList)ViewBag.ParentProducts, "-- " + @FCVStockTool.Language.Product.Product.ChoosePro + " --", new { @class = "form-control" })
+                </div>*@
+            </div>
+            <div class="row">
+                <div class="col-md-12 form-group">
+                    <div>@FCVStockTool.Language.Product.Product.Description</div>
+                    @Html.TextBoxFor(m => m.Description, new { @class = "form-control" })
+                </div>
+            </div>
+            <br />
+            <div class="row">
+                <div class="col-md-12 button-list ">
+                    <button disabled="@(Model.Id > 0 ? true : false)" onclick="form.action = '/Product/Create?PageNo=@ViewBag.CurrentPage'" class="btn btn-info">@FCVStockTool.Language.Product.Product.CreatePro</button>
+                    <button disabled="@(Model.Id > 0 ? false : true)" onclick="form.action = '/Product/Edit?PageNo=@ViewBag.CurrentPage'" class="btn btn-info">@FCVStockTool.Language.Product.Product.UpdatePro</button>
+                    <a id="btnDelete" href="/Product/Delete/@(Model.Id)?PageNo=@ViewBag.CurrentPage" class="btn btn-info">@FCVStockTool.Language.Product.Product.DeletePro</a>
+                    <button id="btnImport" class="btn btn-info" data-toggle="modal" data-target="#myModal">Import</button>
+                    <button id="btnExport" class="btn btn-info cancel" onclick="form.action = '/Product/Export'">Export</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+<div class="panel panel-info">
+    <div class="panel-body">
+        <div class="col-lg-8">
+        </div><!-- /.col-lg-6 -->
+        @using (Html.BeginForm())
+        {
+            <div class="col-lg-4">
+                <div class="input-group">
+
+                    <input id="searchString" name="searchString" type="text" class="form-control" placeholder="@FCVStockTool.Language.Product.Product.Search...">
+                    <span class="input-group-btn">
+                        <button class="btn btn-default btn-search" type="submit">@FCVStockTool.Language.Product.Product.Search</button>
+                    </span>
+
+                </div><!-- /input-group -->
+            </div><!-- /.col-lg-6 -->
+        }
+
+    </div>
+    <div class="table-responsive">
+        <table class="table">
+            <tr>
+                <th>@FCVStockTool.Language.Product.Product.Code</th>
+                <th>@FCVStockTool.Language.Product.Product.Name</th>
+                <th>@FCVStockTool.Language.Product.Product.Category</th>
+                @*<th>@FCVStockTool.Language.Product.Product.Pro</th>
+                <th></th>*@
+                <th></th>
+            </tr>
+            @foreach (var c in ViewBag.Products)
+            {
+                <tr>
+                    <td><center> @c.Code</center></td>
+                    <td>@c.Name</td>
+                    <td>@(c.Category != null ? c.Category.Name : "")</td>
+                    @*<td><center>@(c.Parent != null ? c.Parent.Name : "")</center></td>*@
+                   <td><center><a href="/Product/Index/@c.Id?PageNo=@ViewBag.CurrentPage&parentid=@(c.ParentId)">@FCVStockTool.Language.Product.Product.EditPro</a></center></td>
+                    @*<td>
+        <center>
+            @if (c.Parent == null)
+            {<a href="/Product/Index?parentid=@c.Id">@FCVStockTool.Language.Product.Product.Parts</a>}
+        </center>
+    </td>*@
+                </tr>
+            }
+        </table>
+    </div>
+    <div class="panel-footer">
+        <div class="btn-toolbar" role="toolbar" aria-label="...">
+            @for (int i = 1; i <= @ViewBag.TotalPage; i++)
+            {
+                <div class="btn-group" role="group" aria-label="...">
+                    <a href="/Product/Index?PageNo=@i" class="btn btn-default display-inline">@i</a>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form id="frmImport" action="/Product/Import" method="post" enctype="multipart/form-data">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">@FCVStockTool.Language.Product.Product.ImportPro</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <label for="file">@FCVStockTool.Language.Category.Category.FileName:</label>
+                        <input type="file" name="file" id="file" />
+                    </div>
+                    <div class="row">
+                        <a href="/Files/ImportTemplates/Product_Template.xlsx">Template</a>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="btnOK" type="submit" class="btn btn-primary">Import</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">@FCVStockTool.Language.Product.Product.Close</button>
+                </div>
+            </form>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+@section scripts{
+    <script>
+        $("#btnDelete").click(function () { return ConfirmDelete() });
+    </script>
+}

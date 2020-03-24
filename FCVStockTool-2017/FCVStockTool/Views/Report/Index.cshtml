@@ -1,0 +1,95 @@
+﻿@model FCVStockTool.Models.Report
+@{
+    ViewBag.Title = @FCVStockTool.Language.Report.Report.InforDetail;
+}
+<div class="page-header">
+    <h1>@FCVStockTool.Language.Report.Report.ListDep</h1>
+</div>
+@Html.ValidationSummary(true)
+
+<form method="post" enctype="multipart/form-data">
+    <div class="panel panel-info">
+        <div class="panel-heading">@FCVStockTool.Language.Report.Report.InforDetail</div>
+        <!-- Default panel contents -->
+        <div class="panel-body">
+            <div class="row">
+                @Html.HiddenFor(m => m.Id)
+                @Html.HiddenFor(m => m.GUID)
+                <div class="col-md-4 form-group">
+                    <div>@FCVStockTool.Language.Report.Report.Name</div>
+                    @Html.TextBoxFor(m => m.Name, new { @class = "form-control", id="txtName" })
+                    @Html.ValidationMessageFor(m => m.Name)
+                </div>
+                <div class="col-md-4 form-group">
+                    <div>@FCVStockTool.Language.Report.Report.File</div>
+                    <input type="file" name="reportFile" id="fulReport" />
+                </div>
+            </div>
+            <br />
+            <div class="row">
+                <div class="col-md-12 button-list ">
+                    <button disabled="@(Model.Id > 0 ? true : false)" onclick="form.action = '/Report/Create?PageNo=@ViewBag.CurrentPage'" class="btn btn-info">@FCVStockTool.Language.Report.Report.CreateDep</button>
+                    <button disabled="@(Model.Id > 0 ? false : true)" onclick="form.action = '/Report/Edit?PageNo=@ViewBag.CurrentPage'" class="btn btn-info">@FCVStockTool.Language.Report.Report.UpdateDep</button>
+                    <a id="btnDelete" href="/Report/Delete/@(Model.Id)?PageNo=@ViewBag.CurrentPage" class="btn btn-info">@FCVStockTool.Language.Report.Report.DeleteDep</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+    <div class="panel panel-info">
+        <div class="panel-body">
+
+            <div class="col-lg-8">
+            </div><!-- /.col-lg-6 -->
+            @using (Html.BeginForm())
+            {
+                <div class="col-lg-4">
+                    <div class="input-group">
+
+                        <input id="searchString" name="searchString" type="text" class="form-control" placeholder="@FCVStockTool.Language.Report.Report.Search...">
+                        <span class="input-group-btn">
+                            <button class="btn btn-default btn-search" type="submit">@FCVStockTool.Language.Report.Report.Search</button>
+                        </span>
+
+                    </div><!-- /input-group -->
+                </div><!-- /.col-lg-6 -->
+            }
+        </div>
+        <div class="table-responsive">
+            <table class="table">
+                <tr>
+                    <th>@FCVStockTool.Language.Report.Report.Name</th>
+                    <th></th>
+                </tr>
+                @foreach (var c in ViewBag.Reports)
+                {
+                    <tr>
+                        <td><a onclick="OpenReport('/ViewReport.aspx?reportid=@c.GUID')">@c.Name</a></td>
+                        <td><center><a href="/Report/Index/@c.Id?PageNo=@ViewBag.CurrentPage">@FCVStockTool.Language.Report.Report.EditDep</a></center></td>
+                    </tr>
+                }
+            </table>
+        </div>
+        <div class="panel-footer">
+            <div class="btn-toolbar" role="toolbar" aria-label="...">
+                @for (int i = 1; i <= @ViewBag.TotalPage; i++)
+                {
+                    <div class="btn-group" role="group" aria-label="...">
+                        <a href="/Report/Index?PageNo=@i" class="btn btn-default display-inline">@i</a>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+
+    @section scripts{
+        <script>
+            $("#btnDelete").click(function () { return ConfirmDelete() });
+            $("#fulReport").change(function () {
+                $("#txtName").val($(this).val().replace(".rdl", ""));
+            });
+            function OpenReport(path) {
+                window.open(path);
+            }
+        </script>
+    }

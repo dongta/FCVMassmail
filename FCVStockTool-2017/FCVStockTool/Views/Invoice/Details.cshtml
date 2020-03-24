@@ -1,0 +1,136 @@
+﻿@model Invoice
+@{
+    ViewBag.Title = @FCVStockTool.Language.Invoice.Invoice.Invoices+" "+ Model.PONo;
+}
+<div class="page-header">
+    <h1>@FCVStockTool.Language.Invoice.Invoice.Invoices <small>@(Model.PONo)</small></h1>
+</div>
+@using (Html.BeginForm())
+{
+    <div class="panel panel-info">
+        <!-- Default panel contents -->
+        <div class="panel-heading">@FCVStockTool.Language.Invoice.Invoice.InforDetail</div>
+        <div class="panel-body">
+            @Html.HiddenFor(m => m.Id, new { id = "hdfInvoiceId" })
+            <div class="row">
+                <div class="form-group col-md-3">
+                    <div>@FCVStockTool.Language.Invoice.Invoice.NumberInvoice</div>
+                    @Html.TextBoxFor(m => m.PONo, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.PONo)
+                </div>
+                <div class="form-group col-md-3">
+                    <div>@FCVStockTool.Language.Invoice.Invoice.Date</div>
+                    @Html.TextBoxFor(m => m.PODate, "{0:dd/MM/yyyy}", new { @class = "form-control datepicker" })
+
+                </div>
+                <div class="form-group col-md-3">
+                    <div>@FCVStockTool.Language.Invoice.Invoice.Supplier</div>
+                    @Html.DropDownListFor(m => m.SupplierId, (SelectList)ViewBag.Suppliers, "-- " + @FCVStockTool.Language.Invoice.Invoice.ChooseSup + " --", new { @class = "form-control" })
+                </div>
+                <div class="form-group col-md-3">
+                    <div>@FCVStockTool.Language.Invoice.Invoice.Total</div>
+                    @Html.TextBoxFor(m => m.Amount, new { @class = "form-control", type = "number", min = 0, max = 9999999999 })
+                </div>
+            </div>
+            <br />
+            <div class="row">
+                <div class="col-md-12 button-list ">
+                    <button disabled="@(Model.Id > 0 ? true : false)" onclick="form.action = '/Invoice/Create'" class="btn btn-info">@FCVStockTool.Language.Invoice.Invoice.CreateInvoice</button>
+                    <button disabled="@(Model.Id > 0 ? false : true)" onclick="form.action = '/Invoice/Edit'" class="btn btn-info">@FCVStockTool.Language.Invoice.Invoice.UpdateInvoice</button>
+                    <a href="/Invoice/Delete/@(Model.Id)" class="btn btn-info" id="btnDelete">@FCVStockTool.Language.ProductItem.ProItem.DeleteProItem</a>
+                    <a href="/Invoice/Index?PageNo=1" class="btn btn-info">@FCVStockTool.Language.ProductItem.ProItem.GoBack</a>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<div class="panel panel-info">
+    <!-- Default panel contents -->
+    <div class="panel-heading">@FCVStockTool.Language.Invoice.Invoice.InvoiceDetail</div>
+    <div class="panel-body">
+        <div class="row">
+            @Html.Hidden("ID", "", new { id = "hdfDetailID" })
+            <div class=" form-group col-md-2">
+                <div>@FCVStockTool.Language.Invoice.Invoice.Product</div>
+                @Html.DropDownList("Product", (SelectList)ViewBag.Products, "-- " + @FCVStockTool.Language.Invoice.Invoice.ChoosePro + " --", new { id = "dllProductId", @class = "form-control" })
+            </div>
+            <div class=" form-group col-md-3">
+                <div>@FCVStockTool.Language.Invoice.Invoice.Warranty</div>
+                <input id="txtWarranty" type="text" class="form-control" typeof="number" min="0" max="999999" />
+            </div>
+            <div class=" form-group col-md-2">
+                <div>@FCVStockTool.Language.Invoice.Invoice.UnitPrice</div>
+                <input id="txtUnitPrice" type="text" class="form-control" />
+            </div>
+            <div class=" form-group col-md-1">
+                <div>@FCVStockTool.Language.Invoice.Invoice.Quantity</div>
+                <input id="txtQuantity" type="text" class="form-control" />
+            </div>
+            <div class="form-group col-md-4 button-list btn-invoice">
+                <button id="btnCreateDetail" class="btn btn-info">@FCVStockTool.Language.Invoice.Invoice.AddInvoice</button>
+                <button id="btnEditDetail" class="btn btn-info">@FCVStockTool.Language.Invoice.Invoice.UpdateInvoice</button>
+            </div>
+        </div>
+    </div>
+    <div class="table-responsive">
+    </div>
+</div>
+
+@section scripts{
+    <script>
+        $(function () {
+            LoadInvoiceDetails();
+            $('.datepicker').datepicker({ dateFormat: 'dd/M/yy' }).val();
+            function LoadInvoiceDetails() {
+                $(".table-responsive").html("");
+                var _invoiceId = $("#hdfInvoiceId").val();
+                $.ajax({
+                    url: "/InvoiceDetail/InvoiceDetails",
+                    data: { invoiceid: _invoiceId },
+                    success: function (res) {
+                        $(res).appendTo(".table-responsive");
+                    },
+                    error: function (request, status, error) {
+                        alert(request.responseText);
+                    }
+                });
+            }
+
+            $("#btnCreateDetail").click(function () {
+                var _invoiceId = $("#hdfInvoiceId").val();
+                var _productId = $("#dllProductId").val();
+                var _warrantyTime = $("#txtWarranty").val();
+                var _unitPrice = $("#txtUnitPrice").val();
+                var _quantity = $("#txtQuantity").val();
+                $.ajax({
+                    type: "POST",
+                    url: "/InvoiceDetail/Create",
+                    data: JSON.stringify({ InvoiceId: _invoiceId, productId: _productId, warrantyperiod: _warrantyTime, unitprice: _unitPrice, quantity: _quantity }),
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function () {
+                        alert("Thêm thành công!");
+                    },
+                    error: function (request, status, error) {
+                        alert(request.responseText);
+                    }
+                });
+                LoadInvoiceDetails();
+            });
+
+
+            $("#btnEditDetail").click(function (e) {
+                alert("1");
+            });
+
+            $("#btnDetailEdit").click(function (e) {
+                alert("2");
+            });
+
+
+            $("#btnDelete").click(function () { return ConfirmDelete() });
+        });
+    </script>
+}

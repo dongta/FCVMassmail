@@ -1,0 +1,65 @@
+﻿ .display-inline {
+            float:left;
+        }
+div .button-list {
+    text-align:center;
+}
+div .button-list .btn {
+    width:100px;
+}
+ input, select, textarea {
+    max-width: 2000px;
+}
+table th {
+    text-align:center;
+}
+
+.form-control {
+    padding: 3px 3px;
+    height:25px;
+}
+
+.btn-search {
+    padding:2px 3px 3px 3px;
+    height:25px;
+}
+
+.table-responsive {
+    overflow:scroll;
+}
+right {
+    padding-right:120px;
+}
+.btn-invoice {
+    margin-top:12px;
+}
+.field-validation-error {
+    color:red;
+}
+
+
+.custom-combobox {
+        position: relative;
+        display: inline-block;
+        padding:0;
+        margin:0;
+        border-radius:5px;
+    }
+ 
+    .custom-combobox-toggle {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        margin-left: -1px;
+        padding: 0;
+        /* support: IE7 */
+        *height: 1.7em;
+        *top: 0.1em;
+       
+    }
+ 
+    .custom-combobox-input {
+        margin: 0;
+        padding: 0.3em;
+        
+    }

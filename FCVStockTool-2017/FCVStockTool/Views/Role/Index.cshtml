@@ -1,0 +1,61 @@
+﻿@model Role
+@{
+    ViewBag.Title = @FCVStockTool.Language.Role.Role.ListRole;
+}
+<div class="page-header">
+    <h1>@FCVStockTool.Language.Role.Role.ListRole</h1>
+</div>
+@Html.ValidationSummary(true)
+
+
+<div class="panel panel-info">
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-lg-8">
+
+            </div><!-- /.col-lg-6 -->
+            @using (Html.BeginForm())
+            {
+                <div class="col-lg-4">
+                    <div class="input-group">
+
+                        <input id="searchString" name="searchString" type="text" class="form-control" placeholder="@FCVStockTool.Language.Role.Role.Search...">
+                        <span class="input-group-btn">
+                            <button class="btn btn-default btn-search" type="submit">@FCVStockTool.Language.Role.Role.Search</button>
+                        </span>
+
+                    </div><!-- /input-group -->
+                </div><!-- /.col-lg-6 -->
+            }
+        </div><!-- /.row -->
+    </div>
+    <div class="table-responsive">
+        <table class="table">
+            <tr>
+                <th>@FCVStockTool.Language.Role.Role.Name</th>
+                <th>@FCVStockTool.Language.Role.Role.Activated</th>
+                <th>@FCVStockTool.Language.Role.Role.Note</th>
+                
+            </tr>
+            @foreach (var c in ViewBag.Roles)
+            {
+                <tr>
+                    <td><center>@c.Name</center></td>
+                    <td><center>@c.Active</center></td>
+                    <td><center>@c.Description</center></td>
+                    
+                </tr>
+            }
+        </table>
+    </div>
+    <div class="panel-footer">
+        <div class="btn-toolbar" role="toolbar" aria-label="...">
+            @for (int i = 1; i <= @ViewBag.TotalPage; i++)
+            {
+                <div class="btn-group" role="group" aria-label="...">
+                    <a href="/Role/Index?PageNo=i" class="btn btn-default display-inline">@i</a>
+                </div>
+            }
+        </div>
+    </div>
+</div>

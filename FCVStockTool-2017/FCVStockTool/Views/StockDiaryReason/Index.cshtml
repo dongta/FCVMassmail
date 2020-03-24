@@ -1,0 +1,89 @@
+﻿@model StockDiaryReason
+@{
+    ViewBag.Title = @FCVStockTool.Language.StockDiaryReason.StockDiaryReason.Title;
+    }
+<div class="page-header">
+    <h1>@FCVStockTool.Language.StockDiaryReason.StockDiaryReason.Title</h1>
+</div>
+
+
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(m => m.Id)
+    <div class="panel panel-info">
+        <div class="panel-heading">@FCVStockTool.Language.StockDiaryReason.StockDiaryReason.InforDetail</div>
+        <!-- Default panel contents -->
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-6 form-group">
+                    <div>@FCVStockTool.Language.StockDiaryReason.StockDiaryReason.Text</div>
+                    @Html.TextBoxFor(m => m.Text, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.Text)
+                </div>
+                <div class="col-md-6 form-group">
+                    <div>@FCVStockTool.Language.StockDiaryReason.StockDiaryReason.Type</div>
+                    @Html.DropDownListFor(m => m.Type, (SelectList)ViewBag.Types, "-- " + @FCVStockTool.Language.StockDiary.StockDiary.ChooseType + " --", new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.Text)
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 button-list ">
+                    <button disabled="@(Model.Id > 0 ? true : false)" onclick="form.action = '/StockDiaryReason/Create?PageNo=@ViewBag.CurrentPage'" class="btn btn-info">@FCVStockTool.Language.Common.Common.CreateButton</button>
+                    <button disabled="@(Model.Id > 0 ? false : true)" onclick="form.action = '/StockDiaryReason/Edit?PageNo=@ViewBag.CurrentPage'" class="btn btn-info">@FCVStockTool.Language.Common.Common.UpdateButton</button>
+                    <a id="btnDelete" href="/StockDiaryReason/Delete/@(Model.Id)?PageNo=@ViewBag.CurrentPage" class="btn btn-info">@FCVStockTool.Language.Common.Common.DeleteButon</a>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+<div class="panel panel-info">
+    <div class="panel-body">
+        <div class="col-lg-8">
+        </div><!-- /.col-lg-6 -->
+        @using (Html.BeginForm())
+        {
+            <div class="col-lg-4">
+                <div class="input-group">
+
+                    <input id="searchString" name="searchString" type="text" class="form-control" placeholder="@FCVStockTool.Language.Common.Common.SearchButton...">
+                    <span class="input-group-btn">
+                        <button class="btn btn-default btn-search" type="submit">@FCVStockTool.Language.Common.Common.SearchButton</button>
+                    </span>
+
+                </div><!-- /input-group -->
+            </div><!-- /.col-lg-6 -->
+        }
+    </div>
+    <div class="table-responsive">
+        <table class="table">
+            <tr>
+                <th>@FCVStockTool.Language.StockDiaryReason.StockDiaryReason.Text</th>
+                <th></th>
+            </tr>
+            @foreach (var c in ViewBag.StockDiaryReasons)
+            {
+                <tr>
+                    <td>@c.Text</td>
+                    <td>@c.TypeName</td>
+                    <td><center><a href="/StockDiaryReason/Index/@c.Id?PageNo=@ViewBag.CurrentPage">@FCVStockTool.Language.Common.Common.EditButton</a></center></td>
+                </tr>
+            }
+        </table>
+    </div>
+    <div class="panel-footer">
+        <div class="btn-toolbar" role="toolbar" aria-label="...">
+            @for (int i = 1; i <= @ViewBag.TotalPage; i++)
+            {
+                <div class="btn-group" role="group" aria-label="...">
+                    <a href="/StockDiaryReason/Index?PageNo=@i" class="btn btn-default display-inline">@i</a>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+@section scripts{
+    <script>
+        $("#btnDelete").click(function () { return ConfirmDelete() });
+    </script>
+}

@@ -1,0 +1,188 @@
+﻿@model ProductItem
+@{
+    ViewBag.Title = @FCVStockTool.Language.ProductItem.ProItem.Detail;
+}
+
+
+<div class="page-header">
+    <h1>@FCVStockTool.Language.ProductItem.ProItem.Product <small>@(Model.Product != null ? @Model.Product.Name : "")</small></h1>
+</div>
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary();
+    @Html.HiddenFor(m => m.Id, new { id = "hdfId" })
+    @Html.Hidden("oldStockStatusId", @Model.StockStatusId)
+    @Html.Hidden("oldEmployeeId", @Model.EmployeeId)
+    <div class="panel panel-info">
+        <!-- Default panel contents -->
+        <div class="panel-heading">@FCVStockTool.Language.ProductItem.ProItem.InforDetail</div>
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-2 form-group">
+                    <div>@FCVStockTool.Language.ProductItem.ProItem.ShortCode</div>
+                    @Html.TextBoxFor(m => m.ShortCode, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.ShortCode)
+                </div>
+                <div class="col-md-2 form-group">
+                    <div>@FCVStockTool.Language.ProductItem.ProItem.Name</div>
+                    @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.Name)
+                </div>
+                <div class="col-md-2 form-group">
+                    <div>@FCVStockTool.Language.ProductItem.ProItem.Product</div>
+                    @Html.DropDownListFor(m => m.ProductId, (SelectList)ViewBag.Products, "-- " + @FCVStockTool.Language.ProductItem.ProItem.ChoosePro + " --", new { id="ddlProductId", @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.ProductId)
+                </div>
+                <div class="col-md-2 form-group">
+                    <div>@FCVStockTool.Language.ProductItem.ProItem.Serial</div>
+                    @Html.TextBoxFor(m => m.SerialNo, new { id="txtSerialNo", @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.SerialNo)
+                </div>
+                @*<div class="col-md-2 form-group">
+                    <div>@FCVStockTool.Language.ProductItem.ProItem.StatusPro</div>
+                    @Html.DropDownListFor(m => m.ProductStatusId, (SelectList)ViewBag.ProductStatuses, "-- " + @FCVStockTool.Language.ProductItem.ProItem.ChooseStatusPro + " --", new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.ProductStatusId)
+                </div>*@
+                <div class="col-md-2 form-group">
+                    <div>@FCVStockTool.Language.ProductItem.ProItem.StatusWarehouse</div>
+                    @Html.DropDownListFor(m => m.StockStatusId, (SelectList)ViewBag.StockStatuses, "-- " + @FCVStockTool.Language.ProductItem.ProItem.ChooseStatusWare + " --", new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.StockStatusId)
+                </div>
+                <div class="col-md-2 form-group">
+                    <div>@FCVStockTool.Language.ProductItem.ProItem.Building</div>
+                    @Html.DropDownListFor(m => m.BuildingId, (SelectList)ViewBag.Buildings, "-- " + @FCVStockTool.Language.ProductItem.ProItem.ChooseBuilding + " --", new { id = "ddlProductId", @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.BuildingId)
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-2 form-group">
+                    <div>@FCVStockTool.Language.ProductItem.ProItem.PONo</div>
+                    @Html.TextBoxFor(m => m.PONo, new { id = "txtSerialNo", @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.PONo)
+                </div>
+                <div class="col-md-2 form-group">
+                    <div>@FCVStockTool.Language.ProductItem.ProItem.PODate</div>
+                    @Html.TextBoxFor(m => m.PODate, "{0:MM/dd/yyyy}", new { @class = "form-control datepicker" })
+                    @Html.ValidationMessageFor(m => m.ShortCode)
+                </div>
+                <div class="col-md-2 form-group">
+                    <div>@FCVStockTool.Language.ProductItem.ProItem.ExpiryDate</div>
+                    @Html.TextBoxFor(m => m.ExpiryDate, "{0:MM/dd/yyyy}", new { @class = "form-control datepicker" })
+                    @Html.ValidationMessageFor(m => m.ExpiryDate)
+                </div>
+                <div class="col-md-2 form-group">
+                    <div>@FCVStockTool.Language.ProductItem.ProItem.Employee</div>
+                    @Html.DropDownListFor(m => m.EmployeeId, (SelectList)ViewBag.Employees, "-- " + @FCVStockTool.Language.ProductItem.ProItem.ChooseEmployee + " --", new {id="cboEmp", @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.EmployeeId)
+                </div>
+                @*<div class="col-md-2 form-group">
+                    <div>@FCVStockTool.Language.ProductItem.ProItem.CDROM</div>
+                    @Html.TextBoxFor(m => m.CDROM, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.CDROM)
+                </div>*@
+                <div class="col-md-2 form-group">
+                    <div>@FCVStockTool.Language.ProductItem.ProItem.Department</div>
+                    @Html.DropDownListFor(m => m.DepartmentId, (SelectList)ViewBag.Department, "-- " + @FCVStockTool.Language.ProductItem.ProItem.ChooseDepartment + " --", new { id = "ddlDep", @class = "form-control"})
+                </div>
+                <div class="col-md-2 form-group">
+                    <div>@FCVStockTool.Language.ProductItem.ProItem.Description</div>
+                    @Html.TextBoxFor(m => m.Description, new { @class = "form-control" })
+                </div>
+            </div>
+            <br />
+            <div class="row">
+                <div class="col-md-12 button-list ">
+                    <button onclick="form.action = '/ProductItem/Create?PageNo=@ViewBag.CurrentPage'" class="btn btn-info">@FCVStockTool.Language.ProductItem.ProItem.CreatePro</button>
+                    <button onclick="form.action = '/ProductItem/Edit?PageNo=@ViewBag.CurrentPage'" class="btn btn-info">@FCVStockTool.Language.ProductItem.ProItem.UpdateProItem</button>
+                    <a id="btnDelete" href="/ProductItem/Delete/@(Model.Id)?PageNo=@ViewBag.CurrentPage" class="btn btn-info">@FCVStockTool.Language.ProductItem.ProItem.DeleteProItem</a>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<div class="panel panel-info">
+    <!-- Default panel contents -->
+    <div class="panel-heading">@FCVStockTool.Language.ProductItem.ProItem.Warehouseshistory</div>
+    
+    <div class="table-responsive">
+        <table class="table">
+            <tr>
+                <th>@FCVStockTool.Language.ProductItem.ProItem.Date</th>
+                <th>@FCVStockTool.Language.ProductItem.ProItem.StatusWarehouse</th>
+                <th>@FCVStockTool.Language.ProductItem.ProItem.Description</th>
+            </tr>
+            <tbody id="divDiaries">
+          @*@foreach (var c in ViewBag.StockDiaries)
+            {
+                <tr>
+                    <td><center>@(string.Format("{0:dd/MM/yyyy}", c.DateEvent))</center></td>
+                    <td><center>@(c.Type == 1 ? "Nhập" : "Xuất")</center></td>
+                    <td><center>@(c.ProductStatus != null ? c.ProductStatus.Text : "")</center></td>
+                    <td><center>@(c.StockDiaryReason != null ? c.StockDiaryReason.Text : "")</center></td>
+                    <td><center><a href="/ProductItem/Index/@c.Id?PageNo=@ViewBag.CurrentPage">Edit</a></center></td>
+                </tr>
+            }*@
+            </tbody>
+        </table>
+    </div>
+</div>  
+
+<div class="btn-toolbar" role="toolbar" aria-label="...">
+
+    @for (int i = 1; i <= @ViewBag.TotalPage; i++)
+    {
+        <div class="btn-group" role="group" aria-label="...">
+            <a href="/ProductItem/Index?PageNo=i" class="btn btn-default display-inline">@i</a>
+        </div>
+    }
+</div>
+
+@section scripts{
+    <script>
+        $("#btnDelete").click(function () { return ConfirmDelete() });
+
+        $(function () {
+            $('.datepicker').datepicker({ dateFormat: 'dd/mm/yy' }).val();
+            
+            loadStockDiaries();
+            //loadReasons(0);
+        });
+        
+        function loadStockDiaries() {
+            var _productId = $('#hdfId').val();
+            if (_productId == 0 || _productId == '' ) return;
+            
+            $.ajax({
+                type: "GET",
+                url: "/StockDiary/GetStockDiary",
+                data: { ProductItemId: _productId },
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (respon) {
+                    $('#divDiaries').html('');
+                    $(respon).each(function (i, e) {
+                        var str = '';
+                        str += '<tr>';
+                        str += '<td>' + dateFormat($(e).attr("Date")) + '</td>';
+                        str += '<td>' + $(e).attr("Type") + '</td>';
+                        if ($(e).attr("Note") == null)
+                            str += '<td></td>';
+                        else
+                            str += '<td>' + $(e).attr("Note") + '</td>';
+                        str += "</tr>";
+                        $('#divDiaries').append(str);
+                    });
+
+                },
+                error: function (request, status, error) {
+                    alert(request.responseText);
+                }
+            });
+
+        }
+        customCombobox();
+        $('#cboEmp').combobox();
+    </script>
+}
+

@@ -1,0 +1,181 @@
+﻿@model StockDiary
+@{
+    ViewBag.Title = "Index";
+}
+
+<div class="page-header">
+    <h1>@FCVStockTool.Language.StockDiary.StockDiary.Warehouseshistory</h1>
+</div>
+@Html.ValidationSummary(true)
+
+@using (Html.BeginForm())
+{
+    @Html.HiddenFor(m => m.Id)
+    <div class="panel panel-info">
+        <div class="panel-heading">@FCVStockTool.Language.StockDiary.StockDiary.InforDetail</div>
+        <!-- Default panel contents -->
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-3 form-group">
+                    <div>@FCVStockTool.Language.StockDiary.StockDiary.Code</div>
+                    @Html.TextBoxFor(m => m.Code, new { @class = "form-control", @readonly = "readonly" })
+                </div>
+                <div class="col-md-3 form-group">
+                    <div>@FCVStockTool.Language.StockDiary.StockDiary.Product</div>
+                    @Html.DropDownListFor(m => m.ProductId, (SelectList)ViewBag.Products, "-- " + @FCVStockTool.Language.StockDiary.StockDiary.ChoosePro + " --", new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.ProductId)
+                </div>
+                <div class="col-md-3 form-group">
+                    <div>@FCVStockTool.Language.StockDiary.StockDiary.Serial</div>
+                    @Html.TextBoxFor(m => m.SerialNo, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.SerialNo)
+                </div>
+                <div class="col-md-3 form-group">
+                    <div>@FCVStockTool.Language.StockDiary.StockDiary.StatusWare</div>
+                    @Html.DropDownListFor(m => m.ProductStatusId, (SelectList)ViewBag.ProductStatuses, "-- " + @FCVStockTool.Language.StockDiary.StockDiary.Choosestatus + " --", new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3 form-group">
+                    <div>@FCVStockTool.Language.StockDiary.StockDiary.Type</div>
+                    @*@Html.DropDownListFor(m => m.Type, (SelectList)ViewBag.Types, "-- Nhập/Xuất --", new { @class = "form-control" })*@
+                    @Html.DropDownList("Type", new List<SelectListItem>
+                                    {
+                                        new SelectListItem{ Text="-- "+ @FCVStockTool.Language.StockDiary.StockDiary.ChooseType + " --", Value=""},
+                                        new SelectListItem{ Text=@FCVStockTool.Language.StockDiary.StockDiary.Import, Value="1"},
+                                        new SelectListItem{ Text=@FCVStockTool.Language.StockDiary.StockDiary.Export, Value="2"}
+                                    }, new { @class = "form-control" }
+                                )
+                </div>
+                <div class="col-md-3 form-group">
+                    <div>@FCVStockTool.Language.StockDiary.StockDiary.Reason</div>
+                    @Html.DropDownListFor(m => m.StockDiaryReasonId, (SelectList)ViewBag.StockDiaryReasons, "-- " + @FCVStockTool.Language.StockDiary.StockDiary.ChooseReason + " --", new { @class = "form-control" })
+                </div>
+                <div class="col-md-3 form-group">
+                    <div>@FCVStockTool.Language.StockDiary.StockDiary.DateEvent</div>
+                    @Html.TextBoxFor(m => m.DateEvent, "{0:dd/MM/yyyy}", new { @class = "form-control datepicker" })
+                </div>
+                <div class="col-md-3 form-group">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 button-list ">
+                    <button disabled="@(Model.Id > 0 ? true : false)" onclick="form.action = '/StockDiary/Create?PageNo=@ViewBag.CurrentPage'" class="btn btn-info">@FCVStockTool.Language.StockDiary.StockDiary.CreateWare</button>
+                    <button disabled="@(Model.Id > 0 ? false : true)" onclick="form.action = '/StockDiary/Edit?PageNo=@ViewBag.CurrentPage'" class="btn btn-info">@FCVStockTool.Language.StockDiary.StockDiary.UpdateWare</button>
+                    <a id="btnDelete" href="/StockDiary/Delete/@(Model.Id)?PageNo=@ViewBag.CurrentPage" class="btn btn-info">@FCVStockTool.Language.StockDiary.StockDiary.DeleteWare</a>
+                    <button id="btnImport" class="btn btn-info" data-toggle="modal" data-target="#myModal">@FCVStockTool.Language.StockDiary.StockDiary.Import</button>
+                    <button id="btnExport" class="btn btn-info">@FCVStockTool.Language.StockDiary.StockDiary.Export</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+<div class="panel panel-info">
+    <div class="panel-body">
+        <div class="col-lg-8">
+        </div><!-- /.col-lg-6 -->
+        @using (Html.BeginForm())
+        {
+            <div class="col-lg-4">
+                <div class="input-group">
+
+                    <input id="searchString" name="searchString" type="text" class="form-control" placeholder="@FCVStockTool.Language.StockDiary.StockDiary.Search...">
+                    <span class="input-group-btn">
+                        <button class="btn btn-default btn-search" type="submit">@FCVStockTool.Language.StockDiary.StockDiary.Search</button>
+                    </span>
+
+                </div><!-- /input-group -->
+            </div><!-- /.col-lg-6 -->
+        }
+
+
+    </div>
+    <div class="table-responsive">
+        <table class="table">
+            <tr>
+                <th>@FCVStockTool.Language.StockDiary.StockDiary.Code</th>
+                <th>@FCVStockTool.Language.StockDiary.StockDiary.Product</th>
+                <th>@FCVStockTool.Language.StockDiary.StockDiary.Serial</th>
+                <th>@FCVStockTool.Language.StockDiary.StockDiary.StatusWare</th>
+                <th>@FCVStockTool.Language.StockDiary.StockDiary.Reason</th>
+                <th>@FCVStockTool.Language.StockDiary.StockDiary.Type</th>
+                <th>@FCVStockTool.Language.StockDiary.StockDiary.DateEvent</th>
+                <th></th>
+            </tr>
+            @foreach (var c in ViewBag.StockDiaries)
+            {
+                <tr>
+                    <td><center>@c.Code</center></td>
+                    <td><center>@(c.Product != null ? c.Product.Name : "")</center></td>
+                    <td><center>@c.SerialNo</center></td>
+                    <td><center>@(c.ProductStatus != null ? c.ProductStatus.Text : "")</center></td>
+                    <td><center>@(c.StockDiaryReason != null ? c.StockDiaryReason.Text : "")</center></td>
+                    <td><center>@(c.TypeName)</center></td>
+                    <td><center>@(c.DateEvent != null ? string.Format("{0:dd/MM/yyyy}", c.DateEvent) : "")</center></td>
+                    <td><center><a href="/StockDiary/Index/@c.Id?PageNo=@ViewBag.CurrentPage">@FCVStockTool.Language.StockDiary.StockDiary.EditWare</a></center></td>
+                </tr>
+            }
+        </table>
+    </div>
+    <div class="panel-footer">
+        <div class="btn-toolbar" role="toolbar" aria-label="...">
+            @for (int i = 1; i <= @ViewBag.TotalPage; i++)
+            {
+                <div class="btn-group" role="group" aria-label="...">
+                    <a href="/StockDiary/Index?PageNo=@i" class="btn btn-default display-inline">@i</a>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form id="frmImport" action="/StockDiary/Import" method="post" enctype="multipart/form-data">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">@FCVStockTool.Language.StockDiary.StockDiary.ImportWare</h4>
+                </div>
+                <div class="modal-body">
+                    <label for="file">@FCVStockTool.Language.StockDiary.StockDiary.FileName:</label>
+                    <input type="file" name="file" id="file" />
+                </div>
+                <div class="modal-footer">
+                    <button id="btnOK" type="button" class="btn btn-primary">@FCVStockTool.Language.StockDiary.StockDiary.Import</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">@FCVStockTool.Language.StockDiary.StockDiary.Close</button>
+                </div>
+            </form>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+@section scripts{
+    <script>
+        $("#btnDelete").click(function () { return ConfirmDelete() });
+        $("button#btnOK").click(function () {
+            var formData = new FormData();
+            var totalFiles = $("#file")[0].files.length;
+            for (var i = 0; i < totalFiles; i++) {
+                var file = $("#file")[0].files[i];
+                formData.append("file", file);
+            }
+            $.ajax({
+                type: "POST",
+                url: "/StockDiary/Import",
+                data: formData,
+                dataType: 'json',
+                contentType: false,
+                processData: false,
+                success: function (msg) {
+                    $("#myModal").modal('hide');
+                    location.reload();
+                },
+                error: function () {
+                    alert("failure");
+                }
+            });
+        });
+        $(function () {
+            $('.datepicker').datepicker({ dateFormat: 'dd/M/yy' }).val();
+        });
+    </script>
+}

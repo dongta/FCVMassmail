@@ -1,0 +1,140 @@
+﻿@model Accessory
+@{
+    ViewBag.Title = @FCVStockTool.Language.Accessory.Accessory.Title;
+}
+<div class="page-header">
+    <h1>@FCVStockTool.Language.Accessory.Accessory.Title</h1>
+</div>
+
+
+@using (Html.BeginForm("Index","Accessory"))
+{
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(m => m.Id)
+    <div class="panel panel-info">
+        <div class="panel-heading">@FCVStockTool.Language.Accessory.Accessory.InforDetail</div>
+        <!-- Default panel contents -->
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-4 form-group">
+                    <div>@FCVStockTool.Language.Accessory.Accessory.Category</div>
+                    @Html.DropDownListFor(m => m.CategoryId, (SelectList)ViewBag.Categories, "-- " + @FCVStockTool.Language.Accessory.Accessory.ChooseCate + " --", new { id = "ddlCategoryId", @class = "form-control", onchange = "this.form.submit();" })
+                    @Html.ValidationMessageFor(m => m.CategoryId)
+                </div>
+                <div class="col-md-4 form-group">
+                    <div>@FCVStockTool.Language.Accessory.Accessory.Name</div>
+                    @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.Name)
+                </div>
+                <div class="col-md-4 form-group">
+                    <div>@FCVStockTool.Language.Accessory.Accessory.Amount</div>
+                    @Html.TextBoxFor(m => m.Amount, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.Amount)
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 form-group">
+                    <div>@FCVStockTool.Language.ProductItem.ProItem.Description</div>
+                    @Html.TextBoxFor(m => m.Description, new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 button-list ">
+                    <button disabled="@(Model.Id > 0 ? true : false)" onclick="form.action = '/Accessory/Create?PageNo=@ViewBag.CurrentPage'" class="btn btn-info">@FCVStockTool.Language.Accessory.Accessory.CreateCate</button>
+                    <button disabled="@(Model.Id > 0 ? false : true)" onclick="form.action = '/Accessory/Edit?PageNo=@ViewBag.CurrentPage'" class="btn btn-info">@FCVStockTool.Language.Accessory.Accessory.UpdateCate</button>
+                    <a id="btnDelete" href="/Accessory/Delete/@(Model.Id)?PageNo=@ViewBag.CurrentPage" class="btn btn-info">@FCVStockTool.Language.Accessory.Accessory.DeleteCate</a>
+                    <button id="btnImport" class="btn btn-info" data-toggle="modal" data-target="#myModal">Import</button>
+                    <button id="btnExport" onclick="form.action = '/Accessory/Export'" class="btn btn-info cancel">Export</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+<div class="panel panel-info">
+    <div class="panel-body">
+        <div class="col-lg-8">
+        </div><!-- /.col-lg-6 -->
+        @using (Html.BeginForm())
+        {
+            <div class="col-lg-4">
+                <div class="input-group">
+
+                    <input id="searchString" name="searchString" type="text" class="form-control" placeholder="@FCVStockTool.Language.Accessory.Accessory.Search...">
+                    <span class="input-group-btn">
+                        <button class="btn btn-default btn-search" type="submit">@FCVStockTool.Language.Accessory.Accessory.Search</button>
+                    </span>
+
+                </div><!-- /input-group -->
+            </div><!-- /.col-lg-6 -->
+        }
+    </div>
+    <div class="table-responsive">
+        <table class="table">
+            <tr>
+                <th>@FCVStockTool.Language.Accessory.Accessory.Category</th>
+                <th>@FCVStockTool.Language.Accessory.Accessory.Name</th>
+                <th>@FCVStockTool.Language.Accessory.Accessory.Amount</th>
+                <th>@FCVStockTool.Language.Accessory.Accessory.ImportOn</th>
+                <th>@FCVStockTool.Language.Accessory.Accessory.ImportUser</th>
+                <th></th>
+                <th></th>
+                <th></th>
+            </tr>
+            @foreach (var c in ViewBag.Accessories)
+            {
+                <tr>
+                    <td>@(c.Category !=null? c.Category.Name:"")</td>
+                    <td>@c.Name</td>
+                    <td>@c.Amount</td>
+                    <td><center>@(c.ImportOn != null ? string.Format("{0:dd/MM/yyyy HH:mm}", c.ImportOn) : "")</center></td>
+                    <td>@(c.ImportByUser != null ? c.ImportByUser.DisplayName : "")</td>
+                    <td><center><a href="/Accessory/Index/@c.Id?PageNo=@ViewBag.CurrentPage&categoryid=@c.CategoryId">@FCVStockTool.Language.Accessory.Accessory.EditCate</a></center></td>
+                    <td><center><a id="btnExportToUser" href="/AccessoryImport/Index?accesoryid=@(c.Id)" class="btn btn-info">@FCVStockTool.Language.Accessory.Accessory.ImportHistory</a></center></td>
+                    <td><center><a id="btnExportToUser" href="/AccessoryExport/Index?accesoryid=@(c.Id)" class="btn btn-info">@FCVStockTool.Language.Accessory.Accessory.ExportToUser</a></center></td>
+                </tr>
+            }
+        </table>
+    </div>
+    <div class="panel-footer">
+        <div class="btn-toolbar" role="toolbar" aria-label="...">
+            @for (int i = 1; i <= @ViewBag.TotalPage; i++)
+            {
+                <div class="btn-group" role="group" aria-label="...">
+                    <a href="/Accessory/Index?PageNo=@i" class="btn btn-default display-inline">@i</a>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form id="frmImport" action="/Accessory/Import" method="post" enctype="multipart/form-data">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">@FCVStockTool.Language.Accessory.Accessory.ImportCate</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <label for="file">@FCVStockTool.Language.Accessory.Accessory.FileName:</label>
+                        <input type="file" name="file" id="file" />
+                    </div>
+                    <div class="row">
+                        <a href="/Files/ImportTemplates/Accessory_Template.xlsx">Template</a>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="btnOK" type="submit" class="btn btn-primary">Import</button>
+                    <button type="button" class="btn btn-default cancel">@FCVStockTool.Language.Accessory.Accessory.Close</button>
+                </div>
+            </form>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+@section scripts{
+    <script>
+        $("#btnDelete").click(function () { return ConfirmDelete() });
+    </script>
+}
+
+

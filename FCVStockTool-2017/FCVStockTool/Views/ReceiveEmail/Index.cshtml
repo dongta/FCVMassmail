@@ -1,0 +1,93 @@
+﻿@model FCVStockTool.Models.ReceiveEmail
+@{
+    ViewBag.Title = @FCVStockTool.Language.ReceiveEmail.ReceiveEmail.Title;
+}
+
+<h2> @FCVStockTool.Language.ReceiveEmail.ReceiveEmail.Title</h2>
+
+@using (Html.BeginForm())
+{
+
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(m => m.Id)
+    <div class="panel panel-info">
+        <div class="panel-heading">@FCVStockTool.Language.ReceiveEmail.ReceiveEmail.InforDetail</div>
+        <!-- Default panel contents -->
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-3 form-group">
+                    <div>@FCVStockTool.Language.ReceiveEmail.ReceiveEmail.Name</div>
+                    @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.Name)
+                </div>
+                <div class="col-md-4 form-group">
+                    <div>@FCVStockTool.Language.ReceiveEmail.ReceiveEmail.Email</div>
+                    @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.Email)
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="col-md-12 button-list ">
+                    <button disabled="@(Model.Id > 0 ? true : false)" onclick="form.action = '/ReceiveEmail/Create?PageNo=@ViewBag.CurrentPage'" class="btn btn-info">@FCVStockTool.Language.ReceiveEmail.ReceiveEmail.CreateRE</button>
+                    <button disabled="@(Model.Id > 0 ? false : true)" onclick="form.action = '/ReceiveEmail/Edit?PageNo=@ViewBag.CurrentPage'" class="btn btn-info">@FCVStockTool.Language.ReceiveEmail.ReceiveEmail.UpdateRE</button>
+                    <a id="btnDelete" href="/ReceiveEmail/Delete/@(Model.Id)?PageNo=@ViewBag.CurrentPage" class="btn btn-info">@FCVStockTool.Language.ReceiveEmail.ReceiveEmail.DeleteRE</a>
+
+                </div>
+            </div>
+        </div>
+    </div>
+}
+<div class="panel panel-info">
+    <div class="panel-body">
+        <div class="col-lg-8">
+        </div><!-- /.col-lg-6 -->
+        @using (Html.BeginForm())
+        {
+            <div class="col-lg-4">
+                <div class="input-group">
+
+                    <input id="searchString" name="searchString" type="text" class="form-control" placeholder="@FCVStockTool.Language.ReceiveEmail.ReceiveEmail.Search...">
+                    <span class="input-group-btn">
+                        <button class="btn btn-default btn-search" type="submit">@FCVStockTool.Language.ReceiveEmail.ReceiveEmail.Search</button>
+                    </span>
+
+                </div><!-- /input-group -->
+            </div><!-- /.col-lg-6 -->
+        }
+    </div>
+    <div class="table-responsive">
+        <table class="table">
+            <tr>
+                <th>@FCVStockTool.Language.ReceiveEmail.ReceiveEmail.Name</th>
+                <th>@FCVStockTool.Language.ReceiveEmail.ReceiveEmail.Email</th>
+                <th></th>
+            </tr>
+            @foreach (var c in ViewBag.ReceiveEmail)
+            {
+                <tr>
+                    <td><center>@c.Name</center></td>
+                    <td><center>@c.Email</center></td>
+                    <td><center><a href="/ReceiveEmail/Index/@c.Id?PageNo=@ViewBag.CurrentPage">@FCVStockTool.Language.ReceiveEmail.ReceiveEmail.EditRE</a></center></td>
+                </tr>
+            }
+
+        </table>
+    </div>
+    <div class="panel-footer">
+        <div class="btn-toolbar" role="toolbar" aria-label="...">
+            @for (int i = 1; i <= @ViewBag.TotalPage; i++)
+            {
+                <div class="btn-group" role="group" aria-label="...">
+                    <a href="/ReceiveEmail/Index?PageNo=@i" class="btn btn-default display-inline">@i</a>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script>
+        $("#btnDelete").click(function () { return ConfirmDelete() });
+    </script>
+}

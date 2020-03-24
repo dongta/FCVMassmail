@@ -1,0 +1,189 @@
+﻿@model User
+@{
+    ViewBag.Title = @FCVStockTool.Language.User.User.ListUser;
+}
+
+<div class="page-header">
+    <h1>@FCVStockTool.Language.User.User.ListUser</h1>
+</div>
+@Html.ValidationSummary(true)
+
+@using (Html.BeginForm())
+{
+    @Html.HiddenFor(m => m.Id)
+    <div class="panel panel-info">
+        <div class="panel-heading">@FCVStockTool.Language.User.User.InforDetail</div>
+        <!-- Default panel contents -->
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-2 form-group">
+                    <div>@FCVStockTool.Language.User.User.UserLogin</div>
+                    @Html.TextBoxFor(m => m.Username, new { id ="txtUsername",@class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.Username)
+                </div>
+                <div class="col-md-3 form-group">
+                    <div>@FCVStockTool.Language.User.User.FullName</div>
+                    @Html.TextBoxFor(m => m.DisplayName, new {id="txtDisplayName", @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.DisplayName)
+                </div>
+                <div class="col-md-1 form-group">
+                    <div>@FCVStockTool.Language.User.User.Activated</div>
+                    @Html.CheckBoxFor(m => m.Active, new { @checked = "checked" })
+                </div>
+                <div class="col-md-3 form-group">
+                    <div>@FCVStockTool.Language.User.User.Department</div>
+                    @Html.DropDownListFor(m => m.DepartmentId, (SelectList)ViewBag.Departments, "-- " + @FCVStockTool.Language.User.User.ChooseDepartment + " --", new { @class = "form-control" })
+                </div>
+                <div class="col-md-3 form-group">
+                    <div>@FCVStockTool.Language.User.User.Role</div>
+                    @Html.DropDownListFor(m => m.RoleId, (SelectList)ViewBag.Roles, "-- " + @FCVStockTool.Language.User.User.ChooseRole + " --", new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 button-list ">
+                    <button disabled="@(Model.Id > 0 ? true : false)" onclick="form.action = '/User/Create?PageNo=@ViewBag.CurrentPage'" class="btn btn-info">@FCVStockTool.Language.User.User.CreateUser</button>
+                    <button disabled="@(Model.Id > 0 ? false : true)" onclick="form.action = '/User/Edit?PageNo=@ViewBag.CurrentPage'" class="btn btn-info">@FCVStockTool.Language.User.User.UpdateUser</button>
+                    <a id="btnDelete" href="/User/Delete/@(Model.Id)?PageNo=@ViewBag.CurrentPage" class="btn btn-info">@FCVStockTool.Language.User.User.DeleteUser</a>
+                    <button id="btnImport" class="btn btn-info" data-toggle="modal" data-target="#myModal">@FCVStockTool.Language.User.User.Import</button>
+                    <button id="btnExport" class="btn btn-info">@FCVStockTool.Language.User.User.Export</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+<div class="panel panel-info">
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-lg-8">
+            </div><!-- /.col-lg-6 -->
+            @using (Html.BeginForm())
+            {
+                <div class="col-lg-4">
+                    <div class="input-group">
+
+                        <input id="searchString" name="searchString" type="text" class="form-control" placeholder="@FCVStockTool.Language.User.User.Search...">
+                        <span class="input-group-btn">
+                            <button class="btn btn-default btn-search" type="submit">@FCVStockTool.Language.User.User.Search</button>
+                        </span>
+
+                    </div><!-- /input-group -->
+                </div><!-- /.col-lg-6 -->
+            }
+        </div><!-- /.row -->
+    </div>
+    <div class="table-responsive">
+        <table class="table">
+            <tr>
+                <th>@FCVStockTool.Language.User.User.UserLogin</th>
+                <th>@FCVStockTool.Language.User.User.FullName</th>
+                <th>@FCVStockTool.Language.User.User.Department</th>
+                <th>@FCVStockTool.Language.User.User.Role</th>
+                <th>@FCVStockTool.Language.User.User.Activated</th>
+                <th></th>
+            </tr>
+            @foreach (var c in ViewBag.Users)
+            {
+                <tr>
+                    <td>@c.Username</td>
+                    <td>@c.DisplayName</td>
+                    <td>@(c.Department != null? c.Department.Name:"")</td>
+                    <td>
+                        @if (c.Role != null)
+                        {
+                        <center>@c.Role.Name</center>
+                        }
+                        else
+                        {
+                        <center></center>
+                        }
+                    </td>
+                    <td><center>@c.Active</center></td>
+                    <td><center><a href="/User/Index/@c.Id?PageNo=@ViewBag.CurrentPage">@FCVStockTool.Language.User.User.EditUser</a></center></td>
+                </tr>
+            }
+        </table>
+    </div>
+
+    <div class="panel-footer">
+        <div class="btn-toolbar" role="toolbar" aria-label="...">
+            @for (int i = 1; i <= @ViewBag.TotalPage; i++)
+            {
+                <div class="btn-group" role="group" aria-label="...">
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form id="frmImport" action="/User/Import" method="post" enctype="multipart/form-data">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">@FCVStockTool.Language.User.User.ImportUser</h4>
+                </div>
+                <div class="modal-body">
+                    <label for="file">@FCVStockTool.Language.User.User.FileName:</label>
+                    <input type="file" name="file" id="file" />
+                </div>
+                <div class="modal-footer">
+                    <button id="btnOK" type="button" class="btn btn-primary">@FCVStockTool.Language.User.User.Import</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">@FCVStockTool.Language.User.User.Close</button>
+                </div>
+            </form>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+@section scripts{
+    <script>
+        $("#btnDelete").click(function () { return ConfirmDelete() });
+        $("button#btnOK").click(function () {
+            var formData = new FormData();
+            var totalFiles = $("#file")[0].files.length;
+            for (var i = 0; i < totalFiles; i++) {
+                var file = $("#file")[0].files[i];
+                formData.append("file", file);
+            }
+            $.ajax({
+                type: "POST",
+                url: "/User/Import",
+                data: formData,
+                dataType: 'json',
+                contentType: false,
+                processData: false,
+                success: function (msg) {
+                    $("#myModal").modal('hide');
+                    location.reload();
+                },
+                error: function () {
+                    alert("failure");
+                }
+            });
+        });
+
+        $("#txtUsername").change(function () {
+            var username = $("#txtUsername").val();
+            if (username.length > 0) {
+                $.ajax({
+                    type: "POST",
+                    url: "/User/FindADUserInfor?userName=" + username,
+                    dataType: 'json',
+                    contentType: false,
+                    processData: false,
+                    success: function (msg) {
+                        if (msg.results != null) {
+                            $("#txtDisplayName").val(msg.results.DisplayName);
+                        } else {
+                            alert("Không tìm thấy người dùng!");
+                        }
+
+                    },
+                    error: function () {
+                        alert("Có lỗi xảy ra!");
+                    }
+                });
+            }
+        });
+    </script>
+}

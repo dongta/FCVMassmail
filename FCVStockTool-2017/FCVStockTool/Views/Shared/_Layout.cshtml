@@ -1,0 +1,108 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>@ViewBag.Title - IT's Stock Tool</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+<body>
+    @{
+        var cookie = Request.Cookies["StockTool"];
+        var RoleName = string.Empty;
+        if (cookie != null && cookie["Role"] != null)
+        {
+            RoleName = cookie["Role"].ToString();
+        }
+    }
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                @Html.ActionLink("IT's Stock Tool", "Index", "ProductTicket", new { area = "" }, new { @class = "navbar-brand" })
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    @if (RoleName != string.Empty)
+                    {
+
+                        <li>@Html.ActionLink(@FCVStockTool.Language.Resource.ProductTicket, "Index", "ProductTicket")</li>
+                        if (RoleName.Equals("Administrators", StringComparison.OrdinalIgnoreCase))
+                        {
+                            <li>
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                                    @FCVStockTool.Language.Resource.Inventory <span class="caret"></span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li>@Html.ActionLink(@FCVStockTool.Language.Resource.ProductItem, "Index", "ProductItem")</li>
+                                    <li>@Html.ActionLink(@FCVStockTool.Language.Resource.Accessories, "Index", "Accessory")</li>
+                                    <li>@Html.ActionLink(@FCVStockTool.Language.Resource.StockDiary, "Index", "StockDiary")</li>
+                                </ul>
+                            </li>
+                        }
+                        if (RoleName.Equals("Administrators", StringComparison.OrdinalIgnoreCase) || RoleName.Equals("Accountants", StringComparison.OrdinalIgnoreCase))
+                        {
+                            <li>
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                                    @FCVStockTool.Language.Resource.Accountant <span class="caret"></span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li>@Html.ActionLink(@FCVStockTool.Language.Resource.Invoices, "Index", "Invoice")</li>
+                                    <li>@Html.ActionLink(@FCVStockTool.Language.Resource.AccountantAsset, "Index", "AccountantAsset")</li>
+                                </ul>
+                            </li>
+                        }
+                        if (RoleName.Equals("Administrators", StringComparison.OrdinalIgnoreCase))
+                        {
+                            <li>
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                                    @FCVStockTool.Language.Resource.Dictionary <span class="caret"></span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li>@Html.ActionLink(@FCVStockTool.Language.Resource.Report, "Index", "Report")</li>
+                                    <li role="separator" class="divider"></li>
+                                    <li>@Html.ActionLink(@FCVStockTool.Language.Resource.Department, "Index", "Department")</li>
+                                    <li>@Html.ActionLink(@FCVStockTool.Language.Resource.Employee, "Index", "Employee")</li>
+                                    <li role="separator" class="divider"></li>
+                                    <li>@Html.ActionLink(@FCVStockTool.Language.Resource.Category, "Index", "Category")</li>
+                                    <li>@Html.ActionLink(@FCVStockTool.Language.Resource.Product, "Index", "Product")</li>
+                                    <li>@Html.ActionLink(@FCVStockTool.Language.Resource.Supplier, "Index", "Supplier")</li>
+                                    <li role="separator" class="divider"></li>
+                                    @*<li>@Html.ActionLink(@FCVStockTool.Language.Resource.ProductStatus, "Index", "ProductStatus")</li>*@
+                                    <li>@Html.ActionLink(@FCVStockTool.Language.Resource.StockStatus, "Index", "StockStatus")</li>
+                                    @*<li>@Html.ActionLink(@FCVStockTool.Language.Resource.StockDiaryReason, "Index", "StockDiaryReason")</li>*@
+                                    <li role="separator" class="divider"></li>
+                                    <li>@Html.ActionLink(@FCVStockTool.Language.Resource.ReceiveEmail, "Index", "ReceiveEmail")</li>
+                                    <li>@Html.ActionLink(@FCVStockTool.Language.Resource.ConfigurationEmail, "Index", "ConfigEmail")</li>
+                                    <li role="separator" class="divider"></li>
+                                    <li>@Html.ActionLink(@FCVStockTool.Language.Resource.User, "Index", "User")</li>
+                                    <li>@Html.ActionLink(@FCVStockTool.Language.Resource.Role, "Index", "Role")</li>
+                                </ul>
+                            </li>
+                        }
+                    }
+                </ul>
+               
+                    @Html.Partial("_LoginPartial")
+</div>
+        </div>
+    </div>
+    <div class="container body-content">
+        @RenderBody()
+        <hr />
+        <footer>
+            <p>&copy; @DateTime.Now.Year - IVG VietNam</p>
+        </footer>
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

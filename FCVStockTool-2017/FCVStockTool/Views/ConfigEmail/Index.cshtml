@@ -1,0 +1,57 @@
+﻿@model FCVStockTool.Models.ConfigEmail
+@{
+    ViewBag.Title = @FCVStockTool.Language.ConfigEmail.ConfigEmail.ConfigurationEmail;
+}
+
+<h2>@FCVStockTool.Language.ConfigEmail.ConfigEmail.ConfigurationEmail</h2>
+@using (Html.BeginForm("Create", "ConfigEmail", FormMethod.Post))
+{
+    @Html.HiddenFor(m => m.Id)
+    <div class="panel panel-info">
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-4 form-group">
+                    <div>@FCVStockTool.Language.ConfigEmail.ConfigEmail.Host</div>
+                    @Html.TextBoxFor(m => m.Host, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.Host)
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4 form-group">
+                    <div>@FCVStockTool.Language.ConfigEmail.ConfigEmail.Name</div>
+                    @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4 form-group">
+                    <div>@FCVStockTool.Language.ConfigEmail.ConfigEmail.EmailFrom</div>
+                    @Html.TextBoxFor(m => m.EmailFrom, new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4 form-group">
+                    <div>@FCVStockTool.Language.ConfigEmail.ConfigEmail.UserName</div>
+                    @Html.TextBoxFor(m => m.Username, new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4 form-group">
+                    <div>@FCVStockTool.Language.ConfigEmail.ConfigEmail.PassWord</div>
+                    @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4 form-group">
+                    <div>@FCVStockTool.Language.ConfigEmail.ConfigEmail.Subject</div>
+                    @Html.TextAreaFor(m => m.Subject, new { row = 3, @class = "form-control", style = "max-width: 349px;" })
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-4 button-list ">
+                    <input type="submit" class="btn btn-info" value="@FCVStockTool.Language.ConfigEmail.ConfigEmail.Submit" />
+                </div>
+            </div>
+        </div>
+    </div>
+}

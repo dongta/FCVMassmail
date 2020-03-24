@@ -1,0 +1,266 @@
+﻿@model ProductTicket
+@{
+    ViewBag.Title = @FCVStockTool.Language.ProductTicket.ProTicket.ProductTicket +Model.Code;
+}
+
+<div class="page-header">
+    <h1>@FCVStockTool.Language.ProductTicket.ProTicket.ProductTicket <small>@Model.Code</small></h1>
+</div>
+@Html.ValidationSummary(true)
+@{
+    var cookie = Request.Cookies["StockTool"];
+    var RoleName = string.Empty;
+    if (cookie != null && cookie["Role"] != null)
+    {
+        RoleName = cookie["Role"].ToString();
+    }
+}
+@using (Html.BeginForm())
+{
+    @Html.HiddenFor(m => m.Id, new { @id="hdfId"})
+    <div class="panel panel-info">
+        <div class="panel-heading">@FCVStockTool.Language.ProductTicket.ProTicket.InforDetail</div>
+        <!-- Default panel contents -->
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-4 form-group">
+                    <div>@FCVStockTool.Language.ProductTicket.ProTicket.Product</div>
+                    @Html.DropDownListFor(m => m.CategoryId, (SelectList)ViewBag.Categories, "-- " + @FCVStockTool.Language.ProductTicket.ProTicket.ChoosePro + " --", new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.CategoryId)
+                </div>
+                <div class="col-md-4 form-group">
+                    <div>@FCVStockTool.Language.ProductTicket.ProTicket.Employee</div>
+                    @Html.DropDownListFor(m => m.EmployeeId, (SelectList)ViewBag.Employees, "-- " + @FCVStockTool.Language.ProductTicket.ProTicket.ChooseEmp + " --", new { id = "cboEmp", @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.EmployeeId)
+                </div>
+                <div class="col-md-4 form-group">
+                    <div>@FCVStockTool.Language.ProductTicket.ProTicket.Status</div>
+                    @Html.DropDownListFor(m => m.TicketStatusId, (SelectList)ViewBag.TicketStatuses, "-- " + @FCVStockTool.Language.ProductTicket.ProTicket.ChooseStatus + " --", new { @class = "form-control", @disabled = "true" })
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 form-group">
+                    <div>@FCVStockTool.Language.ProductTicket.ProTicket.Reason</div>
+                    @Html.TextBoxFor(m => m.Reason, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.Reason)
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-2 form-group">
+                    <div>@FCVStockTool.Language.ProductTicket.ProTicket.Requesters</div>
+                    <label>@(Model.RequestBy != null ? Model.RequestBy.DisplayName : "")</label>
+                </div>
+                <div class="col-md-2 form-group">
+                    <div>@FCVStockTool.Language.ProductTicket.ProTicket.Requestdate</div>
+                    <label>@(string.Format("{0:dd/MM/yyyy}", Model.RequestOn))</label>
+                </div>
+                <div class="col-md-2 form-group">
+                    <div>@FCVStockTool.Language.ProductTicket.ProTicket.Approver</div>
+                    <label>@(Model.ApproveBy != null ? Model.ApproveBy.DisplayName : "")</label>
+                </div>
+                <div class="col-md-2 form-group">
+                    <div>@FCVStockTool.Language.ProductTicket.ProTicket.Approvaldate</div>
+                    <label>@(string.Format("{0:dd/MM/yyyy}", Model.ApproveOn))</label>
+                </div>
+                <div class="col-md-2 form-group">
+                    <div>@FCVStockTool.Language.ProductTicket.ProTicket.PeopleExport</div>
+                    <label>@(Model.ExportBy != null ? Model.ExportBy.DisplayName : "")</label>
+                </div>
+                <div class="col-md-2 form-group">
+                    <div>@FCVStockTool.Language.ProductTicket.ProTicket.ExportDate</div>
+                    <label>@(string.Format("{0:dd/MM/yyyy}", Model.ExportOn))</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 form-group">
+                    <div>@FCVStockTool.Language.ProductTicket.ProTicket.Description</div>
+                    @Html.TextBoxFor(m => m.Description, new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="row">
+                
+                <div class="col-md-12 button-list ">
+                    <button disabled="@(Model.Id >0? true: false)" onclick="form.action = '/ProductTicket/Create?PageNo=@ViewBag.CurrentPage'" class="btn btn-info">@FCVStockTool.Language.ProductTicket.ProTicket.CreatePro</button>
+                    <button disabled="@(Model.Id >0 && Model.TicketStatusId<2?false: true)" onclick="form.action = '/ProductTicket/Edit?PageNo=@ViewBag.CurrentPage'" class="btn btn-info">@FCVStockTool.Language.ProductTicket.ProTicket.UpdatePro</button>
+                    @if (RoleName.Equals("Administrators", StringComparison.OrdinalIgnoreCase))
+                    { 
+                        <button disabled="@(Model.Id >0 && Model.TicketStatusId==1?false: true)" onclick="form.action = '/ProductTicket/Approve?PageNo=@ViewBag.CurrentPage'" class="btn btn-primary">@FCVStockTool.Language.ProductTicket.ProTicket.Approvepro</button>
+    <button disabled="@(Model.Id >0 && Model.TicketStatusId==2?false: true)" data-toggle="modal" data-target="#mdExport" class="btn btn-success">@FCVStockTool.Language.ProductTicket.ProTicket.Export</button>
+                    }
+                    <button disabled="@(Model.Id >0 && Model.TicketStatusId==1?false: true)" onclick="form.action = '/ProductTicket/Cancel?PageNo=@ViewBag.CurrentPage'" class="btn btn-default">@FCVStockTool.Language.ProductTicket.ProTicket.Cancelpro</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+    <div class="panel panel-info">
+        <div class="panel-body">
+            <div class="col-lg-8">
+            </div><!-- /.col-lg-6 -->
+            @using (Html.BeginForm())
+            { 
+                <div class="col-lg-4">
+                    <div class="input-group">
+
+                        <input id="searchString" name="searchString" type="text" class="form-control" placeholder="@FCVStockTool.Language.ProductTicket.ProTicket.Search...">
+                        <span class="input-group-btn">
+                            <button class="btn btn-default btn-search" type="submit">@FCVStockTool.Language.ProductTicket.ProTicket.Search</button>
+                        </span>
+
+                    </div><!-- /input-group -->
+                </div><!-- /.col-lg-6 -->
+            }
+        </div>
+        <div class="table-responsive">
+            <table class="table">
+                <tr>
+                    <th>@FCVStockTool.Language.ProductTicket.ProTicket.Code</th>
+                    <th>@FCVStockTool.Language.ProductTicket.ProTicket.Product</th>
+                    <th>@FCVStockTool.Language.ProductTicket.ProTicket.Employee</th>
+                    @*<th>@FCVStockTool.Language.ProductTicket.ProTicket.Reason</th>*@
+                    <th>@FCVStockTool.Language.ProductTicket.ProTicket.Requestdate</th>
+                    <th>@FCVStockTool.Language.ProductTicket.ProTicket.Requesters</th>
+                    <th>@FCVStockTool.Language.ProductTicket.ProTicket.Status</th>
+                    @*<th>Ngày duyệt</th>
+                        <th>Người duyệt</th>
+                        <td></td>*@
+                    <td></td>
+                </tr>
+                @foreach (var c in ViewBag.ProductTickets)
+                {
+                    <tr style="@(c.TicketStatusId == 1 ? "background-color:yellow;color:red" : c.TicketStatusId == 2 ? "background-color:#819FF7" : c.TicketStatusId == 4 ? "background-color:#D8D8D8" : "")">
+                        <td><center>@c.Code</center></td>
+                        <td><center>@(c.Category != null ? c.Category.Name : "")</center></td>
+                        <td><center>@(c.Employee != null ? c.Employee.Name : "")</center></td>
+                        @*<td><center>@c.Reason</center></td>*@
+                        <td><center>@(c.RequestOn != null ? string.Format("{0:dd/MM/yyyy}", c.RequestOn) : "")</center></td>
+                        <td><center>@(c.RequestBy != null ? c.RequestBy.DisplayName : "")</center></td>
+                        <td><center>@c.TicketStatus.Text</center></td>
+                        @*<td><center>@(c.ApproveOn != null ? string.Format("{0:dd/MM/yyyy}", c.ApproveOn) : "")</center></td>
+                            <td>@(c.ApproveBy != null ? c.ApproveBy.DisplayName : "")</td>*@
+                        <td><a href="/ProductTicket/Index/@c.Id?PageNo=@ViewBag.CurrentPage">@FCVStockTool.Language.ProductTicket.ProTicket.Detailpro</a></td>
+                        @*<td><a href="/ProductTicket/Index/@c.Id?PageNo=@ViewBag.CurrentPage">Duyệt</a></td>*@
+                    </tr>
+                }
+            </table>
+        </div>
+        <div class="panel-footer">
+            <div class="btn-toolbar" role="toolbar" aria-label="...">
+                @for (int i = 1; i <= @ViewBag.TotalPage; i++)
+                {
+                    <div class="btn-group" role="group" aria-label="...">
+                        <a href="/ProductTicket/Index?PageNo=@i" class="btn btn-default display-inline">@i</a>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form id="frmImport" action="/ProductTicket/Import" method="post" enctype="multipart/form-data">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title">Import nhóm sản phẩm</h4>
+                    </div>
+                    <div class="modal-body">
+                        <label for="file">Filename:</label>
+                        <input type="file" name="file" id="file" />
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button id="btnOK" type="button" class="btn btn-primary">Import</button>
+                    </div>
+                </form>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+
+<div class="modal fade" id="mdExport" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Xuất hàng</h4>
+            </div>
+            <div class="modal-body">
+              
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="form-group col-md-12">
+                                <div>@FCVStockTool.Language.ProductItem.ProItem.ShortCode</div>
+                                <input id="txtSerialNo" class="form-control"/>
+                            </div>
+                       </div>
+                    </div>
+                    <div class="modal-footer">
+                        <input type="submit" class="btn btn-default" onclick="ExportProductItem()" value="@FCVStockTool.Language.Invoice.Invoice.Import"/>
+                        <button type="button" class="btn btn-default" data-dismiss="modal" id="close">@FCVStockTool.Language.Invoice.Invoice.Close</button>
+                    </div>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<!-- END Import Excel-->    
+
+@section scripts{
+    <script>
+        $('.datepicker').datepicker({ dateFormat: 'dd/M/yy' }).val();
+        $("#btnDelete").click(function () { return ConfirmDelete() });
+        function ExportProductItem()
+        {
+            var _shortCode = $('#txtSerialNo').val();
+            if (_shortCode == '') {
+                alert('Vui lòng nhập ShortCode');
+                return;
+            }
+
+            $.ajax({
+                type: "GET",
+                url: "/ProductItem/CheckShortCode",
+                data: { shortCode: _shortCode },
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (respon) {
+                    if (respon.Exist) {
+                        if (respon.EmployeeName != '') {
+                            if (!confirm('Thiết bị đang được sử dụng bởi ' + respon.EmployeeName + ". Bạn có muốn thay đổi?")) {
+                                return;
+                            }
+                        }
+                    }
+                    else {
+                        alert('Không tìm thấy thiết bị với ShortCode ' + _shortCode + '. Vui lòng kiểm tra lại');
+                        return;
+                    }
+                    AssignProductItem(respon);
+                },
+                error: function (request, status, error) {
+                    alert(request.responseText);
+                }
+            });
+        }
+        function AssignProductItem(data)
+        {
+            var _hdfId = $('#hdfId').val();
+            $.ajax({
+                type: "GET",
+                url: "/ProductTicket/AssignEmployee",
+                data: {
+                    ticketId: _hdfId, employeeId: data.EmployeeId, productId: data.ProductId, serial: data.Serial, productItemID: data.ProductItemID
+                },
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (respon) {
+                    alert('Xuất thiết bị thành công!');
+                },
+                error: function (request, status, error) {
+                    alert(request.responseText);
+                }
+            });
+        }
+        customCombobox();
+        $('#cboEmp').combobox();
+    </script>
+}

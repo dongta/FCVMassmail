@@ -1,0 +1,112 @@
+﻿@model FCVStockTool.Models.AccountantAsset
+@{
+    ViewBag.Title = @FCVStockTool.Language.AccountantAsset.AccountantAsset.Import;
+}
+
+<div class="page-header">
+    <h1>@FCVStockTool.Language.AccountantAsset.AccountantAsset.Import</h1><!-- Đa ngôn ngữ -->
+</div>
+<!-- Button Import -->
+<div class="panel panel-info">
+    <div class="panel-body">
+        <div class="col-lg-8">
+            <button id="btnImport" class="btn btn-info" data-toggle="modal" data-target="#myModal">Import</button>
+        </div><!-- /.col-lg-6 -->
+    </div>
+</div>
+<!-- END Button Import -->
+<!-- Import Excel-->
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">@FCVStockTool.Language.AccountantAsset.AccountantAsset.ImortAccountAcc</h4>
+            </div>
+            <div class="modal-body">
+                @using (Html.BeginForm("Import", "AccountantAsset", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                {
+                    <div class="modal-body">
+                        <div class="row">
+                            <label for="file">@FCVStockTool.Language.Category.Category.FileName:</label>
+                            <input type="file" name="file" id="file" />
+                        </div>
+                        <div class="row">
+                            <a href="/Files/ImportTemplates/AccountAsset_Template.xlsx">Template</a>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <input type="submit" class="btn btn-default" value="Import" />
+                        <button type="button" class="btn btn-default" data-dismiss="modal" id="close">@FCVStockTool.Language.AccountantAsset.AccountantAsset.Close</button>
+                    </div>
+                }
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<!-- END Import Excel-->
+<!-- List Import -->
+<h4> List Import</h4>
+<div class="panel panel-info">
+    <div class="table-responsive">
+        <!-- Table Show List -->
+        <table class="table" id="AccountantAssets">
+            <tr>
+                <th>@FCVStockTool.Language.AccountantAsset.AccountantAsset.Group</th>
+                <th>@FCVStockTool.Language.AccountantAsset.AccountantAsset.Class</th>
+                <th>@FCVStockTool.Language.AccountantAsset.AccountantAsset.FixedAssetCode</th>
+                <th>@FCVStockTool.Language.AccountantAsset.AccountantAsset.FixedAssetName</th>
+                <th>@FCVStockTool.Language.AccountantAsset.AccountantAsset.CostCenter</th>
+                <th>@FCVStockTool.Language.AccountantAsset.AccountantAsset.UsefulLife</th>
+                <th>@FCVStockTool.Language.AccountantAsset.AccountantAsset.DepreciationDate</th>
+                <th>@FCVStockTool.Language.AccountantAsset.AccountantAsset.Acquisition</th>
+                <th>@FCVStockTool.Language.AccountantAsset.AccountantAsset.Sub_code</th>
+                <th>@FCVStockTool.Language.AccountantAsset.AccountantAsset.Description_subCode</th>
+                <th>@FCVStockTool.Language.AccountantAsset.AccountantAsset.Barcode</th>
+                <th>@FCVStockTool.Language.AccountantAsset.AccountantAsset.Acquisition_subcode</th>
+                <th>@FCVStockTool.Language.AccountantAsset.AccountantAsset.RetirementDate</th>
+                <th>@FCVStockTool.Language.AccountantAsset.AccountantAsset.Status</th>
+                <th>@FCVStockTool.Language.AccountantAsset.AccountantAsset.Owner</th>
+                <th>@FCVStockTool.Language.AccountantAsset.AccountantAsset.Remarks</th>
+            </tr>
+            @foreach (var c in ViewBag.AccountantAsset)
+            {
+            <tr>
+                <td><center>@c.Group</center></td>
+                <td><center>@c.Class</center></td>
+                <td><center>@c.FixedAssetCode</center></td>
+                <td><center>@c.FixedAssetName</center></td>
+                <td><center>@c.CostCenter</center></td>
+                <td><center>@c.UsefulLife</center></td>
+                <td>@string.Format("{0:dd/MM/yyyy}", @c.DepreciationDate)</td>
+                <td>@string.Format("{0:#,##0.00;(#,##0.00);0.00}", @c.Acquisition)</td>
+                <td><center>@c.Sub_code</center></td>
+                <td>@c.Description_subCode</td>
+                <td><center>@c.Barcode</center></td>
+                <td><center>@string.Format("{0:#,##0.00;(#,##0.00);0.00}", @c.Acquisition_subcode)</center></td>
+                <td><center>@string.Format("{0:dd/MM/yyyy}", @c.RetirementDate)</center></td>
+                <td><center>@c.Status</center></td>
+                <td><center>@c.Owner</center></td>
+                <td>@c.Remarks</td>
+                <td></td>
+            </tr>
+            }
+        </table>
+        <!-- END Table Show List -->
+    </div>
+
+    <!-- Page -->
+    <div class="panel-footer">
+        <div class="btn-toolbar" role="toolbar" aria-label="...">
+            @for (int i = 1; i <= @ViewBag.TotalPage; i++)
+            {
+            <div class="btn-group" role="group" aria-label="...">
+                <a href="/AccountantAsset/Index?PageNo=@i" class="btn btn-default display-inline">@i</a>
+            </div>
+            }
+        </div>
+    </div>
+    <!-- END Page -->
+</div>
+<!-- END List Import -->

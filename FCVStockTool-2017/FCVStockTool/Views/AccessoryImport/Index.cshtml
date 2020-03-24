@@ -1,0 +1,67 @@
+﻿@model AccessoryImport
+@{
+    ViewBag.Title = @FCVStockTool.Language.AccessoryImport.AccessoryImport.Title + ViewBag.AccessoryName;
+}
+<div class="page-header">
+    <h1>@FCVStockTool.Language.AccessoryImport.AccessoryImport.Title <small>@ViewBag.AccessoryName</small></h1>
+</div>
+
+<div class="panel panel-info">
+    @*<div class="panel-body">
+            <div class="col-lg-8">
+            </div><!-- /.col-lg-6 -->
+            @using (Html.BeginForm())
+            {
+                <div class="col-lg-4">
+                    <div class="input-group">
+
+                        <input id="searchString" name="searchString" type="text" class="form-control" placeholder="@FCVStockTool.Language.AccessoryExport.AccessoryExport.Search...">
+                        <span class="input-group-btn">
+                            <button class="btn btn-default btn-search" type="submit">@FCVStockTool.Language.AccessoryExport.AccessoryExport.Search</button>
+                        </span>
+
+                    </div><!-- /input-group -->
+                </div><!-- /.col-lg-6 -->
+            }
+        </div>*@
+    <div class="table-responsive">
+        <table class="table">
+            <tr>
+                <th>@FCVStockTool.Language.AccessoryImport.AccessoryImport.Amount</th>
+                <th>@FCVStockTool.Language.AccessoryImport.AccessoryImport.ImportOn</th>
+                <th>@FCVStockTool.Language.AccessoryImport.AccessoryImport.ImportBy</th>
+                <th>@FCVStockTool.Language.ProductItem.ProItem.Description</th>
+                <th></th>
+            </tr>
+            @foreach (var c in ViewBag.AccessoryImports)
+            {
+                <tr>
+                    @*<td>@(c.ExportToEmployee != null ? c.ExportToEmployee.Name : "")</td>*@
+                    <td><center>@c.Amount</center></td>
+                    <td><center>@(string.Format("{0:dd/MM/yyyy}", c.ImportOn))</center></td>
+                    <td>@(c.ImportByUser != null ? c.ImportByUser.DisplayName : "")</td>
+                    <td>@c.Description</td>
+                    <td><center><a id="btnExportToUser" style="visibility:@(c.Cancel?"hidden":"vissible")" href="/AccessoryImport/Cancel/@(c.Id)" class="btn btn-info">@FCVStockTool.Language.AccessoryImport.AccessoryImport.Cancel</a><text>@(c.Cancel ? FCVStockTool.Language.AccessoryImport.AccessoryImport.Canceled : "")</text></center></td>
+                </tr>
+            }
+        </table>
+    </div>
+    <div class="panel-footer">
+        <div class="btn-toolbar" role="toolbar" aria-label="...">
+            @for (int i = 1; i <= @ViewBag.TotalPage; i++)
+            {
+                <div class="btn-group" role="group" aria-label="...">
+                    <a href="/AccessoryExport/Index?PageNo=@i" class="btn btn-default display-inline">@i</a>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+@section scripts{
+    <script>
+        customCombobox();
+        $('#cboUser').combobox();
+    </script>
+}
+
+
