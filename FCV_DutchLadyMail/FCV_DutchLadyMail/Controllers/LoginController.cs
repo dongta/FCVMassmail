@@ -37,47 +37,26 @@ namespace FCV_DutchLadyMail.Controllers
         [HttpPost]
         public ActionResult Index(Login login, string returnUrl = "")
         {
-            if (ModelState.IsValid)
+            string error = string.Empty;
+            try
             {
-                string authenticationMode = ConfigurationManager.AppSettings["AuthenticationMode"].ToLower();
-
-                if (authenticationMode=="db")
+                if (ModelState.IsValid)
                 {
-                    var hashPassword = StringHelper.hasPasswordMD5(login.Password);
-                    var user = db.USERS.Where(a => a.Username == login.UserName&&a.Password== hashPassword).FirstOrDefault();
-                    
-                    if (user!=null)
+                    string authenticationMode = ConfigurationManager.AppSettings["AuthenticationMode"];
+                    if (authenticationMode != null && authenticationMode.ToLower() == "db")
                     {
-                        IdentityUser _identity = new IdentityUser();
-                        _identity.UserId = user.User_Id;
-                        _identity.UserName = user.Username;
-                        _identity.FullName = user.DisplayName;
-                        _identity.Address = null;
-                        _identity.Email = user.Email;
-                        Session.Add("Identity", _identity);
+                        var hashPassword = StringHelper.hasPasswordMD5(login.Password);
+                        var user = db.USERS.Where(a => a.Username == login.UserName && a.Password == hashPassword).FirstOrDefault();
 
-
-                        if (Url.IsLocalUrl(returnUrl))
-                            return Redirect(returnUrl);
-                        else
-                            return RedirectToAction("Index", "Home");
-                    }
-                    else
-                    {
-                        ModelState.AddModelError("LoginValidate", "Username or password wrong! Please check again!");
-                    }
-                }
-                else
-                {
-                    IdentityUser _identity = new IdentityUser();
-                    try
-                    {
-                        //_identity = AuthenticateUsingPrincipalcontext("domaina.int.net", login.UserName, login.Password);
-                        _identity = AuthenticateUsingPrincipalcontext("192.168.0.1", login.UserName, login.Password);
-                        if (_identity.UserName != null)
+                        if (user != null)
                         {
+                            IdentityUser _identity = new IdentityUser();
+                            _identity.UserId = user.User_Id;
+                            _identity.UserName = user.Username;
+                            _identity.FullName = user.DisplayName;
+                            _identity.Address = null;
+                            _identity.Email = user.Email;
                             Session.Add("Identity", _identity);
-
 
                             if (Url.IsLocalUrl(returnUrl))
                                 return Redirect(returnUrl);
@@ -88,17 +67,45 @@ namespace FCV_DutchLadyMail.Controllers
                         {
                             ModelState.AddModelError("LoginValidate", "Username or password wrong! Please check again!");
                         }
-
-                        //string strMessage = String.Format("User '{0}' authenticated successfully with PrincipalContext, \nDistinguished Name: {1}", login.UserName, strDistinguishedName);
                     }
-                    catch (AuthenticationException ex)
+                    else
                     {
-                        //ModelState.AddModelError("LoginValidate", ex.Message);
-                        string strMessage = String.Format("Error: {0}", ex.Message);
+                        IdentityUser _identity = new IdentityUser();
+                        try
+                        {
+                            _identity = AuthenticateUsingPrincipalcontext("domaina.int.net", login.UserName, login.Password);
+                            //_identity = AuthenticateUsingPrincipalcontext("192.168.0.1", login.UserName, login.Password);
+                            if (_identity.UserName != null)
+                            {
+                                Session.Add("Identity", _identity);
+
+
+                                if (Url.IsLocalUrl(returnUrl))
+                                    return Redirect(returnUrl);
+                                else
+                                    return RedirectToAction("Index", "Home");
+                            }
+                            else
+                            {
+                                error = "8";
+                                ModelState.AddModelError("LoginValidate", "Username or password wrong! Please check again!");
+                            }
+
+                            //string strMessage = String.Format("User '{0}' authenticated successfully with PrincipalContext, \nDistinguished Name: {1}", login.UserName, strDistinguishedName);
+                        }
+                        catch (AuthenticationException ex)
+                        {
+                            //ModelState.AddModelError("LoginValidate", ex.Message);
+                            string strMessage = String.Format("Error: {0}", ex.Message);
+                        }
                     }
                 }
+                return View();
             }
-            return View();
+            catch (Exception ex)
+            {
+                return Content("ERROR: --> " + ex.Message + error);
+            }
         }
         public IdentityUser Login(Login login)
         {

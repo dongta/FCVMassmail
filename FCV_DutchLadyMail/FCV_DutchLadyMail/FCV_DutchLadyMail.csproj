@@ -85,10 +85,10 @@
     <Reference Include="NLog">
       <HintPath>..\packages\NLog.1.0.0.505\lib\NLog.dll</HintPath>
     </Reference>
-    <Reference Include="PagedList">
+    <Reference Include="PagedList, Version=1.17.0.0, Culture=neutral, PublicKeyToken=abbb863e9397c5e1, processorArchitecture=MSIL">
       <HintPath>..\packages\PagedList.1.17.0.0\lib\net40\PagedList.dll</HintPath>
     </Reference>
-    <Reference Include="PagedList.Mvc">
+    <Reference Include="PagedList.Mvc, Version=4.5.0.0, Culture=neutral, PublicKeyToken=abbb863e9397c5e1, processorArchitecture=MSIL">
       <HintPath>..\packages\PagedList.Mvc.4.5.0.0\lib\net40\PagedList.Mvc.dll</HintPath>
     </Reference>
     <Reference Include="Remotion">
@@ -1167,6 +1167,7 @@
     <Content Include="Content\lib\images1\sort_both.png" />
     <Content Include="Content\lib\images1\sort_desc.png" />
     <Content Include="Content\lib\images1\sort_desc_disabled.png" />
+    <Content Include="Content\PagedList.css" />
     <Content Include="dll\CKFinder.dll" />
     <Content Include="Files\CrmInstall\06_10_2018\coast_arnat59.jpg" />
     <Content Include="Files\CrmInstall\06_10_2018\coast_art294.jpg" />
@@ -2110,7 +2111,6 @@
     <Content Include="Content\lib\sweetalert\sweetalert.css" />
     <Content Include="Content\lib\toastr\toastr.min.css" />
     <Content Include="Content\lib\vector-map\jqvmap.min.css" />
-    <Content Include="Content\PagedList.css" />
     <Content Include="Content\spinners.css" />
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_flat_75_ffffff_40x100.png" />

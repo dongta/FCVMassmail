@@ -227,6 +227,27 @@ namespace FCV_DutchLadyMail.Controllers
                         _Mail.DistributorCode = code;
                         if (s[1] != "")
                         {
+                            #region Array mail
+                            if (s[1].Contains("&lt;").ToString().Length == 1)
+                            {
+                                s[1] = s[1].Replace("&lt;", "<").Replace("&gt;", "");
+                                s[1] = s[1].Split('<')[1];
+                            }
+                            else if (s[1].Contains("&lt;").ToString().Length > 1)
+                            {
+                                s[1] = s[1].Replace("&lt;", "<").Replace("&gt;", ">");
+                                string arrayMail = string.Empty;
+                                string[] _arr = s[1].Split('<');
+                                for (int i = 0; i < _arr.Count(); i++)
+                                {
+                                    if (_arr[i].Contains(">"))
+                                    {
+                                        arrayMail += _arr[i].Split('>')[0] + ",";
+                                    }
+                                }
+                                if (arrayMail != string.Empty) s[1] = arrayMail;
+                            }
+                            #endregion
                             _Mail.toAddress = s[1];
                             //if (!String.IsNullOrEmpty(Files) && !Files.Equals("-- Please select --"))
                             if (!String.IsNullOrEmpty(Files))
@@ -256,6 +277,27 @@ namespace FCV_DutchLadyMail.Controllers
                         var dt = LstMail.Where(ta => ta.DistributorCode.Equals(code)).SingleOrDefault();
                         if (s[1] != "")
                         {
+                            #region Array mail
+                            if (s[1].Contains("&lt;").ToString().Length == 1)
+                            {
+                                s[1] = s[1].Replace("&lt;", "<").Replace("&gt;", "");
+                                s[1] = s[1].Split('<')[1];
+                            }
+                            else if (s[1].Contains("&lt;").ToString().Length > 1)
+                            {
+                                s[1] = s[1].Replace("&lt;", "<").Replace("&gt;", ">");
+                                string arrayMail = string.Empty;
+                                string[] _arr = s[1].Split('<');
+                                for (int i = 0; i < _arr.Count(); i++)
+                                {
+                                    if (_arr[i].Contains(">"))
+                                    {
+                                        arrayMail += _arr[i].Split('>')[0] + ",";
+                                    }
+                                }
+                                if (arrayMail != string.Empty) s[1] = arrayMail;
+                            }
+                            #endregion
                             dt.ccAddress=s[1];
                             if (!String.IsNullOrEmpty(AddCC))
                                 dt.ccAddress = dt.ccAddress + AddCC;
@@ -304,6 +346,28 @@ namespace FCV_DutchLadyMail.Controllers
                         var dtBcc = LstMail.Where(ta => ta.DistributorCode.Equals(code)).SingleOrDefault();
                         if (s[1] != "")
                         {
+                            #region Array mail
+                            if (s[1].Contains("&lt;").ToString().Length == 1)
+                            {
+                                s[1] = s[1].Replace("&lt;", "<").Replace("&gt;", "");
+                                s[1] = s[1].Split('<')[1];
+                            }
+                            else if (s[1].Contains("&lt;").ToString().Length > 1)
+                            {
+                                s[1] = s[1].Replace("&lt;", "<").Replace("&gt;", ">");
+                                string arrayMail = string.Empty;
+                                string[] _arr = s[1].Split('<');
+                                for (int i = 0; i < _arr.Count(); i++)
+                                {
+                                    if (_arr[i].Contains(">"))
+                                    {
+                                        arrayMail += _arr[i].Split('>')[0] + ",";
+                                    }
+                                }
+                                if (arrayMail != string.Empty) s[1] = arrayMail;
+                            }
+                            #endregion
+
                             dtBcc.bccAddress = s[1];
                             if (!String.IsNullOrEmpty(AddBCC))
                                 dtBcc.bccAddress = dtBcc.bccAddress + AddBCC;
@@ -375,6 +439,7 @@ namespace FCV_DutchLadyMail.Controllers
             }
             #endregion
             Session.Add("CountGet", 0);
+            var ii = TempData["MessageCount"];
             TempData["MessageCount"] = LstMail.Count + " emails sent to queue !";
             return RedirectToAction("SendMails");
         }

@@ -173,7 +173,7 @@ namespace FCV_DutchLadyMail.Controllers
                 if (FileUpload.ContentType == "application/vnd.ms-excel" || FileUpload.ContentType == "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
                 {
                     string filename = FileUpload.FileName;
-                    //string targetpath = Server.MapPath("~/Files/Excel");
+                    //string targetpath = Server.MapPath("~/Files/Excel/");
                     string targetpath = "D:/MassMail/ImportFiles/";
                     FileUpload.SaveAs(targetpath + filename);
                     string pathToExcelFile = targetpath + filename;
@@ -206,18 +206,33 @@ namespace FCV_DutchLadyMail.Controllers
                         {
                             if (item.Code != "")
                             {
-                                DistributorModel TU = new DistributorModel();
-                                TU.Name = item.Name;
-                                TU.Address = item.Address;
-                                TU.ID = item.ID;
-                                TU.Code = item.Code;
-                                TU.AdminMail = item.AdminMail;
-                                TU.SEMail = item.SEMail;
-                                TU.AcMail = item.AcMail;
-                                TU.ManagerMail = item.ManagerMail;
-                                TU.Region = item.Region;
-                                TU.State = true;
-                                db.Distributors.Add(TU);
+                                var TU = db.Distributors.FirstOrDefault(x => x.Code == item.Code);
+                                if (TU == null)
+                                {
+                                    TU = new DistributorModel();
+                                    TU.Name = item.Name;
+                                    TU.Address = item.Address;
+                                    TU.Code = item.Code;
+                                    TU.AdminMail = item.AdminMail;
+                                    TU.SEMail = item.SEMail;
+                                    TU.AcMail = item.AcMail;
+                                    TU.ManagerMail = item.ManagerMail;
+                                    TU.Region = item.Region;
+                                    TU.State = true;
+                                    db.Distributors.Add(TU);
+                                }
+                                else
+                                {
+                                    TU.Name = item.Name;
+                                    TU.Address = item.Address;
+                                    TU.Code = item.Code;
+                                    TU.AdminMail = item.AdminMail;
+                                    TU.SEMail = item.SEMail;
+                                    TU.AcMail = item.AcMail;
+                                    TU.ManagerMail = item.ManagerMail;
+                                    TU.Region = item.Region;
+                                    TU.State = true;
+                                }
                                 db.SaveChanges();
                             }
                         }
@@ -226,14 +241,12 @@ namespace FCV_DutchLadyMail.Controllers
                         {
                             foreach (var entityValidationErrors in ex.EntityValidationErrors)
                             {
-
                                 foreach (var validationError in entityValidationErrors.ValidationErrors)
                                 {
 
                                     Response.Write("Property: " + validationError.PropertyName + " Error: " + validationError.ErrorMessage);
 
                                 }
-
                             }
                         }
                     }
